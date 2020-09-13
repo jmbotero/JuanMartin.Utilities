@@ -110,14 +110,16 @@ namespace JuanMartin.Utilities.Euler
             answer.Duration = stopWatch.Elapsed.TotalMilliseconds;
 
             if (!silent) Console.WriteLine(answer.Message);
-            if (!silent) Console.WriteLine("Problem execution duration: {0}ms", answer.Duration);
+            if (!silent) Console.WriteLine("Problem execution duration: {0} ms", answer.Duration);
         }
 
         public static void ValidateProblems(Problem[] problems, IEnumerable<int> skip_problems)
         {
             Result result = null;
             var incorrectProblems = new List<int>();
+            var stopWatch = new Stopwatch();
 
+            stopWatch.Start();
             Console.Write("Executing problem: ");
             for (int i = 1; i < problems.Length; i++)
             {
@@ -135,6 +137,7 @@ namespace JuanMartin.Utilities.Euler
 
             Console.WriteLine();
             Console.WriteLine("Have incorrect answers for Problems: {0}", (incorrectProblems.Count == 0) ? "None" : string.Join(",", incorrectProblems.ToArray()));
+            Console.WriteLine("Overall execution duration: {0} min", stopWatch.Elapsed.TotalMinutes);
         }
 
         public static Problem GetProblemById(int id)
@@ -602,6 +605,7 @@ namespace JuanMartin.Utilities.Euler
             var count = arguments.LongNumber;
             var number = (long)Math.Pow((double)count, 2);
             long number_of_divisors = 0;
+
             do
             {
                 number++;
