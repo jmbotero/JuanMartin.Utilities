@@ -242,9 +242,9 @@ namespace JuanMartin.Utilities.Euler
             var number = arguments.LongNumber;
             string message;
 
-            List<int> factors = UtilityMath.GetPrimeFactors(number);
+            var factors = UtilityMath.GetPrimeFactors(number).ToArray();
 
-            var isPrime = factors.Count == 0;
+            var isPrime = factors.Length == 0;
             var max = factors.Max();
 
             var answer = max.ToString();
@@ -253,7 +253,7 @@ namespace JuanMartin.Utilities.Euler
                 message = string.Format("The prime factors of {0} are [{1}], maximum is {2}", number, factors.ToString(), answer);
             }
             else
-                message = string.Format("{0} is not a prime, but its prime factors are [{1}] with maximum {2}", number, factors.ToString(), answer);
+                message = string.Format("{0} is not a prime, but its prime factors are [{1}] with maximum {2}", number, string.Join(",", factors.ToArray()), answer);
 
             if (Answers[arguments.Id] != answer)
             {
@@ -603,18 +603,17 @@ namespace JuanMartin.Utilities.Euler
         public static Result DivisibleTriangularNumber(Problem arguments)
         {
             var count = arguments.LongNumber;
-            var number = (long)Math.Pow((double)count, 2);
-            long number_of_divisors = 0;
+            long number = 0;
+            int nod = 0;
 
-            do
-            {
-                number++;
-                if (UtilityMath.IsTriangularNumber(number))
-                {
-                    number_of_divisors = UtilityMath.NumberOfDivisors(number);
-                }
-            } while (number_of_divisors < count);
+            var i = count;
+            while (nod < count)
+            { 
+                number = UtilityMath.GetTriangularNumber(i);
+                i++;
 
+                nod = UtilityMath.NumberOfDivisors(number);
+            }
             var answer = number.ToString();
             var message = string.Format("The value of the first triangle number to have over {0} divisors is {1}.", count, number);
             if (Answers[arguments.Id] != answer)
@@ -1863,8 +1862,8 @@ namespace JuanMartin.Utilities.Euler
 
             while (!found && number < int.MaxValue)
             {
-                List<int> pf = UtilityMath.GetPrimeFactors(number, distincts);
-                if (pf.Count == distincts)
+                var pf = UtilityMath.GetPrimeFactors(number, distincts).ToArray();
+                if (pf.Length == distincts)
                 {
                     consecutives++;
                     if (first == -1) first = number;
