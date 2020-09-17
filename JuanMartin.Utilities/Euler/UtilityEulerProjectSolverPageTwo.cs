@@ -49,7 +49,7 @@ namespace JuanMartin.Utilities.Euler
 
 
         /// <summary>
-        /// https://projecteuler.net/problem=51  --skip=12,15,20,26,60
+        /// https://projecteuler.net/problem=51 
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
