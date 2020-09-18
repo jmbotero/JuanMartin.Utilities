@@ -707,13 +707,10 @@ namespace JuanMartin.Utilities.Euler
         {
             var gridSize = arguments.IntNumber;
 
-            var x = UtilityMath.FactorialOverFlow((ulong)gridSize);
-            var y = UtilityMath.FactorialOverFlow((ulong)(2 * gridSize));
-
-            var a = BigInteger.Parse(x);
-            var b = BigInteger.Parse(y);
-            var n = BigInteger.Pow(a, 2);
-            var routes = BigInteger.Divide(b, n);
+            var a = UtilityMath.FactorialLoop<BigInteger>(gridSize);
+            var b = UtilityMath.FactorialLoop<BigInteger>(2 * gridSize);
+            var divisor = BigInteger.Pow(a, 2);
+            var routes = BigInteger.Divide(b, divisor);
 
             var answer = routes.ToString();
             var message = string.Format("There are {0} route(s) in a {1}x{1} grid.", routes, gridSize);

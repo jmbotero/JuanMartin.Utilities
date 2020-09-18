@@ -231,7 +231,7 @@ namespace JuanMartin.Utilities.Euler
                 }
             }
             var answer = count.ToString();
-            var message = string.Format("{0} not necessarily distinct, values of  nCr, for 1 ≤ n ≤ 100, are greater than {1}.", answer, limit);
+            var message = string.Format("{0} not necessarily distinct, values of combinatorics(n, r), for 1 ≤ n ≤ 100, are greater than {1}.", answer, limit);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
