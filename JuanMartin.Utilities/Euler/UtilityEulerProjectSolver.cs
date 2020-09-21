@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CellList = System.Collections.Generic.Dictionary<string, JuanMartin.Kernel.Utilities.DataStructures.Cells>;
 
@@ -1066,16 +1067,16 @@ namespace JuanMartin.Utilities.Euler
             var limit = arguments.IntNumber;
             var max = 0;
             var d = 0;
-            var sequenceLiimit = 2000;
-            // even divisors are never repeating
-            for (int divisor = 3; divisor < limit; divisor += 2)
-            {
-                var digits = UtilityMath.GetDecimalList(1, divisor, sequenceLiimit);
 
-                // we have a repeating number
-                if (digits.Count == sequenceLiimit)
+            // we are more likely to find a large recurring cycle when d is large
+            for (int divisor = limit-1; divisor > 2; divisor--)
+            {
+                var digits = UtilityMath.GetDecimalList(1, divisor, 2000).ToArray();
+
+                // we have a decimal part number
+                if (digits.Length > 0)
                 {
-                    var number = UtilityMath.GetPeriodicalSequence(digits, sequenceLiimit);
+                    var number = UtilityMath.GetPeriodicalSequence(digits).Length;
 
                     if (number > max)
                     {
