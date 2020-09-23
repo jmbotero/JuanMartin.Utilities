@@ -1066,28 +1066,30 @@ namespace JuanMartin.Utilities.Euler
         {
             var limit = arguments.IntNumber;
             var max = 0;
-            var d = 0;
+            var number = 0;
 
-            // we are more likely to find a large recurring cycle when d is large
-            for (int divisor = limit-1; divisor > 2; divisor--)
+            // only prime numbers as per (https://en.wikipedia.org/wiki/Repeating_decimal#Fractions_with_prime_denominators), 
+            // those have the longest recurring cycles
+            var primes = UtilityMath.GeneratePrimes(3, limit).ToArray();
+            foreach (int divisor in primes)
             {
                 var digits = UtilityMath.GetDecimalList(1, divisor, 2000).ToArray();
 
                 // we have a decimal part number
                 if (digits.Length > 0)
                 {
-                    var number = UtilityMath.GetPeriodicalSequence(digits).Length;
+                    var length = UtilityMath.GetPeriodicalSequence(digits).Length;
 
-                    if (number > max)
+                    if (length > max)
                     {
-                        max = number;
-                        d = divisor;
+                        max = length;
+                        number = divisor;
                     }
                 }
 
             }
-            var answer = d.ToString();
-            var message = string.Format("The value of d < {0} for which 1/d contains the longest recurring cycle in its decimal fraction part is {1} with length of {2}.", limit, d, max);
+            var answer = number.ToString();
+            var message = string.Format("The value of d < {0} for which 1/d contains the longest recurring cycle in its decimal fraction part is {1} with length of {2}.", limit, answer, max);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
