@@ -1,5 +1,6 @@
 ﻿using JuanMartin.Kernel.Extesions;
 using JuanMartin.Kernel.Utilities;
+using JuanMartin.Kernel.Utilities.DataStructures;
 using JuanMartin.Models;
 using System;
 using System.Collections.Generic;
@@ -747,7 +748,7 @@ namespace JuanMartin.Utilities.Euler
         public static Result OrderedFractions(Problem arguments)
         {
             var integers = arguments.ListOfNumbers;
-            var key = new UtilityMath.Fraction(integers[0], integers[1]);
+            var key = new Fraction(integers[0], integers[1]);
             var d = arguments.IntNumber;
 
             var sort_list = UtilityMath.GetReducedProperFractions(d, key, true).ToList();
@@ -775,8 +776,8 @@ namespace JuanMartin.Utilities.Euler
         {
             var d = arguments.IntNumber;
             var bounds = arguments.ListOfNumbers;
-            var begin = new UtilityMath.Fraction(bounds[0], bounds[1]);
-            var end = new UtilityMath.Fraction(bounds[2], bounds[3]);
+            var begin = new Fraction(bounds[0], bounds[1]);
+            var end = new Fraction(bounds[2], bounds[3]);
 
             var list = UtilityMath.GenerateFareySequence(d);
             var count = list.Count(fraction => fraction > begin && fraction < end);
@@ -963,6 +964,31 @@ namespace JuanMartin.Utilities.Euler
             var answer = sum.ToString();
 
             var message = string.Format("The total of the digital sums of the first {0} decimal digits for all the irrational square roots of the first {1} natural numbers is {2}.", digits, count, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+
+
+        /// <summary>
+        /// https://projecteuler.net/problem=83
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result PathSumFourWays(Problem arguments)
+        {
+            long sum = 0;
+
+            var answer = sum.ToString();
+
+            var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is indicated in bold red and is equal to {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

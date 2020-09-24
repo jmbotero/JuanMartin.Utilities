@@ -22,8 +22,6 @@ namespace JuanMartin.Utilities.Euler
             Pairs = new HashSet<int>[Primes.Length];
             Set = new int[Count];
 
-            var IsPrime = UtilityMath.IsPrimeUsingSquares.Memoize();
-
             for (int a = 0; a < Primes.Length; a++)
             {
                 Pairs[a] = new HashSet<int>();
@@ -33,8 +31,8 @@ namespace JuanMartin.Utilities.Euler
                 {
                     if (a == b) continue;
                     int y = Primes[b];
-                    if (IsPrime(UtilityMath.NumericConcat(x, y)) &&
-                        IsPrime(UtilityMath.NumericConcat(y, x)))
+                    if (UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat(x, y)) &&
+                        UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat(y, x)))
                         Pairs[a].Add(y);
                 }
             }

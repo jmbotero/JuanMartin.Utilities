@@ -90,6 +90,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(76,CountingSummations,100),
                 new Problem(79,PasscodeDerivation,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\keylog.txt|"),
                 new Problem(80,SquareRootDigitalExpansion,new long[] {100,100}),
+                new Problem(83,PathSumFourWays),
                 new Problem(96,Sudoku,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
@@ -138,7 +139,7 @@ namespace JuanMartin.Utilities.Euler
 
             Console.WriteLine();
             Console.WriteLine("Have incorrect answers for Problems: {0}", (incorrectProblems.Count == 0) ? "None" : string.Join(",", incorrectProblems.ToArray()));
-            Console.WriteLine("Overall execution duration: {0} min", stopWatch.Elapsed.TotalMinutes);
+            Console.WriteLine($"Overall execution, {problems.Length} prblems, duration: {Math.Round(stopWatch.Elapsed.TotalMinutes, 1)} min");
         }
 
         public static Problem GetProblemById(int id)
@@ -1150,8 +1151,8 @@ namespace JuanMartin.Utilities.Euler
         public static Result NumberSpiralDiagonals(Problem arguments)
         {
             var dimension = arguments.IntNumber;
-            var spiral = new UtilityMath.SpiralMatrix(dimension);
-            var sum = spiral.DigonalSum;
+            var spiral = new SpiralMatrix(dimension);
+            var sum = spiral.DiagonalSum;
 
 
             var answer = sum.ToString();
