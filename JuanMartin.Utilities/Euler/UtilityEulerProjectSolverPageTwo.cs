@@ -8,14 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace JuanMartin.Utilities.Euler
 {
     public partial class UtilityEulerProjectSolver
     {
-        private static int[] primes = UtilityMath.ErathostenesSieve(3, 30000);
-
         private enum CardSuits
         {
             Diamonds = 'D',
@@ -984,11 +981,19 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result PathSumFourWays(Problem arguments)
         {
-            long sum = 0;
+            var cvsinfo = arguments.Sequence.Split('|');
+            var fileName = cvsinfo[0];
+            var delimiter = Convert.ToChar(cvsinfo[1]);
+            var matrix = new Matrix(fileName,delimiter);
+            var path = new List<int>();
 
-            var answer = sum.ToString();
+            matrix.Transpose(); 
+            matrix.PopulateNeighbors();
+            path =  matrix.GetMinimalPath();
+             
+            var answer = path.Sum().ToString();
 
-            var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is indicated in bold red and is equal to {0}.", answer);
+            var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is equal to {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
@@ -1002,6 +1007,7 @@ namespace JuanMartin.Utilities.Euler
         }
         #region Support Methods
 
+        
         /// <summary>
         /// A common security method used for online banking is to ask the user for three random characters from a passcode. 
         /// This method reads from a textfile some of these thre digits login attempts
@@ -1079,17 +1085,6 @@ namespace JuanMartin.Utilities.Euler
             return count;
         }
 
-        private class Cube
-        {
-            public long Value { get; set; }
-            public int PermutationsCount { get; set; }
-
-            public Cube(long value)
-            {
-                this.PermutationsCount = 0;
-                this.Value = value;
-            }
-        }
 
         //private static long GetSmallesstPermutation(long number)
         //{

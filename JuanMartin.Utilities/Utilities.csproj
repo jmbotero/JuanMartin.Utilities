@@ -62,6 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Euler\Cube.cs" />
+    <Compile Include="Euler\Matrix.cs" />
     <Compile Include="Euler\Number.cs" />
     <Compile Include="Euler\Passcode.cs" />
     <Compile Include="Euler\PrimeSet.cs" />
