@@ -985,11 +985,10 @@ namespace JuanMartin.Utilities.Euler
             var fileName = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
             var matrix = new Matrix(fileName,delimiter);
-            var path = new List<int>();
 
             matrix.Transpose(); 
             matrix.PopulateNeighbors();
-            path =  matrix.GetMinimalPath();
+            var path =  matrix.GetMinimalPath();
              
             var answer = path.Sum().ToString();
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,16 +42,35 @@ namespace JuanMartin.Utilities.Euler
 
         public void Transpose()
         {
+            UnVisitAll();
+
             for (int i = 0; i < _dimension; i++)
             {
                 for (int j = 0; j < _dimension; j++)
                 {
                     if (i == j)
                         continue;
+                    if (_matrix[i][j].Visited || _matrix[j][i].Visited)
+                        continue;
 
                     var temp = _matrix[i][j];
                     _matrix[i][j] = _matrix[j][i];
                     _matrix[j][i] = temp;
+                    _matrix[i][j].Visited = true;
+                    _matrix[j][i].Visited = true;
+                }
+            }
+
+            UnVisitAll();
+        }
+
+        public void UnVisitAll()
+        {
+            for (int i = 0; i < _dimension; i++)
+            {
+                for (int j = 0; j < _dimension; j++)
+                {
+                    _matrix[i][j].Visited = false;
                 }
             }
         }
@@ -61,14 +81,14 @@ namespace JuanMartin.Utilities.Euler
                 for (int j = 0; j < _dimension; j++)
                 {
                     if (i > 0)
-                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i - 1, j), _matrix[i - 1][j].Value);
+                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i - 1, j), _matrix[i - 1][j]);
                     if (i < _dimension - 1)
-                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i + 1, j), _matrix[i + 1][j].Value);
+                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i + 1, j), _matrix[i + 1][j]);
 
                     if (j > 0)
-                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i, j - 1), _matrix[i][j - 1].Value);
+                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i, j - 1), _matrix[i][j - 1]);
                     if (j < _dimension - 1)
-                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i, j + 1), _matrix[i][j + 1].Value);
+                        _matrix[i][j].Neighbors.Add(new Tuple<int, int>(i, j + 1), _matrix[i][j + 1]);
 
                 }
             }
@@ -94,14 +114,18 @@ namespace JuanMartin.Utilities.Euler
                 Tuple<int, int> coordinates = null;
                 var min = Int32.MaxValue;
                 _matrix[current_x][current_y].Visited = true;
-                foreach (var cell in _matrix[current_x][current_y].Neighbors                                                        )
+                foreach (var cell in _matrix[current_x][current_y].Neighbors)
                 {
-                    if (cell.Value < min && cell.Key != Tuple.Create(current_x,current_y))
+                    var current = cell.Value;
+                    if (current.Value < min && !current.Visited)
                     {
                         coordinates = cell.Key;
-                        min = cell.Value;
+                        min = current.Value;
                     }
                 }
+                if (min == Int32.MaxValue)
+                    throw new ApplicationException($"Error finding minimum vale in [{string.Join(",", _matrix[current_x][current_y].Neighbors.Values.Select(n=>n.Value).ToArray())}].");
+
                 path.Add(min);
 
                 previous_x = current_x;
