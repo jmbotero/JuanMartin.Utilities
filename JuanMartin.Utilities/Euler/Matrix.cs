@@ -29,9 +29,9 @@ namespace JuanMartin.Utilities.Euler
             }
         }
 
-        private void LoadMatrix(string fileName, char delimiter)
+        private void LoadMatrix(string file_name, char delimiter)
         {
-            using (var reader = new StreamReader(fileName, Encoding.UTF8))
+            using (var reader = new StreamReader(file_name, Encoding.UTF8))
             {
                 var lines = (IEnumerable<string>)reader.ReadToEnd().Split(new char[] { UtilityFile.CarriageReturn, UtilityFile.LineFeed }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -108,23 +108,25 @@ namespace JuanMartin.Utilities.Euler
                 if (current_x == _dimension - 1 && current_y == _dimension - 1)
                     break;
 
-                if (_matrix[current_x][current_y].Visited)
-                    throw new ApplicationException($"Loop triggered when adding {_matrix[current_x][current_y].Value} to path [{string.Join(",",path.ToArray())}].");
+                var numeric_cell = _matrix[current_x][current_y];
+                
+                if (numeric_cell.Visited)
+                    throw new ApplicationException($"Loop triggered when adding {numeric_cell.Value} to path [{string.Join(",",path.ToArray())}].");
 
                 Tuple<int, int> coordinates = null;
                 var min = Int32.MaxValue;
-                _matrix[current_x][current_y].Visited = true;
-                foreach (var cell in _matrix[current_x][current_y].Neighbors)
+
+                foreach (var cell in numeric_cell.Neighbors)
                 {
-                    var current = cell.Value;
-                    if (current.Value < min && !current.Visited)
+                    var neighbor = cell.Value;
+                    if (neighbor.Value < min && !neighbor.Visited) //cell.Key != Tuple.Create(previous_x, previous_y))
                     {
                         coordinates = cell.Key;
-                        min = current.Value;
+                        min = neighbor.Value;
                     }
                 }
                 if (min == Int32.MaxValue)
-                    throw new ApplicationException($"Error finding minimum vale in [{string.Join(",", _matrix[current_x][current_y].Neighbors.Values.Select(n=>n.Value).ToArray())}].");
+                    throw new ApplicationException($"Error finding minimum value in [{string.Join(",", numeric_cell.Neighbors.Values.Select(n=>n.Value).ToArray())}].");
 
                 path.Add(min);
 
@@ -132,6 +134,7 @@ namespace JuanMartin.Utilities.Euler
                 previous_y = current_y;
                 current_x = coordinates.Item1;
                 current_y = coordinates.Item2;
+                numeric_cell.Visited = true;
             }
             return path;
         }
