@@ -1,8 +1,11 @@
 ﻿
 using JuanMartin.Kernel.Utilities.DataStructures;
+using System.Diagnostics;
 
 namespace JuanMartin.Utilities.Euler
 {
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "}")]
+
     public class Passcode
     {
         private DirectedAcyclicGraph<int> graph;
@@ -30,5 +33,10 @@ namespace JuanMartin.Utilities.Euler
         }
 
         public override string ToString() => graph.ToString(true);
+
+        private string GetDebuggerDisplay()
+        {
+            return string.Empty;
+        }
     }
 }
