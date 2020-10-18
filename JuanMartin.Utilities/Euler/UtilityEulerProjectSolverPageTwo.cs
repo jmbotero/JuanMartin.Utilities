@@ -984,22 +984,23 @@ namespace JuanMartin.Utilities.Euler
             var cvsinfo = arguments.Sequence.Split('|');
             var file_name = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
-            //var matrix = new Matrix(fileName,delimiter);
+            var matrix = new Matrix(file_name, delimiter);
+            var answer = matrix.Bellman_Ford();
 
-            //matrix.Transpose(); 
+
             //matrix.PopulateNeighbors();
             //var path =  matrix.GetMinimalPath();
 
             //var answer = path.Sum().ToString();
 
-            var p = new Problem83(file_name, delimiter);
-            var path = p.Graph.GetShortestPath(p.Graph.Vertices.First(), p.Graph.Vertices.Last());
-            var d = 0;
-            foreach (var v in path.Vertices)
-                d += v.Value;
+            //var p = new Problem83(file_name, delimiter);
+            //var path = p.Graph.GetShortestPath(p.Graph.Vertices.First(), p.Graph.Vertices.Last());
+            //var d = 0;
+            //foreach (var v in path.Vertices)
+            //    d += v.Value;
 
-            var answer = d.ToString(); //p.Run();
-            
+            //var answer = d.ToString(); 
+
             var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is equal to {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
