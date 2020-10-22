@@ -49,14 +49,14 @@ namespace JuanMartin.Utilities.Euler
                     var current = _matrix[i][j];
 
                     if (i > 0)
-                        Graph.AddEdge(current, _matrix[i - 1][j], Edge<int>.EdgeDirection.bidirectional, "left", 1);
+                        Graph.AddEdge(current, _matrix[i - 1][j], Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.bidirectional, "left", 1);
                     if (i < _dimension - 1)
-                        Graph.AddEdge(current, _matrix[i + 1][j], Edge<int>.EdgeDirection.bidirectional, "right", 1);
+                        Graph.AddEdge(current, _matrix[i + 1][j], Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.bidirectional, "right", 1);
 
                     if (j > 0)
-                        Graph.AddEdge(current, _matrix[i][j - 1], Edge<int>.EdgeDirection.bidirectional, "top", 1);
+                        Graph.AddEdge(current, _matrix[i][j - 1], Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.bidirectional, "top", 1);
                     if (j < _dimension - 1)
-                        Graph.AddEdge(current, _matrix[i][j + 1], Edge<int>.EdgeDirection.bidirectional, "bottom", 1);
+                        Graph.AddEdge(current, _matrix[i][j + 1], Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.bidirectional, "bottom", 1);
 
                 }
             }
