@@ -28,7 +28,7 @@ namespace JuanMartin.Utilities.Euler
             }
             for (var i = 1; i < digits.Length; i++)
             {
-                graph.AddEdge(graph.GetVertex(digits[i - 1].ToString()), graph.GetVertex(digits[i].ToString()), type: Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.bidirectional, "adjacent", 1);
+                graph.AddEdge(graph.GetVertex(digits[i - 1].ToString()), graph.GetVertex(digits[i].ToString()), name: "adjacent", weight: 1);
             }
         }
 
