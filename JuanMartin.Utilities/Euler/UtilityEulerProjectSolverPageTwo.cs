@@ -984,24 +984,16 @@ namespace JuanMartin.Utilities.Euler
             var cvsinfo = arguments.Sequence.Split('|');
             var file_name = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
-            var matrix = new Matrix(file_name, delimiter);
-            var answer = matrix.Bellman_Ford();
+            //var matrix = new Matrix(file_name, delimiter);
+            //var answer = matrix.Bellman_Ford();
 
+            var p = new Problem83(file_name, delimiter);
+            //var (weight, path) = p.Graph.GetDijkstraShortestPath("4445", "7981", true);
+            var (weight, path) = p.Graph.GetDijkstraShortestPath("131", "331", true);
+            var labels = string.Join(",", path.ToString(","));  
+            var answer = weight.ToString();
 
-            //matrix.PopulateNeighbors();
-            //var path =  matrix.GetMinimalPath();
-
-            //var answer = path.Sum().ToString();
-
-            //var p = new Problem83(file_name, delimiter);
-            //var path = p.Graph.GetShortestPath(p.Graph.Vertices.First(), p.Graph.Vertices.Last());
-            //var d = 0;
-            //foreach (var v in path.Vertices)
-            //    d += v.Value;
-
-            //var answer = d.ToString(); 
-
-            var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is equal to {0}.", answer);
+            var message = string.Format("The minimal path sum from the top left to the bottom right:  [{0}], by moving left, right, up, and down, is equal to {1}.",  labels, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

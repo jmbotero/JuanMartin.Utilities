@@ -90,7 +90,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(76,CountingSummations,100),
                 new Problem(79,PasscodeDerivation,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\keylog.txt|"),
                 new Problem(80,SquareRootDigitalExpansion,new long[] {100,100}),
-                new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix.txt|,"),
+                new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,"),
                 new Problem(96,Sudoku,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 

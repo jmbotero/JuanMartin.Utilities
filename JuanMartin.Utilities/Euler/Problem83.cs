@@ -35,6 +35,8 @@ namespace JuanMartin.Utilities.Euler
             {
                 for (int j = 0; j < _dimension; j++)
                 {
+                    var cell_id = i.ToString().PadLeft(2, '0') + j.ToString().PadLeft(2, '0');
+                    _matrix[i][j].Guid=cell_id;
                     Graph.AddVertex(_matrix[i][j]);
                 }
             }
