@@ -67,7 +67,6 @@
     <Compile Include="Euler\Number.cs" />
     <Compile Include="Euler\Passcode.cs" />
     <Compile Include="Euler\PrimeSet.cs" />
-    <Compile Include="Euler\Problem83.cs" />
     <Compile Include="Euler\Sudoku.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Euler\UtilityEulerProjectSolver.cs" />
