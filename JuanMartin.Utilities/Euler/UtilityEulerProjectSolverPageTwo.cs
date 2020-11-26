@@ -990,12 +990,15 @@ namespace JuanMartin.Utilities.Euler
             //DirectedAcyclicGraph<int> g = LoadPathWaysMatrixIntoGraph();
 
             //var (weight, path) = g.GetDijkstraSingleShortestPath("131", "331");
-            var (weight, path) = g.GetDijkstraSingleShortestPath("4445", "7981");
-            var labels = string.Join(",", path.ToString(","));
-            var answer = (weight != DirectedAcyclicGraph<int>.INFINITY) ? weight.ToString() : "infinity";
-            //answer = g.Bellman_Ford();
+            //var (weight, path) = g.GetDijkstraSingleShortestPath("4445", "7981");
+            //var labels = string.Join(",", path.ToString(","));
+            var d = g.GetBellman_FordSingleShortestPath("4445");
 
-            var message = string.Format("The minimal path sum from the top left to the bottom right:  [{0}], by moving left, right, up, and down, is equal to {1}.", labels, answer);
+            //var answer = (weight != DirectedAcyclicGraph<int>.INFINITY) ? weight.ToString() : "infinity";
+            var answer = Convert.ToString(d[79][79]);
+
+            var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is equal to {0}.", answer);
+            //var message = string.Format("The minimal path sum from the top left to the bottom right:  [{0}], by moving left, right, up, and down, is equal to {1}.", labels, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
