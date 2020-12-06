@@ -1010,6 +1010,104 @@ namespace JuanMartin.Utilities.Euler
 
             return r;
         }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=87
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result PrimePowerTriples(Problem arguments)
+        {
+            List<int[]> GetCombinationTriplets(int[] prime_digits)
+            {
+                var sets = new List<int[]>();
+
+                foreach(var s in prime_digits)
+                {
+                    foreach (var e in prime_digits)
+                    {
+                        foreach(var t in prime_digits)
+                        {
+                            sets.Add(new int[] { s, e, t });
+                        }
+                    }
+                }
+                  return sets;
+            };
+
+            var limit = arguments.IntNumber;
+            int upper = (int)Math.Round(Math.Sqrt(limit),0) , lower = 2;
+            List<int[]> combinations;
+            var primes = UtilityMath.GetPrimeNumbersUsingSquares(upper,lower).ToArray();
+            int[] primes_subset;
+
+            // first find prime limit
+            var bound = 0;
+            for (int p = 3; p <= primes.Length; p++)
+            {
+                primes_subset = new int[p];
+                Array.Copy(primes, primes_subset, p);
+                combinations = GetCombinationTriplets(primes_subset);
+                bound = p;
+
+                var three_primes = combinations.First();
+                var d1 = three_primes[0];
+                var d2 = three_primes[1];
+                var d3 = three_primes[2];
+
+                var square = d1 * d1;
+                var cube = d2 * d2 * d2;
+                var fourth = d3 * d3 * d3 * d3;
+
+                var sum = square + cube + fourth;
+
+                if (sum > limit)
+                {
+                    bound--;
+                    break;
+                }
+            }
+
+            // use the combinations of this bound to count sums
+            primes_subset = new int[bound];
+            Array.Copy(primes, primes_subset, bound);
+            combinations = GetCombinationTriplets(primes_subset);
+            var size = combinations.Count() - 1;
+
+            for (var j = size; j > 0; j--)
+            {
+                var three_primes = combinations[j];
+                var d1 = three_primes[0];
+                var d2 = three_primes[1];
+                var d3 = three_primes[2];
+
+                 var square = d1 * d1;
+                var cube = d2 * d2 * d2;
+                var fourth = d3 * d3 * d3 * d3;
+
+                var sum = square + cube + fourth;
+
+                if (sum > limit)
+                {
+                    combinations.Remove(three_primes);
+                }
+            }
+             
+            var answer = combinations.Count.ToString(); 
+
+            var message = string.Format("There are {0} numbers below {1} can be expressed as the sum of a prime square, prime cube, and prime fourth power.", answer, limit);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+
         #region Support Methods
 
         private static DirectedAcyclicGraph<int> LoadPathWaysMatrixIntoGraph(string file_name, char delimiter)
