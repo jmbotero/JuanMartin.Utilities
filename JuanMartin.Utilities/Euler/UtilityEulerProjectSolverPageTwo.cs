@@ -981,21 +981,23 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result PathSumFourWays(Problem arguments)
         {
+            var markers = arguments.ListOfNumbers;
             var cvsinfo = arguments.Sequence.Split('|');
 
+            var start = markers[0].ToString();
+            var end = markers[1].ToString();
             var file_name = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
- 
-            DirectedAcyclicGraph<int> g = LoadPathWaysMatrixIntoGraph(file_name, delimiter);
-            //DirectedAcyclicGraph<int> g = LoadPathWaysMatrixIntoGraph();
+            
+            (DirectedAcyclicGraph<int> g, Vertex<int>[][] m) = LoadPathWaysMatrixIntoGraph(file_name, delimiter);
 
-            //var (weight, path) = g.GetDijkstraSingleShortestPath("131", "331");
-            //var (weight, path) = g.GetDijkstraSingleShortestPath("4445", "7981");
+            //var (weight, path) = g.GetDijkstraSingleShortestPath(start, end);
             //var labels = string.Join(",", path.ToString(","));
-            var d = g.GetBellman_FordSingleShortestPath("4445");
+            var d = g.GetBellman_FordSingleShortestPath(start, m);
 
             //var answer = (weight != DirectedAcyclicGraph<int>.INFINITY) ? weight.ToString() : "infinity";
-            var answer = Convert.ToString(d[79][79]);
+            var index = d.Length - 1; // it is a square matrix
+            var answer = Convert.ToString(d[index][index]);
 
             var message = string.Format("The minimal path sum from the top left to the bottom right, by moving left, right, up, and down, is equal to {0}.", answer);
             //var message = string.Format("The minimal path sum from the top left to the bottom right:  [{0}], by moving left, right, up, and down, is equal to {1}.", labels, answer);
@@ -1018,82 +1020,28 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result PrimePowerTriples(Problem arguments)
         {
-            List<int[]> GetCombinationTriplets(int[] prime_digits)
-            {
-                var sets = new List<int[]>();
-
-                foreach(var s in prime_digits)
-                {
-                    foreach (var e in prime_digits)
-                    {
-                        foreach(var t in prime_digits)
-                        {
-                            sets.Add(new int[] { s, e, t });
-                        }
-                    }
-                }
-                  return sets;
-            };
-
             var limit = arguments.IntNumber;
             int upper = (int)Math.Round(Math.Sqrt(limit),0) , lower = 2;
-            List<int[]> combinations;
             var primes = UtilityMath.GetPrimeNumbersUsingSquares(upper,lower).ToArray();
-            int[] primes_subset;
+            var size = primes.Length;
+            var sums = new SortedSet<double>();
 
-            // first find prime limit
-            var bound = 0;
-            for (int p = 3; p <= primes.Length; p++)
+            for (var i = 0; i < size; i++)
             {
-                primes_subset = new int[p];
-                Array.Copy(primes, primes_subset, p);
-                combinations = GetCombinationTriplets(primes_subset);
-                bound = p;
-
-                var three_primes = combinations.First();
-                var d1 = three_primes[0];
-                var d2 = three_primes[1];
-                var d3 = three_primes[2];
-
-                var square = d1 * d1;
-                var cube = d2 * d2 * d2;
-                var fourth = d3 * d3 * d3 * d3;
-
-                var sum = square + cube + fourth;
-
-                if (sum > limit)
+                for (var j = 0; j < size; j++)
                 {
-                    bound--;
-                    break;
+                    for (var k = 0; k < size; k++)
+                    {
+                        var sum = Math.Pow(primes[i], 2) + Math.Pow(primes[j], 3) + Math.Pow(primes[k], 4);
+                        if (sum < limit)
+                            sums.Add(sum); // only count same sum combinations once
+                        else
+                            break;
+                    }
                 }
-            }
-
-            // use the combinations of this bound to count sums
-            primes_subset = new int[bound];
-            Array.Copy(primes, primes_subset, bound);
-            combinations = GetCombinationTriplets(primes_subset);
-            var size = combinations.Count() - 1;
-
-            for (var j = size; j > 0; j--)
-            {
-                var three_primes = combinations[j];
-                var d1 = three_primes[0];
-                var d2 = three_primes[1];
-                var d3 = three_primes[2];
-
-                 var square = d1 * d1;
-                var cube = d2 * d2 * d2;
-                var fourth = d3 * d3 * d3 * d3;
-
-                var sum = square + cube + fourth;
-
-                if (sum > limit)
-                {
-                    combinations.Remove(three_primes);
-                }
-            }
+            } 
              
-            var answer = combinations.Count.ToString(); 
+            var answer = sums.Count.ToString(); 
 
             var message = string.Format("There are {0} numbers below {1} can be expressed as the sum of a prime square, prime cube, and prime fourth power.", answer, limit);
             if (Answers[arguments.Id] != answer)
@@ -1104,13 +1052,12 @@ namespace JuanMartin.Utilities.Euler
             {
                 Answer = answer
             };
-
             return r;
         }
 
         #region Support Methods
 
-        private static DirectedAcyclicGraph<int> LoadPathWaysMatrixIntoGraph(string file_name, char delimiter)
+        private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph(string file_name, char delimiter)
         {
             int dimension;
             Vertex<int>[][] matrix;
@@ -1134,10 +1081,10 @@ namespace JuanMartin.Utilities.Euler
             }
             PopulateMatrixAdjacencyRelationships(dimension, matrix, graph);
 
-            return graph;
+            return (graph, matrix);
         }
 
-        private static DirectedAcyclicGraph<int> LoadPathWaysMatrixIntoGraph()
+        private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph()
         {
             int dimension = 80;
             DirectedAcyclicGraph<int> graph = new DirectedAcyclicGraph<int>();
@@ -1238,7 +1185,7 @@ namespace JuanMartin.Utilities.Euler
             }
             PopulateMatrixAdjacencyRelationships(dimension, matrix, graph);
 
-            return graph;
+            return (graph, matrix);
         }
 
         private static void PopulateMatrixAdjacencyRelationships(int dimension, Vertex<int>[][] matrix, DirectedAcyclicGraph<int> graph)
