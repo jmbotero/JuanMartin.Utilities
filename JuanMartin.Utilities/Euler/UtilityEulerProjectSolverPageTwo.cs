@@ -1021,8 +1021,8 @@ namespace JuanMartin.Utilities.Euler
         public static Result PrimePowerTriples(Problem arguments)
         {
             var limit = arguments.IntNumber;
-            int upper = (int)Math.Round(Math.Sqrt(limit),0) , lower = 2;
-            var primes = UtilityMath.GetPrimeNumbersUsingSquares(upper,lower).ToArray();
+            int upper = (int)Math.Round(Math.Sqrt(limit), 0), lower = 2;
+            var primes = UtilityMath.GetPrimeNumbersUsingSquares(upper, lower).ToArray();
             var size = primes.Length;
             var sums = new SortedSet<double>();
 
@@ -1039,11 +1039,34 @@ namespace JuanMartin.Utilities.Euler
                             break;
                     }
                 }
-            } 
-             
-            var answer = sums.Count.ToString(); 
+            }
+
+            var answer = sums.Count.ToString();
 
             var message = string.Format("There are {0} numbers below {1} can be expressed as the sum of a prime square, prime cube, and prime fourth power.", answer, limit);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=88
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result ProductSumNumbers(Problem arguments)
+        {
+            var limit = arguments.IntNumber;
+
+            var answer = "";
+
+            var message = string.Format("The sum of all the minimal product-sum numbers for 2≤k≤{0} is {1}.", limit, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

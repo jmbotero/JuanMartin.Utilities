@@ -66,7 +66,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(44,PentagonNumbers),
                 new Problem(45,TriangularPentagonalHexagonal),
                 new Problem(46,GoldbachOtherConjecture),
-                new Problem(47,DistinctPrimeFactors,4L,4),
+                new Problem(47,DistinctPrimeFactors,4),
                 new Problem(48,SelfPowers,10L,1000),
                 new Problem(49,PrimePermutations),
                 new Problem(50,ConsecutivePrimeSum,1000000),
@@ -93,6 +93,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(80,SquareRootDigitalExpansion,new long[] {100,100}),
                 new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix.txt|,", new List<int> { 4445, 7981 }),
                 new Problem(87,PrimePowerTriples,50000000),
+                new Problem(87,ProductSumNumbers,1200),
                 new Problem(96,Sudoku,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
@@ -1862,7 +1863,7 @@ namespace JuanMartin.Utilities.Euler
             };
 
             return r;
-        }
+        }   
 
         /// <summary>
         /// https://projecteuler.net/problem=47
@@ -1872,7 +1873,7 @@ namespace JuanMartin.Utilities.Euler
         public static Result DistinctPrimeFactors(Problem arguments)
         {
             var NumConsecutives = arguments.IntNumber;
-            var distincts = (int)arguments.LongNumber;
+            var distincts = 4;
             var consecutives = 0;
             var found = false;
             var number = 646;
@@ -1880,7 +1881,7 @@ namespace JuanMartin.Utilities.Euler
 
             while (!found && number < int.MaxValue)
             {
-                var pf = UtilityMath.GetPrimeFactors(number, distincts).ToArray();
+                var pf = UtilityMath.GetPrimeFactors(number).ToArray();
                 if (pf.Length == distincts)
                 {
                     consecutives++;
