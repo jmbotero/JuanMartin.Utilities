@@ -99,7 +99,9 @@ namespace JuanMartin.Utilities.Euler
 
         public static Problem[] unit_test_roblems = new Problem[] {
                 new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
-                new Problem(87,PrimePowerTriples,50)
+                new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
+                new Problem(87,PrimePowerTriples,50),
+                new Problem(88,ProductSumNumbers,12)
             };
 
         public static string[] Answers

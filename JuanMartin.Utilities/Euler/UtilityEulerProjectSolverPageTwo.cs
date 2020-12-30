@@ -1063,8 +1063,36 @@ namespace JuanMartin.Utilities.Euler
         public static Result ProductSumNumbers(Problem arguments)
         {
             var limit = arguments.IntNumber;
+            int number = limit;
+            var prodct_sum_counts = new HashSet<int>();
 
-            var answer = "";
+            for (var k=2;k<=limit;k++)
+            {
+                var combinations = (List<IEnumerable<int>>)UtilityMath.GetCombinationsOfK(Enumerable.Range(1, number).ToArray(), k).ToList();
+
+                if(combinations.Count==0)
+                    throw new InvalidOperationException($"Sequence of {k} elements of combination of {number} values contains no elements.");
+                
+                for (var i = combinations.Count - 1; i >= 0; i--)
+                {
+                    var operands = combinations[i];
+
+                    if (operands.Sum() != operands.Multiplication())
+                        combinations.RemoveAt(i);
+
+                }
+
+                if (combinations.Count == 0)
+                    continue;
+                    //throw new InvalidOperationException($"Failed to find a valid product-sum for a set size of {k}.");
+
+                var minimum = combinations.Last();
+                var product_sum = minimum.Sum();
+
+                prodct_sum_counts.Add(product_sum);
+            }
+
+            var answer =prodct_sum_counts.Sum().ToString();
 
             var message = string.Format("The sum of all the minimal product-sum numbers for 2≤k≤{0} is {1}.", limit, answer);
             if (Answers[arguments.Id] != answer)
