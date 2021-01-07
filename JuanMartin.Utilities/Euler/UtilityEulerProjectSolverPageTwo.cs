@@ -1065,20 +1065,20 @@ namespace JuanMartin.Utilities.Euler
             var limit = arguments.IntNumber;
             var number = limit; // 2 * (int)Math.Sqrt(limit);
 
-            var prodct_sum_counts = new HashSet<int>();
-
-
+            var prodct_sum_counts = new HashSet<double>();
+        
+            var a = UtilityMath.GetProductSumPermutations(12, 5);
 
             for (var k=2;k<=limit;k++)
             {
-                var combinations = UtilityMath.GetProductSumPermutations(number, k);
+                var combinations = UtilityMath.GetProductSumPermutations(number, k,sort_permutations_by_each_operands_order: true);
 
                 if (combinations.Count == 0)
                     continue;
                 //throw new InvalidOperationException($"Failed to find a valid product-sum for a set size of {k}.");
 
-                var minimum = combinations.Last();
-                var product_sum = minimum.Sum();
+                UtilityMath.Operands minimum = combinations.First();
+                var product_sum = minimum.Sum;
                 prodct_sum_counts.Add(product_sum);
             }
 
