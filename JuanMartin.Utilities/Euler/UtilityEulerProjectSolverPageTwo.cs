@@ -1063,15 +1063,17 @@ namespace JuanMartin.Utilities.Euler
         public static Result ProductSumNumbers(Problem arguments)
         {
             var limit = arguments.IntNumber;
-            var number = limit; // 2 * (int)Math.Sqrt(limit);
+            var number= 2 * (int)Math.Sqrt(limit); 
+            //var number = limit;  
 
             var prodct_sum_counts = new HashSet<double>();
-        
-            var a = UtilityMath.GetProductSumPermutations(12, 5);
+            var c = UtilityMath.GetProductSumPermutations(number, 5);
+            c = UtilityMath.GetProductSumPermutations(number, 10);
+            c = UtilityMath.GetProductSumPermutations(number, 11);
 
             for (var k=2;k<=limit;k++)
             {
-                var combinations = UtilityMath.GetProductSumPermutations(number, k,sort_permutations_by_each_operands_order: true);
+                var combinations = UtilityMath.GetProductSumPermutations(number, k, return_just_first_permutation: true);
 
                 if (combinations.Count == 0)
                     continue;
@@ -1080,6 +1082,7 @@ namespace JuanMartin.Utilities.Euler
                 UtilityMath.Operands minimum = combinations.First();
                 var product_sum = minimum.Sum;
                 prodct_sum_counts.Add(product_sum);
+                Console.WriteLine($"{k},{combinations.Count},{product_sum}.");
             }
 
             var answer =prodct_sum_counts.Sum().ToString();
