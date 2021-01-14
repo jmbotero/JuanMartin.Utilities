@@ -1068,6 +1068,7 @@ namespace JuanMartin.Utilities.Euler
 
             var prodct_sum_counts = new HashSet<double>();
             var c = UtilityMath.GetProductSumPermutations(number, 5);
+            var m = UtilityMath.GetMinimalProductSumPermutation(number, 5);
             c = UtilityMath.GetProductSumPermutations(number, 10);
             c = UtilityMath.GetProductSumPermutations(number, 11);
 
