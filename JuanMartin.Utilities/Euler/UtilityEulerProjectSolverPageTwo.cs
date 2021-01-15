@@ -1063,27 +1063,21 @@ namespace JuanMartin.Utilities.Euler
         public static Result ProductSumNumbers(Problem arguments)
         {
             var limit = arguments.IntNumber;
-            var number= 2 * (int)Math.Sqrt(limit); 
-            //var number = limit;  
+            var number= 2 * (int)Math.Sqrt(limit);
+            var sw = new System.Diagnostics.Stopwatch();
 
             var prodct_sum_counts = new HashSet<double>();
-            var c = UtilityMath.GetProductSumPermutations(number, 5);
-            var m = UtilityMath.GetMinimalProductSumPermutation(number, 5);
-            c = UtilityMath.GetProductSumPermutations(number, 10);
-            c = UtilityMath.GetProductSumPermutations(number, 11);
-
             for (var k=2;k<=limit;k++)
             {
-                var combinations = UtilityMath.GetProductSumPermutations(number, k, return_just_first_permutation: true);
+                sw.Start();
 
-                if (combinations.Count == 0)
-                    continue;
-                //throw new InvalidOperationException($"Failed to find a valid product-sum for a set size of {k}.");
+                var p = UtilityMath.GetMinimalProductSumPermutation(number, k);
 
-                UtilityMath.Operands minimum = combinations.First();
-                var product_sum = minimum.Sum;
+                var product_sum = p.Sum();
                 prodct_sum_counts.Add(product_sum);
-                Console.WriteLine($"{k},{combinations.Count},{product_sum}.");
+
+                sw.Stop();
+                Console.WriteLine($"> {k}: [{string.Join("+",p)}]: {product_sum}: {sw.Elapsed}");
             }
 
             var answer =prodct_sum_counts.Sum().ToString();
