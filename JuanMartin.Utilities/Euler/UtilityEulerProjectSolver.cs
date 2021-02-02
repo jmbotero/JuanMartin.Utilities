@@ -93,7 +93,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(80,SquareRootDigitalExpansion,new long[] {100,100}),
                 new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix.txt|,", new List<int> { 4445, 7981 }),
                 new Problem(87,PrimePowerTriples,50000000),
-                new Problem(87,ProductSumNumbers,1200),
+                new Problem(88,ProductSumNumbers,12000),
+                new Problem(89,RomanNumerals,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
                 new Problem(96,Sudoku,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
@@ -1497,7 +1498,7 @@ namespace JuanMartin.Utilities.Euler
             while (primes.Count < count)
             {
                 //var lastDigit = (x % 10);
-                if (UtilityMath.IsPrime(x) && !x.IsIn(nonPrimes))
+                if (UtilityMath.IsPrime(x) && !nonPrimes.Contains(x))
                 {
                     if (UtilityMath.IsTruncatablePrime(UtilityMath.GetNumberTruncations(x, UtilityMath.Location.left)) && UtilityMath.IsTruncatablePrime(UtilityMath.GetNumberTruncations(x, UtilityMath.Location.right)))
                         primes.Add(x);

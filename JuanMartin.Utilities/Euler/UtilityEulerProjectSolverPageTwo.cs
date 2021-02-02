@@ -1063,26 +1063,54 @@ namespace JuanMartin.Utilities.Euler
         public static Result ProductSumNumbers(Problem arguments)
         {
             var limit = arguments.IntNumber;
-            var number= 2 * (int)Math.Sqrt(limit);
-            var sw = new System.Diagnostics.Stopwatch();
 
-            var prodct_sum_counts = new HashSet<double>();
-            for (var k=2;k<=limit;k++)
-            {
-                sw.Start();
+            //var number= limit;
+            //var sw = new System.Diagnostics.Stopwatch();
+            //var q = UtilityMath.GetMinimalProductSumPermutation2(12, 12);
 
-                var p = UtilityMath.GetMinimalProductSumPermutation(number, k);
+            //var prodct_sum_counts = new HashSet<double>();
 
-                var product_sum = p.Sum();
-                prodct_sum_counts.Add(product_sum);
+            //for (var k = 2; k <= limit; k++)
+            //{
+            //    sw.Start();
 
-                sw.Stop();
-                Console.WriteLine($"> {k}: [{string.Join("+",p)}]: {product_sum}: {sw.Elapsed}");
-            }
+            //    var p = UtilityMath.GetMinimalProductSumPermutation(number, k);
 
-            var answer =prodct_sum_counts.Sum().ToString();
+            //    var product_sum = p.Sum();
+            //    prodct_sum_counts.Add(product_sum);
 
+            //    sw.Stop();
+            //    Console.WriteLine($" > {k}: [{string.Join("+", p)}]: {product_sum}: {sw.Elapsed}");
+            //}
+
+            //var answer =prodct_sum_counts.Sum().ToString();
+            var p = new Problem88(limit);
+
+            var answer = p.Solve().ToString();
             var message = string.Format("The sum of all the minimal product-sum numbers for 2≤k≤{0} is {1}.", limit, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=89
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result RomanNumerals(Problem arguments)
+        {
+            var fileinfo = arguments.Sequence.Split('|');
+            var file_name = fileinfo[0];
+
+            var answer = "" ;
+            var message = string.Format("The sum of all the minimal product-sum numbers for 2≤k≤{0} is {1}.", file_name, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
