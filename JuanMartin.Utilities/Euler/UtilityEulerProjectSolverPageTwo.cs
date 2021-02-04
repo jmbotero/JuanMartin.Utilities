@@ -1110,7 +1110,7 @@ namespace JuanMartin.Utilities.Euler
             var file_name = fileinfo[0];
 
             var answer = "" ;
-            var message = string.Format("The sum of all the minimal product-sum numbers for 2≤k≤{0} is {1}.", file_name, answer);
+            var message = string.Format("The number of characters saved by writing all of the roman numerals in '{0}', in their minimal form is {1}.", file_name, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
