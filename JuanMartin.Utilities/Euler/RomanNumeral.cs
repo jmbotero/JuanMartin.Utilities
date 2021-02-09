@@ -10,6 +10,7 @@ namespace JuanMartin.Utilities.Euler
 {
     public class RomanNumeral
     {
+        private const int MAX_ROMAN_NUMERAL_POWER = 7;
         private readonly SortedDictionary<char, int> Denominations = new SortedDictionary<char, int>() { { 'I', 1 }, { 'V', 5 }, { 'X', 10 }, { 'L', 50 }, { 'C', 100 }, { 'D', 500 }, { 'M', 1000 } };
         private string _numeral;
         private List<int> _draft; // contain first traslation with values evaluating substractions
@@ -162,16 +163,16 @@ namespace JuanMartin.Utilities.Euler
                 return "";
             else
             {
-                if (UtilityMath.GetPowerOfTen(number) > 3)
+                if (UtilityMath.GetPowerOfTen(number) > MAX_ROMAN_NUMERAL_POWER)
                     throw new ArgumentException($"Cannot calculate roman representation for numbers in the  order of 10^{UtilityMath.GetPowerOfTen(number) + 1}.");
 
                 var digits = ConvertToIntArray(number);
 
-                for (var i = 0; i < ((digits.Length >= 3) ? 3 : digits.Length); i++)
+                for (var i = 0; i < ((digits.Length >= MAX_ROMAN_NUMERAL_POWER) ? MAX_ROMAN_NUMERAL_POWER + 1: digits.Length); i++)
                 {
                     roman = IntToRoman(digits[i], i) + roman;
                 }
-
+                roman = roman.Replace("||", "");
             }
 
             return roman;
@@ -179,7 +180,7 @@ namespace JuanMartin.Utilities.Euler
 
         private string IntToRoman(int number, int power)
         {
-            if (power > 3)
+            if (power > MAX_ROMAN_NUMERAL_POWER)
                 throw new ArgumentException($"Cannot calculate roman representation for numbers in the  order of 10^{power + 1}.");
 
             string[][] roman_numerals = new string[][]
@@ -187,10 +188,11 @@ namespace JuanMartin.Utilities.Euler
                 new string[] {"","I","II","III","IV","V","VI","VII","VIII","IX"},
                 new string[] {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"},
                 new string[] {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM" },
-                new string[] {"","M","MM","MMM","|IV|","|V|","|VII|","|VIII|","|IX|" }
+                new string[] {"","M","MM","MMM","|IV|","|V|","|VI|","|VII|","|VIII|","|IX|" }
             };
 
-            return roman_numerals[power][number];
+            var roman= roman_numerals[((power > 3) ? power-3 : power)][number];
+            return (power.Between(4, 7)) ? $"|{roman}|":roman;
         }
 
         private static int[] ConvertToIntArray(int num)
@@ -201,7 +203,7 @@ namespace JuanMartin.Utilities.Euler
                 listOfInts.Add(num % 10);
                 num /= 10;
             }
-            listOfInts.Reverse();
+            //listOfInts.Reverse();
             return listOfInts.ToArray();
         }
 
