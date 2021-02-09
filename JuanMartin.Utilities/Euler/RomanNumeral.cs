@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JuanMartin.Kernel.Extesions;
 using System.Text;
 using System.Threading.Tasks;
+using JuanMartin.Kernel.Utilities;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -10,7 +12,7 @@ namespace JuanMartin.Utilities.Euler
     {
         private readonly SortedDictionary<char, int> Denominations = new SortedDictionary<char, int>() { { 'I', 1 }, { 'V', 5 }, { 'X', 10 }, { 'L', 50 }, { 'C', 100 }, { 'D', 500 }, { 'M', 1000 } };
         private string _numeral;
-        private SortedDictionary<string,int> _draft = new SortedDictionary<string, int>(); //contain first traslation evaluating substractions
+        private List<int> _draft; // contain first traslation with values evaluating substractions
         public string Value
         {
             get { return _numeral; }
@@ -19,8 +21,13 @@ namespace JuanMartin.Utilities.Euler
         public RomanNumeral(string value = "")
         {
             Value = value;
+            _draft = new List<int>();
         }
 
+        /// <summary>
+        /// Check if roman numeral specified is valid: follows rules layout in https://projecteuler.net/about=roman_numerals
+        /// </summary>
+        /// <returns></returns>
         public bool IsValid()
         {
             int substraction_counter = 1;
@@ -39,12 +46,13 @@ namespace JuanMartin.Utilities.Euler
                 new String('D', 2)
             };
 
+            _draft.Clear();
+
             // check rules:
             // rule_1. (valid_charachters): Roman numerals contain only I, V, X, L, C, D, M
             // rule_2. (descending_numerals): Numerals must be arranged in descending order of size.
             // rule_3. (mcx_reduction): M, C, and X cannot be equalled or exceeded by smaller denominations.
             // rule_4. (dlv_once): D, L, and V can each only appear once.
-            // from https://projecteuler.net/about=roman_numerals
             var valid_charachters = Value.All(c => Denominations.ContainsKey(c));
 
             if (valid_charachters)
@@ -89,22 +97,22 @@ namespace JuanMartin.Utilities.Euler
                                         break;
                                     }
 
-                                    _draft.Add($"s{substraction_counter}", value2 - value1);
+                                    _draft.Add(value2 - value1);
                                     substraction_counter++;
                                 }
                                 else
                                 {
-                                    _draft.Add(c.ToString(), Denominations[c]);
-                                    _draft.Add(next_c.ToString(), Denominations[next_c]);
+                                    _draft.Add(Denominations[c]);
+                                    _draft.Add(Denominations[next_c]);
                                 }
                             }
                             else
                             {
-                                _draft.Add(c.ToString(), Denominations[c]);
+                                _draft.Add(Denominations[c]);
                             }
                         }
 
-                        if (_draft.Values.First() < _draft.Values.Last())
+                        if (_draft.First() < _draft.Last())
                         {
                             descending_numerals = false;
                         }
@@ -134,9 +142,68 @@ namespace JuanMartin.Utilities.Euler
             }
         }
 
+        /// <summary>
+        /// If roman number specified in value is valid return its arabic number representation, if number is not valid return -1
+        /// </summary>
+        /// <returns></returns>
         public int ToArabic()
         {
-            return (IsValid()) ? _draft.Values.Sum() : -1;
+            return (IsValid() && _draft.Count() > 1) ? _draft.Sum() : -1;
         }
+
+        public string GetMinimalForm(int number = -1)
+        {
+            string roman = string.Empty;
+            
+            if  (number == -1)
+                number = ToArabic();
+
+            if (number == -1)
+                return "";
+            else
+            {
+                if (UtilityMath.GetPowerOfTen(number) > 3)
+                    throw new ArgumentException($"Cannot calculate roman representation for numbers in the  order of 10^{UtilityMath.GetPowerOfTen(number) + 1}.");
+
+                var digits = ConvertToIntArray(number);
+
+                for (var i = 0; i < ((digits.Length >= 3) ? 3 : digits.Length); i++)
+                {
+                    roman = IntToRoman(digits[i], i) + roman;
+                }
+
+            }
+
+            return roman;
+        }
+
+        private string IntToRoman(int number, int power)
+        {
+            if (power > 3)
+                throw new ArgumentException($"Cannot calculate roman representation for numbers in the  order of 10^{power + 1}.");
+
+            string[][] roman_numerals = new string[][]
+            {
+                new string[] {"","I","II","III","IV","V","VI","VII","VIII","IX"},
+                new string[] {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"},
+                new string[] {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM" },
+                new string[] {"","M","MM","MMM","|IV|","|V|","|VII|","|VIII|","|IX|" }
+            };
+
+            return roman_numerals[power][number];
+        }
+
+        private static int[] ConvertToIntArray(int num)
+        {
+            List<int> listOfInts = new List<int>();
+            while (num > 0)
+            {
+                listOfInts.Add(num % 10);
+                num /= 10;
+            }
+            listOfInts.Reverse();
+            return listOfInts.ToArray();
+        }
+
     }
 }
