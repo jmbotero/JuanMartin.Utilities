@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -1108,8 +1109,70 @@ namespace JuanMartin.Utilities.Euler
         {
             var fileinfo = arguments.Sequence.Split('|');
             var file_name = fileinfo[0];
+            IEnumerable<string> lines;
+            var numerals = new Dictionary<string, string>();
+            var number = new RomanNumeral();
+            int total_original_characters = 0, total_minimal_form_characters = 0;
+            //            var debug_list = new List<Tuple<string, string>>();
 
-            var answer = "" ;
+            using (var reader = new StreamReader(file_name, Encoding.UTF8))
+            {
+                lines = (IEnumerable<string>)reader.ReadToEnd().Split(new char[] { UtilityFile.CarriageReturn, UtilityFile.LineFeed }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            foreach (var entry in lines)
+            {
+                var key = entry.Trim();
+                total_original_characters += key.Length;
+
+                string value;
+                if (!numerals.ContainsKey(key))
+                {
+                    number.Value = key;
+
+                    value = number.GetMinimalForm();
+
+                    numerals.Add(key, value);
+                }
+                else
+                {
+                    value = numerals[key];
+                }
+                total_minimal_form_characters += value.Length;
+//                debug_list.Add(Tuple.Create(key, value));
+            }
+
+            #region for debug
+            //string roman = File.ReadAllText(file_name);
+            //string[] debug_key = roman.Split(new[] { "\r\n" }, StringSplitOptions.None);
+            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_in.txt"), debug_key);
+
+            //string regex_roman = Regex.Replace(roman, "DCCCC", "CM");
+            //regex_roman = Regex.Replace(regex_roman, "LXXXX", "XC");
+            //regex_roman = Regex.Replace(regex_roman, "VIIII", "IX");
+            //regex_roman = Regex.Replace(regex_roman, "CCCC", "CD");
+            //regex_roman = Regex.Replace(regex_roman, "XXXX", "XL");
+            //regex_roman = Regex.Replace(regex_roman, "IIII", "IV");
+            //string[] debug_value = regex_roman.Split(new[] { "\r\n" }, StringSplitOptions.None);
+            //total_original_characters = roman.Length;
+            //total_minimal_form_characters = regex_roman.Length;
+
+            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_out.txt"), debug_value);
+            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_my_out.txt"), debug_list.Select(t => t.Item2).ToArray());
+
+            //var debug = "";
+            //for (var i = 0; i < debug_list.Count; i++)
+            //{
+            //    var my_key = debug_list[i].Item1;
+            //    var my_value = debug_list[i].Item2;
+
+            //    if (debug_value[i].Length != my_value.Length)
+            //        debug += $"{i}-{my_key}({debug_key[i]}):{my_value}({debug_value[i]}),";
+            //}
+            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_compare .txt"), debug.Split(','));
+            #endregion
+
+            var answer = (total_original_characters - total_minimal_form_characters).ToString();
             var message = string.Format("The number of characters saved by writing all of the roman numerals in '{0}', in their minimal form is {1}.", file_name, answer);
             if (Answers[arguments.Id] != answer)
             {
