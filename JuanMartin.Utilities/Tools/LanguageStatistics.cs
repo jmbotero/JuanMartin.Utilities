@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿
+/*
+ * Based on the idea and JavaScript code developed by Rich Tibbett (https://github.com/richtr/guessLanguage.js)
+ * 
+ * C# version by Sasvári Tamás 2013.01.30
+ *  
+ */
+
+using System;
+using System.Collections;
 using System.Text.RegularExpressions;
 
 namespace JuanMartin.Utilities.Tools
