@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JuanMartin.Kernel", "..\Jua
 EndProject
 Project("{451CB413-E70B-4F70-93E9-76100453A956}") = "JuanMartin.Models", "..\JuanMartin.Models\JuanMartin.Models\JuanMartin.Models.csproj", "{451CB413-E70B-4F70-93E9-76100453A956}"
 EndProject
+Project("{0BD96DF1-B9C8-445A-A208-6A215AFA060B}") = "JuanMartin.Utilities.Tests", "JuanMartin.Utilities.Tests\JuanMartin.Utilities.Tests.csproj", "{0BD96DF1-B9C8-445A-A208-6A215AFA060B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{451CB413-E70B-4F70-93E9-76100453A956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{451CB413-E70B-4F70-93E9-76100453A956}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{451CB413-E70B-4F70-93E9-76100453A956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BD96DF1-B9C8-445A-A208-6A215AFA060B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BD96DF1-B9C8-445A-A208-6A215AFA060B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BD96DF1-B9C8-445A-A208-6A215AFA060B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BD96DF1-B9C8-445A-A208-6A215AFA060B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
