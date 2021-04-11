@@ -42,7 +42,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(19,CountingSundays,"01/01/1901;12/31/2000"),
                 new Problem(20,FactorialDigitSum,100),
                 new Problem(21,AmicableNumbers,10000),
-                new Problem(22,NameScores,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\names.txt|,|"""),
+                new Problem(22,NameScores,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\names.txt|,|"""),
                 new Problem(23,NonAbundantSum,28123),
                 new Problem(24,LexicographicPermutations,1000000L,9),
                 new Problem(25,NumberDigitsFidonacciNumber,1000),
@@ -61,7 +61,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(39,IntegerRightTriangles),
                 new Problem(40,ChamperownesConstant),
                 new Problem(41,PandigitalPrime),
-                new Problem(42,CodedTriangleNumbers,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\words.txt|,|"""),
+                new Problem(42,CodedTriangleNumbers,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\words.txt|,|"""),
                 new Problem(43,SubstringDivisibility),
                 new Problem(44,PentagonNumbers),
                 new Problem(45,TriangularPentagonalHexagonal),
@@ -73,12 +73,12 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(51,PrimeDigitReplacements),
                 new Problem(52,PermutedMultiples),
                 new Problem(53,CombinatoricSelections,1000000),
-                new Problem(54,PokerHands,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\poker.txt| "),
+                new Problem(54,PokerHands,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\poker.txt| "),
                 new Problem(55,LychrelNumbers,10000),
                 new Problem(56,PowerfulDigitSum,100),
                 new Problem(57,SquareRootConvergents,1000),
                 new Problem(58,SpiralPrimes),
-                new Problem(59,XorDecryption,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\cypher.txt|,|"""),
+                new Problem(59,XorDecryption,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\cypher.txt|,|"""),
                 new Problem(60,PrimePairSets,5),
                 new Problem(61,CyclicalFigurateNumbers),
                 new Problem(63,PowerfulDigitCounts),
@@ -89,21 +89,21 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(73,CountingFractionsInRange,12000,new List<int> { 1, 3, 1, 2 }),
                 new Problem(75,SingularIntegerRightTriangles,1500000),
                 new Problem(76,CountingSummations,100),
-                new Problem(79,PasscodeDerivation,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\keylog.txt|"),
+                new Problem(79,PasscodeDerivation,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\keylog.txt|"),
                 new Problem(80,SquareRootDigitalExpansion,new long[] {100,100}),
-                new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix.txt|,", new List<int> { 4445, 7981 }),
+                new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix.txt|,", new List<int> { 4445, 7981 }),
                 new Problem(87,PrimePowerTriples,50000000),
                 new Problem(88,ProductSumNumbers,12000),
-                new Problem(89,RomanNumerals,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
-                new Problem(96,Sudoku,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
+                new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
+                new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
         public static Problem[] unit_test_roblems = new Problem[] {
-                new Problem(83,PathSumFourWays,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
+                new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
                 new Problem(87,PrimePowerTriples,50),
                 new Problem(88,ProductSumNumbers,12),
-                new Problem(89,RomanNumerals,@"C:\Git\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,")
+                new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,")
             };
 
         public static string[] Answers
