@@ -9,6 +9,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -1139,7 +1140,7 @@ namespace JuanMartin.Utilities.Euler
                     value = numerals[key];
                 }
                 total_minimal_form_characters += value.Length;
-//                debug_list.Add(Tuple.Create(key, value));
+                //                debug_list.Add(Tuple.Create(key, value));
             }
 
             #region for debug
@@ -1174,6 +1175,38 @@ namespace JuanMartin.Utilities.Euler
 
             var answer = (total_original_characters - total_minimal_form_characters).ToString();
             var message = string.Format("The number of characters saved by writing all of the roman numerals in '{0}', in their minimal form is {1}.", file_name, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=92
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result SquareDigitChains(Problem arguments)
+        {
+            int limit = 10000000;
+            int count = 0;
+
+            for (int i = 2; i < limit; i++)
+            {
+                var (term, _) = UtilityMath.SquareDigitsChain(i);
+
+                if (term  ==  89)
+                    count++;
+            }
+
+            var answer = count.ToString();  
+
+            var message = string.Format("There are {0} numbers below ten million that will arrive at 89.",  answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

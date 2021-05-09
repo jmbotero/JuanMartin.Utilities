@@ -96,6 +96,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(87,PrimePowerTriples,50000000),
                 new Problem(88,ProductSumNumbers,12000),
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
+                new Problem(92,SquareDigitChains),
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
@@ -1951,7 +1952,8 @@ namespace JuanMartin.Utilities.Euler
                 var value = BigInteger.Pow(i, i);
                 series += value;
             }
-            var answer = series.ToString().Tail(size);                                                                      //var numbers = new List<string>();
+            var answer = series.ToString().Tail(size);                                                                      
+            //var numbers = new List<string>();
 
             //Parallel.For(1, Power + 1, i => {
             //    numbers.Add(UtilityMath.PowOverflow(i, i));
