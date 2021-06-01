@@ -64,7 +64,7 @@ namespace JuanMartin.Utilities.Euler
             /// <param name="left"></param>
             /// <param name="right"></param>
             /// <returns></returns>
-            bool NumbersBelongToSameDigitFamily(int left, int right, int repeating_sequences = 1)
+            bool NumbersBelongToSameDigitFamily(int left, int right, int repeatingSequences = 1)
             {
                 var repeating = new Dictionary<char, List<int>>();
                 var sleft = left.ToString();
@@ -80,7 +80,7 @@ namespace JuanMartin.Utilities.Euler
                     var rdigit = sright[i];
                     var ldigit = sleft[i];
 
-                    if ((repeating.Count < repeating_sequences) && !repeating.ContainsKey(ldigit) && (sleft.Count(c => c == ldigit) >= 2))
+                    if ((repeating.Count < repeatingSequences) && !repeating.ContainsKey(ldigit) && (sleft.Count(c => c == ldigit) >= 2))
                     {
                         if (repeating.ContainsKey(ldigit) && repeating[ldigit].Contains(i))
                             continue;
@@ -546,9 +546,9 @@ namespace JuanMartin.Utilities.Euler
             var types = Enumerable.Range(0, count).ToArray<int>(); // array of polygonal number types used
             var setNumberOrder = UtilityString.GeneratePermutations<int>(types); // permutation of the types indicat1ing all combinations of these in a sequence of numbers
 
-            var s = UtilityMath.GetNumericalCyclicalSet(setNumberOrder, numbers);
+            var (_, set) = UtilityMath.GetNumericalCyclicalSet(setNumberOrder, numbers);
 
-            var answer = s.set.Sum().ToString();
+            var answer = set.Sum().ToString();
 
             var message = string.Format("The sum of the only ordered set of six cyclic 4-digit numbers for which each polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and octagonal, is represented by a different number in the set is {0}.", answer);
             if (Answers[arguments.Id] != answer)
@@ -750,8 +750,8 @@ namespace JuanMartin.Utilities.Euler
             var key = new Fraction(integers[0], integers[1]);
             var d = arguments.IntNumber;
 
-            var sort_list = UtilityMath.GetReducedProperFractions(d, key, true).ToList();
-            string answer = sort_list[0].Numerator.ToString();
+            var sortList = UtilityMath.GetReducedProperFractions(d, key, true).ToList();
+            string answer = sortList[0].Numerator.ToString();
 
             var message = string.Format("The numerator of the fraction immediately to the left of {0} is {1}.", key.ToString(), answer);
             if (Answers[arguments.Id] != answer)
@@ -834,7 +834,7 @@ namespace JuanMartin.Utilities.Euler
             var perimeter = arguments.IntNumber;
             var values = 0;
 
-            var a = UtilityMath.GetPythagoreanTriples_Pitagoras(120, false);
+            //var a = UtilityMath.GetPythagoreanTriplesUsingPitagoras(120, false);
             for (int L = 12; L < perimeter; L++)
             {
                 if (GetSingularPythagoreanTriples(L) == 1)
@@ -864,9 +864,7 @@ namespace JuanMartin.Utilities.Euler
         public static Result CountingSummations(Problem arguments)
         {
             var sum = arguments.IntNumber;
-            var answer = string.Empty;
-
-            var partitions = UtilityMath.Partitions(sum);
+            var (Count, _) = UtilityMath.Partitions(sum);
 
             //oeis a(n) is the number of partitions of n (the partition numbers).
             //int[] A000041 = { 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42, 56, 77, 101, 135, 176, 231, 297, 385, 490, 627, 792, 1002, 1255, 1575, 1958, 2436, 3010, 3718, // (28) -> {00:08:19.7112021} 
@@ -885,7 +883,7 @@ namespace JuanMartin.Utilities.Euler
             //        answer = "-1";
             //    }
             //}
-            answer = partitions.Count.ToString();
+            string answer = Count.ToString();
             string message = string.Format("There are {0} different ways can {1} be written as a sum of at least two positive integers.", answer, sum);
 
 
@@ -942,12 +940,12 @@ namespace JuanMartin.Utilities.Euler
             long sum = 0;
 
             #region Sqrt Test
-            for (double expected_number = 0.001; expected_number < 100; expected_number += 0.5d)
+            for (double expectedNumber = 0.001; expectedNumber < 100; expectedNumber += 0.5d)
             {
-                double actual_number = UtilityMath.Sqrt_By_Substraction(expected_number);
+                double actualNumber = UtilityMath.GetSqrtBySubstraction(expectedNumber);
 
-                if ((expected_number - (actual_number * actual_number)) > .0005)
-                    throw new ArithmeticException(string.Format("Sqrt by substraction differed with margin of error for {0}", expected_number));
+                if ((expectedNumber - (actualNumber * actualNumber)) > .0005)
+                    throw new ArithmeticException(string.Format("Sqrt by substraction differed with margin of error for {0}", expectedNumber));
             }
             #endregion
 
@@ -987,15 +985,15 @@ namespace JuanMartin.Utilities.Euler
             var cvsinfo = arguments.Sequence.Split('|');
 
             var start = markers[0].ToString();
-            var end = markers[1].ToString();
-            var file_name = cvsinfo[0];
+            var fileName = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
             
-            (DirectedAcyclicGraph<int> g, Vertex<int>[][] m) = LoadPathWaysMatrixIntoGraph(file_name, delimiter);
+            (DirectedAcyclicGraph<int> g, Vertex<int>[][] m) = LoadPathWaysMatrixIntoGraph(fileName, delimiter);
 
+            //var end = markers[1].ToString();
             //var (weight, path) = g.GetDijkstraSingleShortestPath(start, end);
             //var labels = string.Join(",", path.ToString(","));
-            var d = g.GetBellman_FordSingleShortestPath(start, m);
+            var d = g.GetBellmanFordSingleShortestPath(start, m);
 
             //var answer = (weight != DirectedAcyclicGraph<int>.INFINITY) ? weight.ToString() : "infinity";
             var index = d.Length - 1; // it is a square matrix
@@ -1070,7 +1068,7 @@ namespace JuanMartin.Utilities.Euler
             //var sw = new System.Diagnostics.Stopwatch();
             //var q = UtilityMath.GetMinimalProductSumPermutation2(12, 12);
 
-            //var prodct_sum_counts = new HashSet<double>();
+            //var productSumCounts = new HashSet<double>();
 
             //for (var k = 2; k <= limit; k++)
             //{
@@ -1078,14 +1076,14 @@ namespace JuanMartin.Utilities.Euler
 
             //    var p = UtilityMath.GetMinimalProductSumPermutation(number, k);
 
-            //    var product_sum = p.Sum();
-            //    prodct_sum_counts.Add(product_sum);
+            //    var productSum = p.Sum();
+            //    productSumCounts.Add(productSum);
 
             //    sw.Stop();
-            //    Console.WriteLine($" > {k}: [{string.Join("+", p)}]: {product_sum}: {sw.Elapsed}");
+            //    Console.WriteLine($" > {k}: [{string.Join("+", p)}]: {productSum}: {sw.Elapsed}");
             //}
 
-            //var answer =prodct_sum_counts.Sum().ToString();
+            //var answer =productSumCounts.Sum().ToString();
             var p = new Problem88(limit);
 
             var answer = p.Solve().ToString();
@@ -1109,14 +1107,14 @@ namespace JuanMartin.Utilities.Euler
         public static Result RomanNumerals(Problem arguments)
         {
             var fileinfo = arguments.Sequence.Split('|');
-            var file_name = fileinfo[0];
+            var fileName = fileinfo[0];
             IEnumerable<string> lines;
             var numerals = new Dictionary<string, string>();
             var number = new RomanNumeral();
-            int total_original_characters = 0, total_minimal_form_characters = 0;
-            //            var debug_list = new List<Tuple<string, string>>();
+            int totalOriginalCharacters = 0, totalMinimalFormCharacters = 0;
+            //            var debugList = new List<Tuple<string, string>>();
 
-            using (var reader = new StreamReader(file_name, Encoding.UTF8))
+            using (var reader = new StreamReader(fileName, Encoding.UTF8))
             {
                 lines = (IEnumerable<string>)reader.ReadToEnd().Split(new char[] { UtilityFile.CarriageReturn, UtilityFile.LineFeed }, StringSplitOptions.RemoveEmptyEntries);
             }
@@ -1124,7 +1122,7 @@ namespace JuanMartin.Utilities.Euler
             foreach (var entry in lines)
             {
                 var key = entry.Trim();
-                total_original_characters += key.Length;
+                totalOriginalCharacters += key.Length;
 
                 string value;
                 if (!numerals.ContainsKey(key))
@@ -1139,42 +1137,42 @@ namespace JuanMartin.Utilities.Euler
                 {
                     value = numerals[key];
                 }
-                total_minimal_form_characters += value.Length;
-                //                debug_list.Add(Tuple.Create(key, value));
+                totalMinimalFormCharacters += value.Length;
+                //                debugList.Add(Tuple.Create(key, value));
             }
 
             #region for debug
-            //string roman = File.ReadAllText(file_name);
-            //string[] debug_key = roman.Split(new[] { "\r\n" }, StringSplitOptions.None);
-            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_in.txt"), debug_key);
+            //string roman = File.ReadAllText(fileName);
+            //string[] debugKey = roman.Split(new[] { "\r\n" }, StringSplitOptions.None);
+            //UtilityFile.WriteArrayToFile(fileName.Replace("roman.txt", "roman_in.txt"), debugKey);
 
-            //string regex_roman = Regex.Replace(roman, "DCCCC", "CM");
-            //regex_roman = Regex.Replace(regex_roman, "LXXXX", "XC");
-            //regex_roman = Regex.Replace(regex_roman, "VIIII", "IX");
-            //regex_roman = Regex.Replace(regex_roman, "CCCC", "CD");
-            //regex_roman = Regex.Replace(regex_roman, "XXXX", "XL");
-            //regex_roman = Regex.Replace(regex_roman, "IIII", "IV");
-            //string[] debug_value = regex_roman.Split(new[] { "\r\n" }, StringSplitOptions.None);
-            //total_original_characters = roman.Length;
-            //total_minimal_form_characters = regex_roman.Length;
+            //string regexRoman = Regex.Replace(roman, "DCCCC", "CM");
+            //regexRoman = Regex.Replace(regexRoman, "LXXXX", "XC");
+            //regexRoman = Regex.Replace(regexRoman, "VIIII", "IX");
+            //regexRoman = Regex.Replace(regexRoman, "CCCC", "CD");
+            //regexRoman = Regex.Replace(regexRoman, "XXXX", "XL");
+            //regexRoman = Regex.Replace(regexRoman, "IIII", "IV");
+            //string[] debug_value = regexRoman.Split(new[] { "\r\n" }, StringSplitOptions.None);
+            //totalOriginalCharacters = roman.Length;
+            //totalMinimalFormCharacters = regexRoman.Length;
 
-            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_out.txt"), debug_value);
-            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_my_out.txt"), debug_list.Select(t => t.Item2).ToArray());
+            //UtilityFile.WriteArrayToFile(fileName.Replace("roman.txt", "roman_out.txt"), debug_value);
+            //UtilityFile.WriteArrayToFile(fileName.Replace("roman.txt", "roman_my_out.txt"), debugList.Select(t => t.Item2).ToArray());
 
             //var debug = "";
-            //for (var i = 0; i < debug_list.Count; i++)
+            //for (var i = 0; i < debugList.Count; i++)
             //{
-            //    var my_key = debug_list[i].Item1;
-            //    var my_value = debug_list[i].Item2;
+            //    var myKey = debugList[i].Item1;
+            //    var myValue = debugList[i].Item2;
 
-            //    if (debug_value[i].Length != my_value.Length)
-            //        debug += $"{i}-{my_key}({debug_key[i]}):{my_value}({debug_value[i]}),";
+            //    if (debug_value[i].Length != myValue.Length)
+            //        debug += $"{i}-{myKey}({debugKey[i]}):{myValue}({debug_value[i]}),";
             //}
-            //UtilityFile.WriteArrayToFile(file_name.Replace("roman.txt", "roman_compare .txt"), debug.Split(','));
+            //UtilityFile.WriteArrayToFile(fileName.Replace("roman.txt", "roman_compare .txt"), debug.Split(','));
             #endregion
 
-            var answer = (total_original_characters - total_minimal_form_characters).ToString();
-            var message = string.Format("The number of characters saved by writing all of the roman numerals in '{0}', in their minimal form is {1}.", file_name, answer);
+            var answer = (totalOriginalCharacters - totalMinimalFormCharacters).ToString();
+            var message = string.Format("The number of characters saved by writing all of the roman numerals in '{0}', in their minimal form is {1}.", fileName, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
@@ -1220,13 +1218,13 @@ namespace JuanMartin.Utilities.Euler
 
         #region Support Methods
 
-        private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph(string file_name, char delimiter)
+        private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph(string fileName, char delimiter)
         {
             int dimension;
             Vertex<int>[][] matrix;
             DirectedAcyclicGraph<int> graph = new DirectedAcyclicGraph<int>();
 
-            using (var reader = new StreamReader(file_name, Encoding.UTF8))
+            using (var reader = new StreamReader(fileName, Encoding.UTF8))
             {
                 var lines = (IEnumerable<string>)reader.ReadToEnd().Split(new char[] { UtilityFile.CarriageReturn, UtilityFile.LineFeed }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -1237,8 +1235,8 @@ namespace JuanMartin.Utilities.Euler
             {
                 for (int j = 0; j < dimension; j++)
                 {
-                    var cell_id = i.ToString().PadLeft(2, '0') + j.ToString().PadLeft(2, '0');
-                    matrix[i][j].Guid = cell_id;
+                    var cellId = i.ToString().PadLeft(2, '0') + j.ToString().PadLeft(2, '0');
+                    matrix[i][j].Guid = cellId;
                     graph.AddVertex(matrix[i][j]);
                 }
             }
@@ -1247,7 +1245,9 @@ namespace JuanMartin.Utilities.Euler
             return (graph, matrix);
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             int dimension = 80;
             DirectedAcyclicGraph<int> graph = new DirectedAcyclicGraph<int>();

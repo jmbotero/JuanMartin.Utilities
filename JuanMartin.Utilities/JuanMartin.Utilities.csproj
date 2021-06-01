@@ -57,6 +57,7 @@
     <Compile Include="Euler\UtilityEulerProjectSolver.cs" />
     <Compile Include="Euler\UtilityEulerProjectSolverPageTwo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\LanguageDetector.cs" />
     <Compile Include="Tools\LanguageStatistics.cs" />
     <Compile Include="Tools\TrigramModel.cs" />
   </ItemGroup>

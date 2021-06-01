@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 using System.Text.RegularExpressions;
+using JuanMartin.Utilities.Tools;
 
 namespace LiteMiner.classes
 {
@@ -119,7 +120,7 @@ namespace LiteMiner.classes
         public const int MAX_GRAMS = 300;
 
         LanguageStatistics langStat = new LanguageStatistics();
-        Hashtable NAME_MAP = new Hashtable() {
+        Hashtable countryNameMap = new Hashtable() {
         {"ab", "Abkhazian"},
         {"af", "Afrikaans"},
         {"ar", "Arabic"},
@@ -218,7 +219,7 @@ namespace LiteMiner.classes
         {"zu", "Zulu"}
         };
         
-        string[] SINGLETONS = {
+        string[] nameSingletons = {
         "Armenian", "hy",
         "Hebrew", "he",
         "Bengali", "bn",
@@ -240,14 +241,14 @@ namespace LiteMiner.classes
         "Khmer", "km"
         };
         
-        string[] BASIC_LATIN = {"en", "ceb", "ha", "so", "tlh", "id", "haw", "la", "sw", "eu", "nr", "nso", "zu", "xh", "ss", "st", "tn", "ts"};
-        string[] EXTENDED_LATIN = {"cs", "af", "pl", "hr", "ro", "sk", "sl", "tr", "hu", "az", "et", "sq", "ca", "es", "fr", "de", "nl", "it", "da", "is", "no", "sv", "fi", "lv", "pt", "ve", "lt", "tl", "cy", "vi"};
-        string[] ALL_LATIN;
-        string[] CYRILLIC = {"ru", "uk", "kk", "uz", "mn", "sr", "mk", "bg", "ky"};
-        string[] ARABIC = {"ar", "fa", "ps", "ur"};
-        string[] DEVANAGARI = {"hi", "ne"};
-        string[] PT = {"pt_BR", "pt_PT"};
-        Hashtable RegexCache = new Hashtable();
+        string[] basicLatinLanguages = {"en", "ceb", "ha", "so", "tlh", "id", "haw", "la", "sw", "eu", "nr", "nso", "zu", "xh", "ss", "st", "tn", "ts"};
+        string[] extendedLatinLanguaages = {"cs", "af", "pl", "hr", "ro", "sk", "sl", "tr", "hu", "az", "et", "sq", "ca", "es", "fr", "de", "nl", "it", "da", "is", "no", "sv", "fi", "lv", "pt", "ve", "lt", "tl", "cy", "vi"};
+        string[] allLatinLanguages;
+        string[] cyrillicLanguages = {"ru", "uk", "kk", "uz", "mn", "sr", "mk", "bg", "ky"};
+        string[] arabicLanguages = {"ar", "fa", "ps", "ur"};
+        string[] devangariLanguages = {"hi", "ne"};
+        string[] pt = {"pt_BR", "pt_PT"};
+        Hashtable regexCache = new Hashtable();
 
         // Unicode char greedy regex block range matchers
         string[] unicodeBlockTests = {
@@ -380,42 +381,42 @@ namespace LiteMiner.classes
 
         public LanguageDetector()
         {
-            List<string> temp = new List<string>(BASIC_LATIN);
-            temp.AddRange(EXTENDED_LATIN);
-            ALL_LATIN = temp.ToArray();
+            List<string> temp = new List<string>(basicLatinLanguages);
+            temp.AddRange(extendedLatinLanguaages);
+            allLatinLanguages = temp.ToArray();
         }
 
         private Hashtable FindRuns(string text)
         {
 
-            Hashtable relevant_runs = new Hashtable();
+            Hashtable relevantRuns = new Hashtable();
 
             for (int x = 0; x < unicodeBlockTests.Length; x+=2)
             {
                 string name = unicodeBlockTests[x];
                 string regex = unicodeBlockTests[x + 1];
-                if (RegexCache[name] == null) RegexCache[name] = new Regex(regex);
+                if (regexCache[name] == null) regexCache[name] = new Regex(regex);
                 // Count the number of characters in each character block.
-                int charCount = ((Regex)RegexCache[name]).Matches(text).Count;
+                int charCount = ((Regex)regexCache[name]).Matches(text).Count;
 
                 // return run types that used for 40% or more of the string
                 // always return basic latin if found more than 15%
                 // and extended additional latin if over 10% (for Vietnamese)
                 double pct = (double)charCount / (double)text.Length;
 
-                relevant_runs[name] = pct;
+                relevantRuns[name] = pct;
            
             }
 
-            return relevant_runs;
+            return relevantRuns;
         }
 
         public string GetLanguageNameByCode(string code)
         {
             if (string.IsNullOrEmpty(code)) return null;
             code = code.ToLower();
-            if (NAME_MAP[code] == null) return null;
-            return NAME_MAP[code] as string;
+            if (countryNameMap[code] == null) return null;
+            return countryNameMap[code] as string;
         }
 
         public string Detect(string text)
@@ -453,22 +454,22 @@ namespace LiteMiner.classes
             }
 
             if ((double)scripts["Cyrillic"] >= 0.4) {
-                return Check(text, CYRILLIC);//decide language using cyrillic letters
+                return Check(text, cyrillicLanguages);//decide language using cyrillic letters
             }
 
             if ((double)scripts["Arabic"] + (double)scripts["Arabic Presentation Forms-A"] + (double)scripts["Arabic Presentation Forms-B"] >= 0.4) {
-                return Check(text, ARABIC); //decide language using arabic letters
+                return Check(text, arabicLanguages); //decide language using arabic letters
             }
 
             if ((double)scripts["Devanagari"] >= 0.4) {
-                return Check(text, DEVANAGARI);
+                return Check(text, devangariLanguages);
             }
 
             // Try languages with unique scripts
-            for (int x = 0; x < SINGLETONS.Length; x+=2)
+            for (int x = 0; x < nameSingletons.Length; x+=2)
             {
-                string name = SINGLETONS[x];
-                string code = SINGLETONS[x + 1];
+                string name = nameSingletons[x];
+                string code = nameSingletons[x + 1];
                 if (scripts[name] != null)
                 {
                     if ((double)scripts[name] >= 0.4)
@@ -481,17 +482,17 @@ namespace LiteMiner.classes
             // Extended Latin
             if ((double)scripts["Latin-1 Supplement"] + (double)scripts["Latin Extended-A"] + (double)scripts["IPA Extensions"] >= 0.4)
             {
-                string latin_lang = Check(text, EXTENDED_LATIN);
+                string latin_lang = Check(text, extendedLatinLanguaages);
                 if (latin_lang == "pt")
                 {
-                    return Check(text, PT);
+                    return Check(text, pt);
                 } else {
                     return latin_lang;
                 }
             }
 
             if ((double)scripts["Basic Latin"] >= 0.15) {
-                return Check(text, ALL_LATIN);
+                return Check(text, allLatinLanguages);
             }
 
             return null; //give up, no match

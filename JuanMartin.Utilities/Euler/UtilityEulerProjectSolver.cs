@@ -100,7 +100,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
-        public static Problem[] unit_test_roblems = new Problem[] {
+        public static Problem[] unitTestProblems = new Problem[] {
                 new Problem(48,SelfPowers,11L,10),
                 new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
@@ -114,18 +114,17 @@ namespace JuanMartin.Utilities.Euler
             get { return ("," + ListOfAnswers).Split(','); }
         }
 
-        public static void LoadAnswers(bool test_mode=false)
+        public static void LoadAnswers(bool testMode=false)
         {
-            string file_name = string.Empty;
-
-            if (test_mode)
-                file_name = @"..\..\data\problem_test_answers.txt";
+            string fileName;
+            if (testMode)
+                fileName = @"..\..\data\problem_test_answers.txt";
             else
-                file_name = @"..\..\data\problem_answers.txt";
+                fileName = @"..\..\data\problem_answers.txt";
 
-            if (File.Exists(file_name))
+            if (File.Exists(fileName))
             {
-                var arr = UtilityFile.ReadTextToArray(file_name);
+                var arr = UtilityFile.ReadTextToArray(fileName);
                 if (arr.Length > 0)
                     ListOfAnswers = string.Join(",", arr);
             }
@@ -146,7 +145,7 @@ namespace JuanMartin.Utilities.Euler
             if (!silent) Console.WriteLine("Problem execution duration: {0} ms", answer.Duration);
         }
 
-        public static void ValidateProblems(Problem[] problems, IEnumerable<int> skip_problems)
+        public static void ValidateProblems(Problem[] problems, IEnumerable<int> skipProblems)
         {
             Result result = null;
             var incorrectProblems = new List<int>();
@@ -158,7 +157,7 @@ namespace JuanMartin.Utilities.Euler
             {
                 var p = problems[i];
 
-                if (skip_problems != null && skip_problems.Contains(p.Id))
+                if (skipProblems != null && skipProblems.Contains(p.Id))
                     continue;
                 
                 Console.Write((i > 1) ? "," + p.Id.ToString(): p.Id.ToString());
@@ -173,11 +172,11 @@ namespace JuanMartin.Utilities.Euler
             Console.WriteLine($"Overall execution, {problems.Length} prblems, duration: {Math.Round(stopWatch.Elapsed.TotalMinutes, 1)} min");
         }
 
-        public static Problem GetProblemById(int id, bool test_mode=false)
+        public static Problem GetProblemById(int id, bool testMode=false)
         {
             Problem p = null;
 
-            if (!test_mode)
+            if (!testMode)
             {
                 foreach (var problem in problems)
                 {
@@ -187,7 +186,7 @@ namespace JuanMartin.Utilities.Euler
             }
             else
             {
-                foreach (var problem in unit_test_roblems)
+                foreach (var problem in unitTestProblems)
                 {
                     if (problem.Id == id)
                         p = problem;
@@ -1075,7 +1074,7 @@ namespace JuanMartin.Utilities.Euler
         {
             var length = arguments.IntNumber;
             var match = false;
-            BigInteger i = 1;
+            var i = 1;
 
             while (!match)
             {
@@ -1595,20 +1594,20 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result IntegerRightTriangles(Problem arguments)
         {
-            var max_t = 0;
-            var max_p = 0;
+            var maxCount = 0;
+            var maxPerimeter = 0;
             var max = 1000;
 
             for (int perimeter = 120; perimeter <= max; perimeter++)
             {
                 int count = UtilityMath.GetPythagoreanTriples(perimeter: perimeter, source: UtilityMath.Formula.Euclid).Count;
-                if (count > max_t)
+                if (count > maxCount)
                 {
-                    max_t = count;
-                    max_p = perimeter;
+                    maxCount = count;
+                    maxPerimeter = perimeter;
                 }
             }
-            var answer = max_p.ToString();
+            var answer = maxPerimeter.ToString();
 
             var message = string.Format("The number of solutions for a value of p ≤ {0}, maximised is {1}.", max, answer);
             if (Answers[arguments.Id] != answer)
@@ -1994,10 +1993,10 @@ namespace JuanMartin.Utilities.Euler
                 {
                     if (UtilityMath.AreMatchingPermutations<int>(primes[i], primes[j]))
                     {
-                        var prime_k = primes[j] + (primes[j] - primes[i]);
-                        if (prime_k <= limit && UtilityMath.IsPrime(prime_k) && UtilityMath.AreMatchingPermutations<int>(primes[j], prime_k))
+                        var thirdValue = primes[j] + (primes[j] - primes[i]);
+                        if (thirdValue <= limit && UtilityMath.IsPrime(thirdValue) && UtilityMath.AreMatchingPermutations<int>(primes[j], thirdValue))
                         {
-                            answer = DigitJoin(primes[i], primes[j], prime_k);
+                            answer = DigitJoin(primes[i], primes[j], thirdValue);
                             break;
 
                         }

@@ -12,7 +12,7 @@ namespace JuanMartin.Utilities.Euler
     {
         private const int MAX_ROMAN_NUMERAL_POWER = 7;
         private readonly SortedDictionary<char, int> _denominations = new SortedDictionary<char, int>() { { 'I', 1 }, { 'V', 5 }, { 'X', 10 }, { 'L', 50 }, { 'C', 100 }, { 'D', 500 }, { 'M', 1000 } };
-        private readonly string[] _xcm_reductions = new string[]
+        private readonly string[] _baseSymbolReplacements = new string[]
         {   new String('I',10),
                 new String('V', 2),
                 new String('I', 100),
@@ -27,8 +27,8 @@ namespace JuanMartin.Utilities.Euler
                 new String('D', 2)
         };
         private string _numeral;
-        private List<string> _parsed_numeral;
-        private List<int> _draft; // contain first traslation with values evaluating substractions
+        private readonly List<string> _parsedNumeral;
+        private readonly List<int> _draft; // contain first traslation with values evaluating substractions
         public string Value
         {
             get { return _numeral; }
@@ -41,75 +41,74 @@ namespace JuanMartin.Utilities.Euler
             Value = value;
             ArabicValue = -1;
             _draft = new List<int>();
-            _parsed_numeral = new List<string>();
+            _parsedNumeral = new List<string>();
         }
 
         private bool Parse()
         {
             _draft.Clear();
-            _parsed_numeral.Clear();
+            _parsedNumeral.Clear();
 
-            var invalid_numeral = false;
+            var invalidNumeral = false;
 
             if (Value != null && Value.Length > 0)
             {
                 for (var i = 0; i < Value.Length; i++)
                 {
                     bool added = false;
-
-                    int value_left = 0;
-                    int value_right = 0;
-
                     char n = Value[i];
+
+                    int valueLeft;
                     try
                     {
-                        value_left = _denominations[n];
+                        valueLeft = _denominations[n];
                     }
                     catch
                     {
-                        invalid_numeral = true;
+                        invalidNumeral = true;
                         break;
                     }
 
                     // there is a contiguous charhacter
                     if (i + 1 < Value.Length)
                     {
-                        char next_n = Value[i + 1];
+                        char nextN = Value[i + 1];
+                        int valueRight;
                         try
                         {
-                            value_right = _denominations[next_n];
+                            valueRight = _denominations[nextN];
                         }
                         catch
                         {
-                            invalid_numeral = true;
+                            invalidNumeral = true;
                             break;
                         }
 
                         // pair is a substraction
-                        if(value_left < value_right)
+                        if (valueLeft < valueRight)
                         {
                             // a. Only one I, X, and C can be used as the leading numeral in part of a subtractive pair.
                             // b. I can only be placed before V and X.
                             // c. X can only be placed before L and C.
                             // d. C can only be placed before D and M.
-                            var rule_a = "IXC".Contains(n);
-                            var rule_b = n == 'I' && !"VX".Contains(next_n);
-                            var rule_c = n == 'X' && !"LC".Contains(next_n);
-                            var rule_d = n == 'C' && !"DM".Contains(next_n);
+                            var ruleA = "IXC".Contains(n);
+                            var ruleB = n == 'I' && !"VX".Contains(nextN);
+                            var ruleC = n == 'X' && !"LC".Contains(nextN);
+                            var ruleD = n == 'C' && !"DM".Contains(nextN);
 
-                            if (!rule_a)
+                            if (!ruleA)
                             {
-                                invalid_numeral = true;
+                                invalidNumeral = true;
                                 break;
                             }
-                            else if (rule_b || rule_c || rule_d)
+                            else if (ruleB || ruleC || ruleD)
                             {
-                                invalid_numeral = true;
+                                invalidNumeral = true;
                                 break;
                             }
 
-                            _parsed_numeral.Add(n.ToString() + next_n.ToString());
-                            _draft.Add(value_right - value_left);
+                            _parsedNumeral.Add(n.ToString() + nextN.ToString());
+                            _draft.Add(valueRight - valueLeft);
                             added = true;
                             i++; // move to next numeral
                         }
@@ -117,12 +116,12 @@ namespace JuanMartin.Utilities.Euler
                  
                     if (!added)
                     {
-                        _parsed_numeral.Add(n.ToString());
-                        _draft.Add(value_left);
+                        _parsedNumeral.Add(n.ToString());
+                        _draft.Add(valueLeft);
                     }
                 }
             }
-            return !invalid_numeral;
+            return !invalidNumeral;
         }
 
         /// <summary>
@@ -132,30 +131,30 @@ namespace JuanMartin.Utilities.Euler
         public bool IsValid()
         {
             // check rules:
-            // rule_1. (valid_charachters): Roman numerals contain only I, V, X, L, C, D, M
-            // rule_2. (descending_numerals): Numerals must be arranged in descending order of size.
-            // rule_3. (mcx_reduction): M, C, and X cannot be equalled or exceeded by smaller denominations.
-            // rule_4. (dlv_once): D, L, and V can each only appear once.
-            var valid_charachters = Value.All(c => _denominations.ContainsKey(c));
+            // rule_1. (validCharachters): Roman numerals contain only I, V, X, L, C, D, M
+            // rule_2. (descendingNumerals): Numerals must be arranged in descending order of size.
+            // rule_3. (mcxReduction): M, C, and X cannot be equalled or exceeded by smaller denominations.
+            // rule_4. (dlvOnce): D, L, and V can each only appear once.
+            var validCharachters = Value.All(c => _denominations.ContainsKey(c));
 
-            if (valid_charachters)
+            if (validCharachters)
             {
-                bool mcx_reduction = !_xcm_reductions.Any(v => Value.Contains(v));
+                bool mcxReduction = !_baseSymbolReplacements.Any(v => Value.Contains(v));
 
-                if (mcx_reduction)
+                if (mcxReduction)
                 {
-                    bool dlv_once = Value.Count(c => c == 'D') <= 1 && Value.Count(c => c == 'L') <= 1 && Value.Count(c => c == 'V') <= 1;
+                    bool dlvOnce = Value.Count(c => c == 'D') <= 1 && Value.Count(c => c == 'L') <= 1 && Value.Count(c => c == 'V') <= 1;
 
-                    if (dlv_once)
+                    if (dlvOnce)
                     {
-                        var descending_numerals = Parse();
+                        var descendingNumerals = Parse();
 
                         if (_draft.Count > 0 && (_draft.First() < _draft.Last()))
                         {
-                            descending_numerals = false;
+                            descendingNumerals = false;
                         }
 
-                        if (descending_numerals)
+                        if (descendingNumerals)
                         {
                             return true;
                         }
@@ -195,11 +194,12 @@ namespace JuanMartin.Utilities.Euler
         {
             string roman = string.Empty;
             
+            // if no number is specified as an argument  use the arabic conversion of 'this' roman numeral
             if  (number == -1)
                 number = ToArabic();
 
-            if (number == -1)
-                return "";
+            if (number < 0)
+                throw new ArgumentException($"Cannot calculate roman representation for negative numbers.");
             else
             {
                 if (UtilityMath.GetPowerOfTen(number) > MAX_ROMAN_NUMERAL_POWER)
@@ -222,7 +222,7 @@ namespace JuanMartin.Utilities.Euler
             if (power > MAX_ROMAN_NUMERAL_POWER)
                 throw new ArgumentException($"Cannot calculate roman representation for numbers in the  order of 10^{power + 1}.");
 
-            string[][] roman_numerals = new string[][]
+            string[][] romanNumerals = new string[][]
             {
                 new string[] {"","I","II","III","IV","V","VI","VII","VIII","IX"},
                 new string[] {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"},
@@ -230,7 +230,8 @@ namespace JuanMartin.Utilities.Euler
                 new string[] {"","M","MM","MMM","MMMM","|V|","|VI|","|VII|","|VIII|","|IX|" }
             };
 
-            var roman= roman_numerals[((power > 3) ? power-3 : power)][number];
+            // surround with || to indicate x1000
+            var roman= romanNumerals[((power > 3) ? power-3 : power)][number];
             return (power.Between(4, 7)) ? $"|{roman}|":roman;
         }
 

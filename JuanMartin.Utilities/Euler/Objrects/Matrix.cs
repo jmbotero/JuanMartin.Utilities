@@ -30,9 +30,9 @@ namespace JuanMartin.Utilities.Euler
             }
         }
 
-        private void LoadMatrix(string file_name, char delimiter)
+        private void LoadMatrix(string fileName, char delimiter)
         {
-            using (var reader = new StreamReader(file_name, Encoding.UTF8))
+            using (var reader = new StreamReader(fileName, Encoding.UTF8))
             {
                 var lines = (IEnumerable<string>)reader.ReadToEnd().Split(new char[] { UtilityFile.CarriageReturn, UtilityFile.LineFeed }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -98,44 +98,44 @@ namespace JuanMartin.Utilities.Euler
         public List<int> GetMinimalPath()
         {
             var path = new List<int>();
-            int previous_x = 0;
-            int previous_y = 0;
-            int current_x = 0;
-            int current_y = 0;
+            int previousX = 0;
+            int previousY = 0;
+            int currentX = 0;
+            int currentY = 0;
 
-            path.Add(_matrix[current_x][current_y].Value);
-            while (previous_x < _dimension && previous_y < _dimension)
+            path.Add(_matrix[currentX][currentY].Value);
+            while (previousX < _dimension && previousY < _dimension)
             {
-                if (current_x == _dimension - 1 && current_y == _dimension - 1)
+                if (currentX == _dimension - 1 && currentY == _dimension - 1)
                     break;
 
-                var numeric_cell = _matrix[current_x][current_y];
+                var numericCell = _matrix[currentX][currentY];
                 
-                if (numeric_cell.Visited)
-                    throw new ApplicationException($"Loop triggered when adding {numeric_cell.Value} to path [{string.Join(",",path.ToArray())}].");
+                if (numericCell.Visited)
+                    throw new ApplicationException($"Loop triggered when adding {numericCell.Value} to path [{string.Join(",",path.ToArray())}].");
 
                 Tuple<int, int> coordinates = null;
                 var min = Int32.MaxValue;
 
-                foreach (var cell in numeric_cell.Neighbors)
+                foreach (var cell in numericCell.Neighbors)
                 {
                     var neighbor = cell.Value;
-                    if (neighbor.Value < min && !neighbor.Visited) //cell.Key != Tuple.Create(previous_x, previous_y))
+                    if (neighbor.Value < min && !neighbor.Visited) //cell.Key != Tuple.Create(previousX, previousY))
                     {
                         coordinates = cell.Key;
                         min = neighbor.Value;
                     }
                 }
                 if (min == Int32.MaxValue)
-                    throw new ApplicationException($"Error finding minimum value in [{string.Join(",", numeric_cell.Neighbors.Values.Select(n=>n.Value).ToArray())}].");
+                    throw new ApplicationException($"Error finding minimum value in [{string.Join(",", numericCell.Neighbors.Values.Select(n=>n.Value).ToArray())}].");
 
                 path.Add(min);
 
-                previous_x = current_x;
-                previous_y = current_y;
-                current_x = coordinates.Item1;
-                current_y = coordinates.Item2;
-                numeric_cell.Visited = true;
+                previousX = currentX;
+                previousY = currentY;
+                currentX = coordinates.Item1;
+                currentY = coordinates.Item2;
+                numericCell.Visited = true;
             }
             return path;
         }
@@ -232,7 +232,7 @@ namespace JuanMartin.Utilities.Euler
 
             private int[][] _distance;
 
-        public string Bellman_Ford()
+        public string BellmanFordAlgotith()
         {
             int h = _matrix.Length;
             int w = _matrix[0].Length;
