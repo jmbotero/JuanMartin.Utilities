@@ -69,7 +69,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(46,GoldbachOtherConjecture),
                 new Problem(47,DistinctPrimeFactors,4),
                 new Problem(48,SelfPowers,10L,1000),
-                new Problem(49,PrimePermutations),
+                new Problem(49,PrimePermutations,new long[] { 1488, 9999 }),
                 new Problem(50,ConsecutivePrimeSum,1000000),
                 new Problem(51,PrimeDigitReplacements),
                 new Problem(52,PermutedMultiples),
@@ -80,7 +80,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(57,SquareRootConvergents,1000),
                 new Problem(58,SpiralPrimes),
                 new Problem(59,XorDecryption,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\cypher.txt|,|"""),
-                new Problem(60,PrimePairSets,5),
+                new Problem(60,PrimePairSets,new long[] { 5, 10000 }),
                 new Problem(61,CyclicalFigurateNumbers),
                 new Problem(63,PowerfulDigitCounts),
                 new Problem(64,OddPeriodSquareRoots,10000),
@@ -101,7 +101,10 @@ namespace JuanMartin.Utilities.Euler
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
+                new Problem(25,NumberDigitsFidonacciNumber,3),
                 new Problem(48,SelfPowers,11L,10),
+                new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
+                new Problem(60,PrimePairSets,new long[] { 4, 673 }),
                 new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
                 new Problem(87,PrimePowerTriples,50),
@@ -1073,17 +1076,16 @@ namespace JuanMartin.Utilities.Euler
         public static Result NumberDigitsFidonacciNumber(Problem arguments)
         {
             var length = arguments.IntNumber;
-            var match = false;
             var i = 1;
 
-            while (!match)
+            while (true)
             {
                 BigInteger fibonacci = UtilityMath.FibonacciLoop(i);
 
                 if (fibonacci.ToString().Length == length)
-                    match = true;
-
-                i++;
+                    break;
+                else
+                    i++;
             }
 
             var answer = i.ToString();
@@ -1984,9 +1986,12 @@ namespace JuanMartin.Utilities.Euler
             string DigitJoin(int a, int b, int c) => a.ToString() + b.ToString() + c.ToString();
 
             var answer = string.Empty;
-            const int limit = 9999;
-            var primes = UtilityMath.ErathostenesSieve(1488, limit);
+            var upperLimit = (int)arguments.Numbers[1];
+            var lowerLimit = (int)arguments.Numbers[0];
 
+            var primes = UtilityMath.ErathostenesSieve(upperLimit, lowerLimit); 
+
+            // TODO: limit to four digit primes
             for (int i = 0; i < primes.Length; i++)
             {
                 for (int j = i + 1; j < primes.Length; j++)
@@ -1994,7 +1999,7 @@ namespace JuanMartin.Utilities.Euler
                     if (UtilityMath.AreMatchingPermutations<int>(primes[i], primes[j]))
                     {
                         var thirdValue = primes[j] + (primes[j] - primes[i]);
-                        if (thirdValue <= limit && UtilityMath.IsPrime(thirdValue) && UtilityMath.AreMatchingPermutations<int>(primes[j], thirdValue))
+                        if (thirdValue <= upperLimit && UtilityMath.IsPrime(thirdValue) && UtilityMath.AreMatchingPermutations<int>(primes[j], thirdValue))
                         {
                             answer = DigitJoin(primes[i], primes[j], thirdValue);
                             break;
@@ -2006,7 +2011,7 @@ namespace JuanMartin.Utilities.Euler
                     break;
             }
 
-            var message = string.Format("The 12-digit number do you form by concatenating the three terms in the second 4-digit increasing sequence is {0}.", answer);
+            var message = string.Format("The {0}-digit number do you form by concatenating the three terms in the second 4-digit increasing sequence is {1}.", answer.Length,  answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

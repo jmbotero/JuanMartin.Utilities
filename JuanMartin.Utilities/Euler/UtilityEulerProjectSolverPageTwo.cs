@@ -514,7 +514,9 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result PrimePairSets(Problem arguments)
         {
-            var set = new PrimeSet(arguments.IntNumber);
+            int limit = (int)arguments.Numbers[1];
+            int numberOfPrimes = (int)arguments.Numbers[0];
+            var set = new PrimeSet(numberOfPrimes, limit);
 
             set.CalculatePrimeSetMinimumSum();
 

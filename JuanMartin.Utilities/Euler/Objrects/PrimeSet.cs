@@ -14,10 +14,10 @@ namespace JuanMartin.Utilities.Euler
         public int[] Set;
         public int[] Minimums;
 
-        public PrimeSet(int c)
+        public PrimeSet(int setSize, int primeUpperLimit)
         {
-            Count = c;
-            Primes = UtilityMath.ErathostenesSieve(3, 20000);
+            Count = setSize;
+            Primes = UtilityMath.ErathostenesSieve(primeUpperLimit, 3);
             Minimums = Enumerable.Repeat(int.MaxValue, 5).ToArray();
             Pairs = new HashSet<int>[Primes.Length];
             Set = new int[Count];
