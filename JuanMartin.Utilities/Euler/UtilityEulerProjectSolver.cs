@@ -45,7 +45,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(21,AmicableNumbers,10000),
                 new Problem(22,NameScores,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\names.txt|,|"""),
                 new Problem(23,NonAbundantSum,28123),
-                new Problem(24,LexicographicPermutations,1000000L,9),
+                new Problem(24,LexicographicPermutations, new long[] { 1000000, 9 }),
                 new Problem(25,NumberDigitsFidonacciNumber,1000),
                 new Problem(26,ReciprocalCycles,1000),
                 new Problem(27,QuadraticPrimes,1000),
@@ -80,7 +80,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(57,SquareRootConvergents,1000),
                 new Problem(58,SpiralPrimes),
                 new Problem(59,XorDecryption,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\cypher.txt|,|"""),
-                new Problem(60,PrimePairSets,new long[] { 5, 10000 }),
+                new Problem(60,PrimePairSets,new long[] { 5, 10000  }),
                 new Problem(61,CyclicalFigurateNumbers),
                 new Problem(63,PowerfulDigitCounts),
                 new Problem(64,OddPeriodSquareRoots,10000),
@@ -96,11 +96,13 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(87,PrimePowerTriples,50000000),
                 new Problem(88,ProductSumNumbers,12000),
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
-                new Problem(92,SquareDigitChains),
+                new Problem(92,SquareDigitChains,10000000),
+                new Problem(93,ArithmeticExpressions, 9),
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
+                new Problem(24,LexicographicPermutations, new long[] { 6, 2 } ),
                 new Problem(25,NumberDigitsFidonacciNumber,3),
                 new Problem(48,SelfPowers,11L,10),
                 new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
@@ -109,7 +111,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
                 new Problem(87,PrimePowerTriples,50),
                 new Problem(88,ProductSumNumbers,12),
-                new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,")
+                new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
+                new Problem(93,ArithmeticExpressions, 4)
             };
 
         public static string[] Answers
@@ -127,17 +130,17 @@ namespace JuanMartin.Utilities.Euler
 
             if (File.Exists(fileName))
             {
-                var arr = UtilityFile.ReadTextToArray(fileName);
+                var arr = UtilityFile.ReadTextToStringEnumerable(fileName).ToArray();
                 if (arr.Length > 0)
                     ListOfAnswers = string.Join(",", arr);
             }
         }
-        public static void Launch(EulerProblem problem, Problem args, bool silent = false)
+        public static void Launch(EulerProblem problem, Problem args, bool testMode=false, bool silent = false)
         {
             Result answer = null;
             var stopWatch = new Stopwatch();
 
-            if (!silent) Console.WriteLine("Problem {0}:", args.Id);
+            if (!silent) Console.WriteLine("{0}roblem {1}:", (testMode) ? "Test p" : "P", args.Id);
             stopWatch.Start();
             answer = problem?.Invoke(args);
             stopWatch.Stop();
@@ -1046,8 +1049,8 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result LexicographicPermutations(Problem arguments)
         {
-            var position = (int)arguments.LongNumber;
-            var length = arguments.IntNumber;
+            var position = (int)arguments.Numbers[0];
+            var length = (int)arguments.Numbers[1];
             var digits = Enumerable.Range(0, length + 1).ToArray<int>();
 
             var permuatations = UtilityString.GeneratePermutations<int>(digits, position);
@@ -1989,7 +1992,7 @@ namespace JuanMartin.Utilities.Euler
             var upperLimit = (int)arguments.Numbers[1];
             var lowerLimit = (int)arguments.Numbers[0];
 
-            var primes = UtilityMath.ErathostenesSieve(upperLimit, lowerLimit); 
+            var primes = UtilityMath.ErathostenesSieve(upperLimit, lowerLimit).ToArray(); 
 
             // TODO: limit to four digit primes
             for (int i = 0; i < primes.Length; i++)
@@ -2032,7 +2035,7 @@ namespace JuanMartin.Utilities.Euler
         public static Result ConsecutivePrimeSum(Problem arguments)
         {
             var limit = arguments.IntNumber;
-            var primes = UtilityMath.ErathostenesSieve(limit);
+            var primes = UtilityMath.ErathostenesSieve(limit).ToArray();
             var start = 0;
             var end = 0;
             var max = int.MinValue;

@@ -1,15 +1,16 @@
 ﻿using JuanMartin.Kernel.Extesions;
+using JuanMartin.Kernel.RuleEngine;
 using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
 using JuanMartin.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -220,7 +221,7 @@ namespace JuanMartin.Utilities.Euler
             var count = 0;
 
 
-            //todo: use factaorial in loop and cache it in array
+            //TODO: use factaorial in loop and cache it in array
 
             for (int n = 1; n <= 100; n++)
             {
@@ -1193,20 +1194,20 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result SquareDigitChains(Problem arguments)
         {
-            int limit = 10000000;
+            int limit = arguments.IntNumber;
             int count = 0;
 
             for (int i = 2; i < limit; i++)
             {
                 var (term, _) = UtilityMath.SquareDigitsChain(i);
 
-                if (term  ==  89)
+                if (term == 89)
                     count++;
             }
 
-            var answer = count.ToString();  
+            var answer = count.ToString();
 
-            var message = string.Format("There are {0} numbers below ten million that will arrive at 89.",  answer);
+            var message = string.Format("There are {0} numbers below ten million that will arrive at 89.", answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
@@ -1218,7 +1219,155 @@ namespace JuanMartin.Utilities.Euler
             return r;
         }
 
+        /// <summary>
+        /// https://projecteuler.net/problem=93
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result ArithmeticExpressions(Problem arguments)
+        {
+            int distinctDigitCount = arguments.IntNumber;
+            var operandCombinations = UtilityMath.GetCombinationsOfK<int>(Enumerable.Range(1, distinctDigitCount).ToArray(), 4).ToArray();
+            //var operandCombinations = new List<int[]> { new int[] { 1, 2, 5, 8 } }; // hack #1, to cut time
+
+            var operatorPermutationsWithRepetition = UtilityMath.GeneratePermutationsOfK<string>(new string[] { "+", "-", "*", "/" }, 3, true).ToArray();
+            var expressionValues = new OrderedDictionary();
+            string maximumOperands = "";
+            string maximumExpression = "";
+            var maximumCount = int.MinValue;
+            
+            foreach (var operandEnumerable in operandCombinations)
+            {
+                if (UtilityMath.ItemsArePositiveSequential(operandEnumerable))
+                {
+                    expressionValues.Clear();
+                    var operands = string.Join("", operandEnumerable); 
+                    var operandPermutations = UtilityMath.GeneratePermutationsOfK<int>(operandEnumerable.ToArray(), 4);
+                    foreach (var operandArray in operandPermutations)
+                    {
+                        //ExpressionEvaluator eval = null;// new ExpressionEvaluator();
+                        var expressions = GetParenthesisCombinations(operandArray, operatorPermutationsWithRepetition);
+                        foreach (var expression in expressions)
+                        {
+                            EvaluateExpression(expressionValues, expression);
+                        }
+                    }
+                    var completeExpressionCount = CountInSequenceFromOne(expressionValues.Values);
+                    if (completeExpressionCount > maximumCount)
+                    {
+                        maximumCount = completeExpressionCount;
+                        maximumExpression = expressionValues.GetKeyOnValue<string,double>(maximumCount); // expression is the keyfor the maximum value
+                        maximumOperands = operands;
+                    }
+                }
+            }
+
+            
+            var answer = maximumOperands;
+
+            var message = string.Format("The set of four distinct digits, a < b < c < d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, is {0} with the highest value operation [{1} (n={2})].", answer, maximumExpression,maximumCount);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+
+        }
+
+        private static int CountInSequenceFromOne(System.Collections.ICollection values)
+        {
+            var i = 0;
+            var previousValue = 0;
+
+            foreach(var item in values)
+            {
+                if (i > values.Count) break;
+
+                var currentValue = (double)item;
+                if (currentValue > previousValue + 1)  
+                    break;
+                else if (currentValue == previousValue + 1)
+                    previousValue++;
+                
+                i++;
+            }
+
+            return previousValue;
+        }
+
         #region Support Methods
+        private static List<string> GetParenthesisCombinations(int[] operandSet, IEnumerable<string[]> operatorSets)
+        {
+            var expressions = new List<string>();
+  
+            var a = operandSet[0];
+            var b = operandSet[1];
+            var c = operandSet[2];
+            var d = operandSet[3];
+
+            foreach (var operatorSet in operatorSets)
+            {
+                var o1 = operatorSet[0];
+                var o2 = operatorSet[1];
+                var o3 = operatorSet[2];
+                //expressions.Add($"{a}{o1}{b}{o2}{c}{o3}{d}");
+                //expressions.Add($"{a}{o1}({b}{o2}{c}){o3}{d}");
+                //expressions.Add($"{a}{o1}{b}{o2}({c}{o3}{d})");
+                //expressions.Add($"{a}{o1}({b}{o2}{c}{o3}{d})");
+                //expressions.Add($"({a}{o1}{b}){o2}({c}{o3}{d})");
+                /// <see cref="Carl J Appellofcomment at https://www.mathblog.dk/project-euler-93-longest-sequence/"/>
+                expressions.Add($"(({a}{o1}{b}){o2}{c}){o3}{d}");
+                expressions.Add($"({a}{o1}{b}){o2}({c}{o3}{d})");
+            }
+
+            return expressions;
+        }
+
+        private static void EvaluateExpression(OrderedDictionary evaluations, string expression)
+        {
+            //    int Evaluate(string expr)
+            //{
+            //    evaluator.Parse(expr);
+            //    Symbol eval = evaluator.Evaluate(new Dictionary<string, Symbol>());
+
+            //    double result = (double)eval.Value.Result;
+            //    if (!double.IsInfinity(result) && result == Math.Truncate(result) && result > 0) // is positive integer
+            //        return (int)result;
+            //    else
+            //        return -1;
+            //}
+
+            void InsertExpression(string key, double eval)
+            {
+                if (evaluations.Count == 0)
+                    evaluations.Add(key, eval);
+                else
+                {
+                    var insertIndex = 0;
+
+                    for (int i = 0; i < evaluations.Count; i++ )
+                    {
+                        var currentValue = (double)evaluations[i];
+                        if (eval < currentValue)
+                            break;
+                        insertIndex ++;
+                    }
+                    evaluations.Insert(insertIndex, key, eval);
+                }
+            }
+
+            //var value = Evaluate(expression);
+            //if (value != -1) // is positive integer
+            var value = UtilityMath.EvaluateSimpleArithmeticOerations(expression);
+            if (!double.IsInfinity(value) && value == Math.Truncate(value) && value > 0) // is positive integer
+            {
+                InsertExpression(expression, value);
+            }   
+        }
 
         private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph(string fileName, char delimiter)
         {
@@ -1247,9 +1396,7 @@ namespace JuanMartin.Utilities.Euler
             return (graph, matrix);
         }
 
-#pragma warning disable IDE0051 // Remove unused private members
         private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph()
-#pragma warning restore IDE0051 // Remove unused private members
         {
             int dimension = 80;
             DirectedAcyclicGraph<int> graph = new DirectedAcyclicGraph<int>();

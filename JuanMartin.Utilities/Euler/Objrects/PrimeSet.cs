@@ -17,7 +17,7 @@ namespace JuanMartin.Utilities.Euler
         public PrimeSet(int setSize, int primeUpperLimit)
         {
             Count = setSize;
-            Primes = UtilityMath.ErathostenesSieve(primeUpperLimit, 3);
+            Primes = UtilityMath.ErathostenesSieve(primeUpperLimit, 3).ToArray();
             Minimums = Enumerable.Repeat(int.MaxValue, 5).ToArray();
             Pairs = new HashSet<int>[Primes.Length];
             Set = new int[Count];
@@ -281,7 +281,7 @@ namespace JuanMartin.Utilities.Euler
 
         // Check if taking any two primes and concatenating them in any order the result is prime. 
         // For example, taking 7 and 109, both 7109 and 1097 are prime
-        private Func<int, int, bool> IsPrimePair = (x, y) =>
+        private readonly Func<int, int, bool> IsPrimePair = (x, y) =>
         {
             var IsPrime = UtilityMath.IsPrimeUsingSquares.Memoize();
 
@@ -292,7 +292,9 @@ namespace JuanMartin.Utilities.Euler
         };
 
         // Check if every possible pair in a set of prime numbers are 'IsPrimePair'
+#pragma warning disable IDE0051 // Remove unused private members
         private bool IsPrimeSetQuery(IEnumerable<int> s)
+#pragma warning restore IDE0051 // Remove unused private members
         {
             //var isPrimePair = IsPrimePair.Memoize();
             var combinations = from item1 in s
