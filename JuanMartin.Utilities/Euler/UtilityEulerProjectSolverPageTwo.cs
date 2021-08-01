@@ -674,7 +674,7 @@ namespace JuanMartin.Utilities.Euler
 
             for (int n = 2; n <= upperBound; n++)
             {
-                if (UtilityMath.IsPerferctSquare(n)) continue;
+                if (UtilityMath.IsPerferctSquare((double)n)) continue;
 
                 var p = UtilityMath.GetContinuedFractionExpansionPeriodicLengthForNonPerfectSquare(n);
                 if (p % 2 == 1) //only if odd
@@ -954,7 +954,7 @@ namespace JuanMartin.Utilities.Euler
 
             for (var number = 1; number <= count; number++)
             {
-                if (!UtilityMath.IsPerferctSquare((double)number))
+                if (!UtilityMath.IsPerferctSquare((double)(double)number))
                 {
                     var sqrt = UtilityMath.SqrtDigitExpansion(number, digits);
 
@@ -1235,13 +1235,13 @@ namespace JuanMartin.Utilities.Euler
             string maximumOperands = "";
             string maximumExpression = "";
             var maximumCount = int.MinValue;
-            
+
             foreach (var operandEnumerable in operandCombinations)
             {
                 if (UtilityMath.ItemsArePositiveSequential(operandEnumerable))
                 {
                     expressionValues.Clear();
-                    var operands = string.Join("", operandEnumerable); 
+                    var operands = string.Join("", operandEnumerable);
                     var operandPermutations = UtilityMath.GeneratePermutationsOfK<int>(operandEnumerable.ToArray(), 4);
                     foreach (var operandArray in operandPermutations)
                     {
@@ -1256,16 +1256,53 @@ namespace JuanMartin.Utilities.Euler
                     if (completeExpressionCount > maximumCount)
                     {
                         maximumCount = completeExpressionCount;
-                        maximumExpression = expressionValues.GetKeyOnValue<string,double>(maximumCount); // expression is the keyfor the maximum value
+                        maximumExpression = expressionValues.GetKeyOnValue<string, double>(maximumCount); // expression is the keyfor the maximum value
                         maximumOperands = operands;
                     }
                 }
             }
 
-            
+
             var answer = maximumOperands;
 
-            var message = string.Format("The set of four distinct digits, a < b < c < d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, is {0} with the highest value operation [{1} (n={2})].", answer, maximumExpression,maximumCount);
+            var message = string.Format("The set of four distinct digits, a < b < c < d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, is {0} with the highest value operation [{1} (n={2})].", answer, maximumExpression, maximumCount);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=94
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result AlmostEquilateraltriangles(Problem arguments)
+        {
+            int limit = arguments.IntNumber;
+            int side = 5;
+            BigInteger? area, perimeter = 0;
+            BigInteger? sum = 0;
+
+            while (perimeter < limit)
+            {
+                (area, perimeter) = UtilityMath.GetIscocelesTriangleAreaAndPerimeterUsingSidesOnly(side + 1, side);
+
+                if (UtilityMath.IsPerferctSquare((BigInteger)area))
+                    sum += perimeter;
+                else
+                    perimeter = BigInteger.Zero;
+                side++;
+            }
+
+            var answer = sum.ToString();
+            var message = string.Format("The  the sum of the perimeters of all almost equilateral triangles with integral side lengths and area and whose perimeters do not exceed {0} is {1}.", limit, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

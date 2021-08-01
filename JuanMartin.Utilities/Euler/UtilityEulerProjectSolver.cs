@@ -98,6 +98,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
                 new Problem(92,SquareDigitChains,10000000),
                 new Problem(93,ArithmeticExpressions, 9),
+//                 new Problem(94, AlmostEquilateraltriangles,1000000000),
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
@@ -112,7 +113,13 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(87,PrimePowerTriples,50),
                 new Problem(88,ProductSumNumbers,12),
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
-                new Problem(93,ArithmeticExpressions, 4)
+                new Problem(93,ArithmeticExpressions, 4),
+
+
+
+
+
+                new Problem(94, AlmostEquilateraltriangles, 15)
             };
 
         public static string[] Answers
@@ -156,7 +163,8 @@ namespace JuanMartin.Utilities.Euler
             Result result = null;
             var incorrectProblems = new List<int>();
             var stopWatch = new Stopwatch();
-
+            double totalElapsed = 0;
+            
             stopWatch.Start();
             Console.Write("Executing problem: ");
             for (int i = 1; i < problems.Length; i++)
@@ -169,13 +177,20 @@ namespace JuanMartin.Utilities.Euler
                 Console.Write((i > 1) ? "," + p.Id.ToString(): p.Id.ToString());
 
                 result = p.Script(p);
+
+                var t = stopWatch.Elapsed.TotalMinutes;
+                totalElapsed += t;
+                result.Duration = t;
+
+                stopWatch.Restart();
+
                 if (Answers[p.Id] != result.Answer)
                     incorrectProblems.Add(p.Id);
             }
-
+            stopWatch.Stop();
             Console.WriteLine();
             Console.WriteLine("Have incorrect answers for Problems: {0}", (incorrectProblems.Count == 0) ? "None" : string.Join(",", incorrectProblems.ToArray()));
-            Console.WriteLine($"Overall execution, {problems.Length} prblems, duration: {Math.Round(stopWatch.Elapsed.TotalMinutes, 1)} min");
+            Console.WriteLine($"Overall execution, {problems.Length} prblems, duration: {Math.Round(totalElapsed, 1)} min");
         }
 
         public static Problem GetProblemById(int id, bool testMode=false)
@@ -1854,7 +1869,7 @@ namespace JuanMartin.Utilities.Euler
                 foreach (int p in primes)
                 {
                     var dif = x - p;
-                    if (dif % 2 == 0 && UtilityMath.IsPerferctSquare(dif / 2))
+                    if (dif % 2 == 0 && UtilityMath.IsPerferctSquare((double)dif / 2))
                     {
                         q = true;
                         break;
@@ -2072,7 +2087,7 @@ namespace JuanMartin.Utilities.Euler
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
             }
-            var r = new Result(arguments.Id, message)
+             var r = new Result(arguments.Id, message)
             {
                 Answer = answer
             };
