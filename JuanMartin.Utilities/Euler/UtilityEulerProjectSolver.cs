@@ -107,6 +107,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(25,NumberDigitsFidonacciNumber,3),
                 new Problem(48,SelfPowers,11L,10),
                 new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
+                new Problem(50,ConsecutivePrimeSum,100),
                 new Problem(60,PrimePairSets,new long[] { 4, 673 }),
                 new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
@@ -706,8 +707,7 @@ namespace JuanMartin.Utilities.Euler
 
             var numbers = sequence.Split(',').ToArray<string>();
 
-            var matrix = UtilityMath.LoadMatrix(numbers);
-            var sum = UtilityMath.AddMatrix(matrix);
+            var sum = UtilityMath.AddLargeNumbers(numbers);
 
             var answer = sum.Substring(0, digits).ToString();
             if (digits < sum.Length)
