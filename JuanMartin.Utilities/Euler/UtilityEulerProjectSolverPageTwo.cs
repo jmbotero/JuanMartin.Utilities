@@ -117,7 +117,7 @@ namespace JuanMartin.Utilities.Euler
 
 
             // get all six digit primes
-            var primes = UtilityMath.GeneratePrimes(100000, 1000000).ToArray();
+            var primes = UtilityMath.GeneratePrimesUsingSquares(1000000, 100000).ToArray();
             var repeats = new List<int>();
 
             // get primes with repeated digits (not necessarily adjacent digits)
@@ -1141,7 +1141,7 @@ namespace JuanMartin.Utilities.Euler
                     value = numerals[key];
                 }
                 totalMinimalFormCharacters += value.Length;
-                //                debugList.Add(Tuple.Create(key, value));
+                //                debug1List.Add(Tuple.Create(key, value));
             }
 
             #region for debug
@@ -1283,21 +1283,22 @@ namespace JuanMartin.Utilities.Euler
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
-        public static Result AlmostEquilateraltriangles(Problem arguments)
+        public static Result AlmostEquilateralTriangles(Problem arguments)
         {
             int limit = arguments.IntNumber;
             int side = 5;
-            BigInteger? area, perimeter = 0;
-            BigInteger? sum = 0;
+            BigDecimal? area, perimeter = BigDecimal.Zero;
+            BigDecimal? sum = BigDecimal.Zero;
 
             while (perimeter < limit)
             {
                 (area, perimeter) = UtilityMath.GetIscocelesTriangleAreaAndPerimeterUsingSidesOnly(side + 1, side);
 
-                if (UtilityMath.IsPerferctSquare((BigInteger)area))
+                var w = ((BigDecimal)area).GetWholePartAsBigInteger();
+                if (((BigDecimal)area).DecimalPlaces == 0 || UtilityMath.IsPerferctSquare(w))
                     sum += perimeter;
                 else
-                    perimeter = BigInteger.Zero;
+                    perimeter = BigDecimal.Zero;
                 side++;
             }
 

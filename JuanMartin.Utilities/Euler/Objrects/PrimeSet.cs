@@ -9,28 +9,28 @@ namespace JuanMartin.Utilities.Euler
     public class PrimeSet
     {
         public int Count;
-        public HashSet<int>[] Pairs;
-        public int[] Primes;
-        public int[] Set;
+        public HashSet<long>[] Pairs;
+        public long[] Primes;
+        public long[] Set;
         public int[] Minimums;
 
         public PrimeSet(int setSize, int primeUpperLimit)
-        {
+        {                 
             Count = setSize;
             Primes = UtilityMath.ErathostenesSieve(primeUpperLimit, 3).ToArray();
             Minimums = Enumerable.Repeat(int.MaxValue, 5).ToArray();
-            Pairs = new HashSet<int>[Primes.Length];
-            Set = new int[Count];
+            Pairs = new HashSet<long>[Primes.Length];
+            Set = new long[Count];
 
             for (int a = 0; a < Primes.Length; a++)
             {
-                Pairs[a] = new HashSet<int>();
-                int x = Primes[a];
+                Pairs[a] = new HashSet<long>();
+                var x = Primes[a];
 
                 for (int b = 0; b < Primes.Length; b++)
                 {
                     if (a == b) continue;
-                    int y = Primes[b];
+                    var y = Primes[b];
                     if (UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat(x, y)) &&
                         UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat(y, x)))
                         Pairs[a].Add(y);
@@ -75,7 +75,7 @@ namespace JuanMartin.Utilities.Euler
                 Set.Assign(level - 1, Primes[a]);
 
                 // calculate minimum for this level
-                int sum = Set.Sum();
+                int sum = (int)Set.Sum();
                 if (sum >= Minimums[4]) break; // if sum of set so far is more that target minimum no need to continue since we are looking for minimum
 
                 if (sum < Minimums[0])
@@ -102,7 +102,7 @@ namespace JuanMartin.Utilities.Euler
                     if (IsPrimeSet()) //if (IsPrimeSetQuery(Set))
                     {
                         // calculate minimum for this level
-                        sum = Set.Sum();
+                        sum = (int)Set.Sum();
                         if (sum < Minimums[1])
                         {
                             Minimums[1] = sum;
@@ -127,7 +127,7 @@ namespace JuanMartin.Utilities.Euler
                                 if (IsPrimeSet()) //if (IsPrimeSetQuery(Set))
                                 {
                                     // calculate minimum for this level
-                                    sum = Set.Sum();
+                                    sum = (int)Set.Sum();
                                     if (sum < Minimums[2])
                                     {
                                         Minimums[2] = sum;
@@ -152,7 +152,7 @@ namespace JuanMartin.Utilities.Euler
                                             if (IsPrimeSet()) //if (IsPrimeSetQuery(Set))
                                             {
                                                 // calculate minimum for previous level
-                                                sum = Set.Sum();
+                                                sum = (int)Set.Sum();
                                                 if (sum < Minimums[3])
                                                 {
                                                     Minimums[3] = sum;
@@ -177,7 +177,7 @@ namespace JuanMartin.Utilities.Euler
                                                         if (IsPrimeSet()) //if (IsPrimeSetQuery(Set))
                                                         {
                                                             // calculate minimum for this level
-                                                            sum = Set.Sum();
+                                                            sum = (int)Set.Sum();
 
                                                             if (sum < Minimums[4])
                                                             {
@@ -204,7 +204,7 @@ namespace JuanMartin.Utilities.Euler
                         }
                         else
                         {
-                            break;
+                             break;
                         }
                     }
                 }
@@ -212,13 +212,10 @@ namespace JuanMartin.Utilities.Euler
 
         }
 
-        public int ExecuteMathBlogPrimePairSet()
+        public long ExecuteMathBlogPrimePairSet()
         {
-            int result = int.MaxValue;
-
-
-            HashSet<int>[] pairs = new HashSet<int>[Primes.Length];
-
+            long result = long.MaxValue;
+            HashSet<long>[] pairs = new HashSet<long>[Primes.Length];
 
             for (int a = 1; a < Primes.Length; a++)
             {
@@ -267,13 +264,13 @@ namespace JuanMartin.Utilities.Euler
             return result;
         }
 
-        private HashSet<int> MakePairs(int a)
+        private HashSet<long> MakePairs(int a)
         {
-            HashSet<int> pairs = new HashSet<int>();
+            HashSet<long> pairs = new HashSet<long>();
             for (int b = a + 1; b < Primes.Length; b++)
             {
-                if (UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat(Primes[a], Primes[b])) &&
-                    UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat(Primes[b], Primes[a])))
+                if (UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat<long>(Primes[a], Primes[b])) &&
+                    UtilityMath.IsPrimeUsingSquares(UtilityMath.NumericConcat<long>(Primes[b], Primes[a])))
                     pairs.Add(Primes[b]);
             }
             return pairs;
