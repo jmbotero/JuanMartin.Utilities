@@ -1295,8 +1295,8 @@ namespace JuanMartin.Utilities.Euler
                 (area, perimeter) = UtilityMath.GetIscocelesTriangleAreaAndPerimeterUsingSidesOnly(side + 1, side);
 
                 var w = ((BigDecimal)area).GetWholePartAsBigInteger();
-                if (((BigDecimal)area).DecimalPlaces == 0 || UtilityMath.IsPerferctSquare(w))
-                    sum += perimeter;
+                if (((BigDecimal)area).DecimalPlaces == 0 && UtilityMath.IsPerferctSquare(w))
+                   sum += perimeter;
                 else
                     perimeter = BigDecimal.Zero;
                 side++;

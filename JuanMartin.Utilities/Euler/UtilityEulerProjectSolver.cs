@@ -107,7 +107,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(25,NumberDigitsFidonacciNumber,3),
                 new Problem(48,SelfPowers,11L,10),
                 new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
-                new Problem(50,ConsecutivePrimeSum,100),
+                new Problem(50,ConsecutivePrimeSum,1000),
                 new Problem(60,PrimePairSets,new long[] { 4, 673 }),
                 new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
@@ -115,7 +115,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(88,ProductSumNumbers,12),
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
                 new Problem(93,ArithmeticExpressions, 4),
-                new Problem(94, AlmostEquilateralTriangles, 15)
+                new Problem(94, AlmostEquilateralTriangles, 16)
             };
 
         public static string[] Answers
