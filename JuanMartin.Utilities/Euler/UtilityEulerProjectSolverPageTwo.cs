@@ -1268,7 +1268,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The set of four distinct digits, a < b < c < d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, is {0} with the highest value operation [{1} (n={2})].", answer, maximumExpression, maximumCount);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(   " => INCORRECT ({0})", Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1280,26 +1280,90 @@ namespace JuanMartin.Utilities.Euler
 
         /// <summary>
         /// https://projecteuler.net/problem=94
+        /// <see cref="https://euler.stephan-brumme.com/94/"/>
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
         public static Result AlmostEquilateralTriangles(Problem arguments)
         {
             int limit = arguments.IntNumber;
-            int side = 5;
-            BigDecimal? area, perimeter = BigDecimal.Zero;
-            BigDecimal? sum = BigDecimal.Zero;
 
-            while (perimeter < limit)
+            //SOLUTION #1
+            //int side = 5;
+            //BigDecimal area, perimeter = BigDecimal.Zero;
+            //BigDecimal sum = BigDecimal.Zero;
+
+            //while (perimeter < limit)
+            //{
+            //    (area, perimeter) = UtilityMath.GetIscocelesTriangleAreaAndPerimeterUsingSidesOnly(side + 1, side);
+
+            //    if (area.DecimalPlaces == 0) // integral area
+            //       sum += perimeter;
+            //    side++;
+            //}
+
+            //SOLUTION #2
+            //// return true if area is integral
+            //bool isValidTriangle(BigDecimal b, BigDecimal a)
+            //{
+            //    var check = 4 * a * a - b * b;
+            //    var root = check.Sqrt_BigInteger();//.Round();
+            //    return root * root == check;
+            //}
+
+            //BigDecimal perimeter = BigDecimal.Zero;
+
+            //var perimeters = new List<BigDecimal>();
+
+            //while (perimeter <= limit + 3)
+            //{
+            //    if (perimeter >= 15)
+            //    {
+            //        // length of the two equal sides
+            //        BigDecimal a = (perimeter / 3).Round();
+
+            //        if (a.DecimalPlaces == 0)
+            //        {
+            //            BigDecimal b;
+            //            // assume single side is one unit smaller than the other two sides
+            //            b = a - 1;
+            //            if (isValidTriangle(b, a))
+            //                perimeters.Add(perimeter - 1);
+
+            //            // assume single side is one unit bigger than the other two sides
+            //            b = a + 1;
+            //            if (isValidTriangle(b, a))
+            //                perimeters.Add(perimeter + 1);
+            //        }
+            //    }
+            //    // next group of triangles
+            //    perimeter += 3;
+            //}
+            //var sum = "0";
+
+            //foreach (var p in perimeters)
+            //    sum = UtilityMath.AddLargeNumbers(sum, p.ToString());
+
+            //SOLUTION #3: https://github.com/dcrousso/ProjectEuler/blob/master/PE094.java
+            long sum = 0;
+            long a = 2, b = 1; // Smallest possible triangle
+                               // For more explanation, see
+                               // https://en.wikipedia.org/wiki/Pell%27s_equation#Additional_solutions_from_the_fundamental_solution
+            while (2 * a + 1 < limit)
             {
-                (area, perimeter) = UtilityMath.GetIscocelesTriangleAreaAndPerimeterUsingSidesOnly(side + 1, side);
-
-                var w = ((BigDecimal)area).GetWholePartAsBigInteger();
-                if (((BigDecimal)area).DecimalPlaces == 0 && UtilityMath.IsPerferctSquare(w))
-                   sum += perimeter;
-                else
-                    perimeter = BigDecimal.Zero;
-                side++;
+                for (int i = 0; i <= 1; i++)
+                {
+                    int offset = (int)Math.Pow(-1, i); // 1 or -1
+                    long almostEquilateral = 2 * a + offset;
+                    long area = b * (a + 2 * offset);
+                    if (almostEquilateral % 3 == 0 && area % 3 == 0 && area > 0)
+                    {
+                        sum += almostEquilateral + offset;
+                    }
+                }
+                long temp = a;
+                a = a * 2 + b * 3;
+                b = b * 2 + temp;
             }
 
             var answer = sum.ToString();
