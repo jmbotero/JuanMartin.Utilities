@@ -99,6 +99,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(92,SquareDigitChains,10000000),
                 new Problem(93,ArithmeticExpressions, 9),
                 new Problem(94, AlmostEquilateralTriangles,1000000000),
+                new Problem(95, AmicableChains,1000000),
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
             };
 
@@ -970,7 +971,7 @@ namespace JuanMartin.Utilities.Euler
         /// <summary>
         /// https://projecteuler.net/problem=22
         /// </summary>
-        /// <param name="arguments"></param>
+        /// <param name="arguments"></param>                 
         /// <returns></returns>
         public static Result NameScores(Problem arguments)
         {

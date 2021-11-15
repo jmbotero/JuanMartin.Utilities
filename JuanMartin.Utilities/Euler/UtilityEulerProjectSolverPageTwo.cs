@@ -1,5 +1,4 @@
 ﻿using JuanMartin.Kernel.Extesions;
-using JuanMartin.Kernel.RuleEngine;
 using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
 using JuanMartin.Models;
@@ -10,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -1280,7 +1278,7 @@ namespace JuanMartin.Utilities.Euler
 
         /// <summary>
         /// https://projecteuler.net/problem=94
-        /// <see cref="https://euler.stephan-brumme.com/94/"/>
+        /// <seealso cref="https://euler.stephan-brumme.com/94/"/>
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
@@ -1380,28 +1378,122 @@ namespace JuanMartin.Utilities.Euler
 
         }
 
+
+        /// <summary>
+        /// https://projecteuler.net/problem=95
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result AmicableChains(Problem arguments)
+        {
+            HashSet<int> GetChainUsingSieve(int n, int[] factorSums, int bound)
+            {
+                if (n < 2 || n > bound)
+                    return null;
+
+                int sum;
+                var chain = new HashSet<int>();
+
+                // make sure chain starts with given number
+                if (chain.Count == 0)
+                    chain.Add(n);
+
+                do
+                {
+                    sum = factorSums[n];
+
+                    // if number has no factors sum is 1, therefore breaks the chain
+                    if (sum == 1)
+                        return null;
+
+                    // if number is same as its sum, chain is infinite =  not  usable
+                    if (sum == n)
+                        return null;
+
+                    if (chain.Count > 1 && chain.ElementAt(0) == sum)
+                        break; //chain  complete
+                    else if (chain.Contains(sum))
+                        return null; // chain only contains an amicable part
+                    
+                    if (sum < bound)
+                        chain.Add(sum);
+                    else
+                        return null; // if at least one of the chain's items is over limit return no chain
+
+                    n = sum;
+                } while (sum < bound);
+
+                return chain;
+            }
+
+            int limit = arguments.IntNumber;
+            int max = int.MinValue;
+            var longestChain = new  HashSet<int>();
+            var cache  = new Dictionary<int, int>();
+
+         // divisorSum[n] is the sum of all the proper divisors of n
+            int[] divisorSum = new int[limit + 1];
+
+            for (int i = 1; i <= limit; i++)
+            {
+                divisorSum[i] = (int)UtilityMath.GetFactors((long)i).Sum();
+                //for (int j = i * 2; j <= limit; j += i)
+                //    divisorSum[j] += i;
+            }
+
+
+            for (int n = 4; n < limit; n++)
+            {
+                var c = GetChainUsingSieve(n, divisorSum, limit);
+
+                if (c != null)
+                {
+                    if (c.Count <= 1) continue ;
+
+                    if (c.Count > max)
+                    {
+                        max = c.Count;
+                        longestChain = c;
+                    }
+                }
+            }
+
+            string answer = (longestChain.Count>0)?longestChain.Min().ToString():"";
+
+            var message = string.Format("The smallest member of the longest amicable chain with no element exceeding one million is {0}", answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+        }
+         
+        #region Support Methods
         private static int CountInSequenceFromOne(System.Collections.ICollection values)
         {
             var i = 0;
             var previousValue = 0;
 
-            foreach(var item in values)
+            foreach (var item in values)
             {
                 if (i > values.Count) break;
 
                 var currentValue = (double)item;
-                if (currentValue > previousValue + 1)  
+                if (currentValue > previousValue + 1)
                     break;
                 else if (currentValue == previousValue + 1)
                     previousValue++;
-                
+
                 i++;
             }
 
             return previousValue;
         }
 
-        #region Support Methods
         private static List<string> GetParenthesisCombinations(int[] operandSet, IEnumerable<string[]> operatorSets)
         {
             var expressions = new List<string>();
