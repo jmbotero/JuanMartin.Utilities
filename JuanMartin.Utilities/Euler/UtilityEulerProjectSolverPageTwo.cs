@@ -1429,14 +1429,13 @@ namespace JuanMartin.Utilities.Euler
             int limit = arguments.IntNumber;
             int max = int.MinValue;
             var longestChain = new  HashSet<int>();
-            var cache  = new Dictionary<int, int>();
-
+  
          // divisorSum[n] is the sum of all the proper divisors of n
-            int[] divisorSum = new int[limit + 1];
+            int[] divisorSum = new int[limit];
 
-            for (int i = 1; i <= limit; i++)
+            for (int i = 0; i < limit; i++)
             {
-                divisorSum[i] = (int)UtilityMath.GetFactors((long)i).Sum();
+                divisorSum[i] = UtilityMath.GetProperDivisors<int>(i).Sum();         // this method is about 5 times slower
                 //for (int j = i * 2; j <= limit; j += i)
                 //    divisorSum[j] += i;
             }
