@@ -100,7 +100,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(93,ArithmeticExpressions, 9),
                 new Problem(94, AlmostEquilateralTriangles,1000000000),
                 new Problem(95, AmicableChains,1000000),
-                new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1")
+                new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1"),
+                new Problem(97,LargeNonMersennePrime, 10, new long[] {28433, 7830457})
             };
 
         public static Problem[] unitTestProblems = new Problem[] {

@@ -798,34 +798,6 @@ namespace JuanMartin.Utilities.Euler
         }
 
         /// <summary>
-        /// https://projecteuler.net/problem=96
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        public static Result Sudoku(Problem arguments)
-        {
-            var s = 0;
-            foreach (var sudoku in LoadBoards(arguments))
-            {
-                sudoku.Solve();
-
-                s += sudoku.CheckSum;
-            }
-            string answer = s.ToString();
-
-            var message = string.Format("The sum of the 3-digit numbers found in the top left corner of each solution grid is {0}.", answer);
-            if (Answers[arguments.Id] != answer)
-            {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
-            }
-            var r = new Result(arguments.Id, message)
-            {
-                Answer = answer
-            };
-
-            return r;
-        }
-        /// <summary>
         /// https://projecteuler.net/problem=75
         /// </summary>
         /// <param name="arguments"></param>
@@ -974,7 +946,6 @@ namespace JuanMartin.Utilities.Euler
             return r;
         }
 
-
         /// <summary>
         /// https://projecteuler.net/problem=83
         /// </summary>
@@ -988,7 +959,7 @@ namespace JuanMartin.Utilities.Euler
             var start = markers[0].ToString();
             var fileName = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
-            
+
             (DirectedAcyclicGraph<int> g, Vertex<int>[][] m) = LoadPathWaysMatrixIntoGraph(fileName, delimiter);
 
             //var end = markers[1].ToString();
@@ -1266,7 +1237,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The set of four distinct digits, a < b < c < d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, is {0} with the highest value operation [{1} (n={2})].", answer, maximumExpression, maximumCount);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(   " => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1378,7 +1349,6 @@ namespace JuanMartin.Utilities.Euler
 
         }
 
-
         /// <summary>
         /// https://projecteuler.net/problem=95
         /// </summary>
@@ -1414,7 +1384,7 @@ namespace JuanMartin.Utilities.Euler
                         break; //chain  complete
                     else if (chain.Contains(sum))
                         return null; // chain only contains an amicable part
-                    
+
                     if (sum < bound)
                         chain.Add(sum);
                     else
@@ -1428,9 +1398,9 @@ namespace JuanMartin.Utilities.Euler
 
             int limit = arguments.IntNumber;
             int max = int.MinValue;
-            var longestChain = new  HashSet<int>();
-  
-         // divisorSum[n] is the sum of all the proper divisors of n
+            var longestChain = new HashSet<int>();
+
+            // divisorSum[n] is the sum of all the proper divisors of n
             int[] divisorSum = new int[limit];
 
             for (int i = 0; i < limit; i++)
@@ -1447,7 +1417,7 @@ namespace JuanMartin.Utilities.Euler
 
                 if (c != null)
                 {
-                    if (c.Count <= 1) continue ;
+                    if (c.Count <= 1) continue;
 
                     if (c.Count > max)
                     {
@@ -1457,7 +1427,7 @@ namespace JuanMartin.Utilities.Euler
                 }
             }
 
-            string answer = (longestChain.Count>0)?longestChain.Min().ToString():"";
+            string answer = (longestChain.Count > 0) ? longestChain.Min().ToString() : "";
 
             var message = string.Format("The smallest member of the longest amicable chain with no element exceeding one million is {0}", answer);
             if (Answers[arguments.Id] != answer)
@@ -1470,7 +1440,75 @@ namespace JuanMartin.Utilities.Euler
             };
             return r;
         }
-         
+
+        /// <summary>
+        /// https://projecteuler.net/problem=96
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result Sudoku(Problem arguments)
+        {
+            var s = 0;
+            foreach (var sudoku in LoadBoards(arguments))
+            {
+                sudoku.Solve();
+
+                s += sudoku.CheckSum;
+            }
+            string answer = s.ToString();
+
+            var message = string.Format("The sum of the 3-digit numbers found in the top left corner of each solution grid is {0}.", answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=97
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result LargeNonMersennePrime(Problem arguments)
+        {
+            int count = arguments.IntNumber;
+            int x = (int)arguments.Numbers[0];
+            int y = (int)arguments.Numbers[1];
+            long mod = (long)Math.Pow(10,count);
+
+            BigInteger prime = x * BigInteger.ModPow(2, y, mod) + 1;
+            prime %= mod;     // get last 10 digits
+            string answer = prime.ToString();
+
+            //  this is veeery slow
+            //string prime = "2";
+
+            //for (int i = 0; i < y; i++)
+            //    prime = UtilityMath.MultiplyLargeNumberBySingleDigit(prime, 2);
+
+            //prime = UtilityMath.MultiplyLargeNumbers(prime, x.ToString());
+            //prime += UtilityMath.AddLargeNumbers(prime, "1");
+
+            //(string q, string answer) = UtilityMath.IntegerDivision(prime, mod.ToString());
+
+            var message = string.Format("The last {0} of the  massive non-Mersenne prime which contains 2,357,207 digits, are {1}", count, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+            return r;
+        }
+
         #region Support Methods
         private static int CountInSequenceFromOne(System.Collections.ICollection values)
         {
@@ -1496,7 +1534,7 @@ namespace JuanMartin.Utilities.Euler
         private static List<string> GetParenthesisCombinations(int[] operandSet, IEnumerable<string[]> operatorSets)
         {
             var expressions = new List<string>();
-  
+
             var a = operandSet[0];
             var b = operandSet[1];
             var c = operandSet[2];
@@ -1542,12 +1580,12 @@ namespace JuanMartin.Utilities.Euler
                 {
                     var insertIndex = 0;
 
-                    for (int i = 0; i < evaluations.Count; i++ )
+                    for (int i = 0; i < evaluations.Count; i++)
                     {
                         var currentValue = (double)evaluations[i];
                         if (eval < currentValue)
                             break;
-                        insertIndex ++;
+                        insertIndex++;
                     }
                     evaluations.Insert(insertIndex, key, eval);
                 }
@@ -1559,7 +1597,7 @@ namespace JuanMartin.Utilities.Euler
             if (!double.IsInfinity(value) && value == Math.Truncate(value) && value > 0) // is positive integer
             {
                 InsertExpression(expression, value);
-            }   
+            }
         }
 
         private static (DirectedAcyclicGraph<int> graph, Vertex<int>[][] matrix) LoadPathWaysMatrixIntoGraph(string fileName, char delimiter)
@@ -1683,8 +1721,8 @@ namespace JuanMartin.Utilities.Euler
                 for (int j = 0; j < dimension; j++)
                 {
                     var cell_id = i.ToString().PadLeft(2, '0') + j.ToString().PadLeft(2, '0');
-                    matrix[i][j] = new Vertex<int>(grid[i][j], guid: cell_id); 
-                    
+                    matrix[i][j] = new Vertex<int>(grid[i][j], guid: cell_id);
+
                     graph.AddVertex(matrix[i][j]);
                 }
             }
