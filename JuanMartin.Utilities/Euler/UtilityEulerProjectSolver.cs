@@ -101,7 +101,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(94, AlmostEquilateralTriangles,1000000000),
                 new Problem(95, AmicableChains,1000000),
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1"),
-                new Problem(97,LargeNonMersennePrime, 10, new long[] {28433, 7830457})
+                new Problem(97,LargeNonMersennePrime, 10, new long[] {28433, 7830457}),
+                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles.txt|,")
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
@@ -117,7 +118,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(88,ProductSumNumbers,12),
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
                 new Problem(93,ArithmeticExpressions, 4),
-                new Problem(94, AlmostEquilateralTriangles, 16)
+                new Problem(94, AlmostEquilateralTriangles, 16),
+                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,")
             };
 
         public static string[] Answers

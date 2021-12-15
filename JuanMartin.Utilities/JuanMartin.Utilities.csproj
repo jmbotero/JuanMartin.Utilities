@@ -58,6 +58,7 @@
     <Compile Include="Euler\Objrects\Problem88.cs" />
     <Compile Include="Euler\Objrects\RomanNumeral.cs" />
     <Compile Include="Euler\Objrects\Sudoku.cs" />
+    <Compile Include="Euler\UtilityEulerProjectSolverPageThree.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Euler\UtilityEulerProjectSolver.cs" />
     <Compile Include="Euler\UtilityEulerProjectSolverPageTwo.cs" />
