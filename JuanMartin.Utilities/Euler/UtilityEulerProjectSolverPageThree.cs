@@ -89,5 +89,57 @@ namespace JuanMartin.Utilities.Euler
             return r;
         }
 
+        /// <summary>
+        /// https://projecteuler.net/problem=104 
+        ///  Solution from <see cref="https://www.mathblog.dk/project-euler-104-fibonacci-pandigital/"/>
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result PandigitalFibonacciEnds(Problem arguments)
+        {
+            BigInteger fn2 = 1;
+            BigInteger fn1 = 1;
+            BigInteger fn = fn1 + fn2;
+
+            BigInteger tailcut = 1000000000; // last 9 digits
+
+            int n = 2;
+            bool found = false;
+
+            while (!found)
+            {
+                n++;
+
+                fn = fn1 + fn2;
+                long tail = (long)(fn % tailcut);
+                if (UtilityMath.IsPandigital(tail))
+                {
+                    int digits = 1 + (int)BigInteger.Log10(fn); // fn.ToString().Length
+                    if (digits > 9)
+                    {
+                        long head = (long)(fn / BigInteger.Pow(10, digits - 9)); // firt 9 digits
+                        if (UtilityMath.IsPandigital(head))
+                        {
+                            found = true;
+                        }
+                    }
+                }
+
+                fn2 = fn1;
+                fn1 = fn;
+            }
+            var answer = n.ToString();
+            var message = string.Format("Given that Fk = ({0}), is the first Fibonacci number for which the first nine digits AND the last nine digits are 1-9 pandigital, k is {1}.",fn, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
     }
 }

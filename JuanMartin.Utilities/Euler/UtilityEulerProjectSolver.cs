@@ -102,7 +102,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(95, AmicableChains,1000000),
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1"),
                 new Problem(97,LargeNonMersennePrime, 10, new long[] {28433, 7830457}),
-                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles.txt|,")
+                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles.txt|,"),
+                new Problem(104,PandigitalFibonacciEnds)
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
