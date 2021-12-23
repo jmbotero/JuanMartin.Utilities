@@ -1,14 +1,9 @@
-﻿using JuanMartin.Kernel.Extesions;
-using JuanMartin.Kernel.Utilities;
-using JuanMartin.Kernel.Utilities.DataStructures;
+﻿using JuanMartin.Kernel.Utilities;
 using JuanMartin.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -43,24 +38,24 @@ namespace JuanMartin.Utilities.Euler
                 return contains;
             };
 
-            bool TriangleContainsOriginUsingDotProduct(int[] vertices)
-            {
-                bool contains = false;
-                int[] a = { vertices[0], vertices[1] };
-                int[] b = { vertices[2], vertices[3] };
-                int[] c = { vertices[4], vertices[5] };
-                int[] p = { 0, 0 }; // origin
+            //bool TriangleContainsOriginUsingDotProduct(int[] vertices)
+            //{
+            //    bool contains = false;
+            //    int[] a = { vertices[0], vertices[1] };
+            //    int[] b = { vertices[2], vertices[3] };
+            //    int[] c = { vertices[4], vertices[5] };
+            //    int[] p = { 0, 0 }; // origin
 
-                // using dot product
-                int scalar_pab = UtilityMath.DotProduct(p, a, b);
-                int scalar_pbc = UtilityMath.DotProduct(p, b, c);
-                int scalar_pca = UtilityMath.DotProduct(p, c, a);
+            //    // using dot product
+            //    int scalar_pab = UtilityMath.DotProduct(p, a, b);
+            //    int scalar_pbc = UtilityMath.DotProduct(p, b, c);
+            //    int scalar_pca = UtilityMath.DotProduct(p, c, a);
 
-                if (scalar_pab.Sign() == scalar_pbc.Sign() && scalar_pab.Sign() == scalar_pca.Sign())
-                    contains = true;
+            //    if (scalar_pab.Sign() == scalar_pbc.Sign() && scalar_pab.Sign() == scalar_pca.Sign())
+            //        contains = true;
 
-                return contains;
-            };
+            //    return contains;
+            //};
 
             var cvsinfo = arguments.Sequence.Split('|');
             var fileName = cvsinfo[0];
@@ -129,7 +124,82 @@ namespace JuanMartin.Utilities.Euler
                 fn1 = fn;
             }
             var answer = n.ToString();
-            var message = string.Format("Given that Fk = ({0}), is the first Fibonacci number for which the first nine digits AND the last nine digits are 1-9 pandigital, k is {1}.",fn, answer);
+            var message = string.Format("Given that Fk = ({0}), is the first Fibonacci number for which the first nine digits AND the last nine digits are 1-9 pandigital, k is {1}.", fn, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=105 
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result SpecialSubsetSumsTesting(Problem arguments)
+        {
+            bool IsSpecialSum(int[] A)
+            {
+
+                for (var i = 1; i <= A.Length; i++)
+                {
+                    var subsetsB = UtilityMath.GetCombinationsOfK<int>(A, i).ToArray();
+
+                    foreach (var B in subsetsB)
+                    {
+                        var disjoint = A.Except(B).ToArray();
+
+                        for (var j = 1; j <= disjoint.Length; j++)
+                        {
+                            var subsetsC = UtilityMath.GetCombinationsOfK<int>(disjoint, j).ToArray();
+
+                            foreach (var C in subsetsC)
+                            {
+                                //if (B.Count() <= C.Count())
+                                //    continue;
+
+                                var sumB = B.Sum();
+                                var sumC = C.Sum();
+
+                                // rule 1
+                                if (sumB == sumC)
+                                    return false;
+
+                                // rule 2
+                                if (B.Count() > C.Count())
+                                    if (sumB <= sumC)
+                                        return false;
+
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            };
+            var cvsinfo = arguments.Sequence.Split('|');
+            var fileName = cvsinfo[0];
+            var delimiter = Convert.ToChar(cvsinfo[1]);
+            int[][] sets;
+            int sum = 0;
+
+            sets = UtilityFile.ReadTextToTwoDimensionalNumericArray(fileName, delimiter);
+
+            foreach (var A in sets)
+            {
+                if (IsSpecialSum(A))
+                    sum += A.Sum();
+            }
+
+
+            var answer = sum.ToString();
+            var message = string.Format("Using  a 4K text file with one-hundred sets containing seven to twelve elements (the two examples given above are the first two sets in the file), identify all the special sum sets, A1, A2, ..., Ak, and the value of S(A1) + S(A2) + ... + S(Ak). is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);

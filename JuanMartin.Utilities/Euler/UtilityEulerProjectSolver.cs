@@ -103,7 +103,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1"),
                 new Problem(97,LargeNonMersennePrime, 10, new long[] {28433, 7830457}),
                 new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles.txt|,"),
-                new Problem(104,PandigitalFibonacciEnds)
+                new Problem(104,PandigitalFibonacciEnds),
+                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets.txt|,")
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
@@ -120,7 +121,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
                 new Problem(93,ArithmeticExpressions, 4),
                 new Problem(94, AlmostEquilateralTriangles, 16),
-                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,")
+                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,"),
+                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets_small.txt|,")
             };
 
         public static string[] Answers
