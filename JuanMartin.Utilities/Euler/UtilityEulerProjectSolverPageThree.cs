@@ -1,4 +1,5 @@
 ﻿using JuanMartin.Kernel.Utilities;
+using JuanMartin.Kernel.Utilities.DataStructures;
 using JuanMartin.Models;
 using System;
 using System.Collections.Generic;
@@ -211,5 +212,91 @@ namespace JuanMartin.Utilities.Euler
 
             return r;
         }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=107 
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result MinimalNetwork(Problem arguments)
+        {
+            var cvsinfo = arguments.Sequence.Split('|');
+            var fileName = cvsinfo[0];
+            var delimiter = Convert.ToChar(cvsinfo[1]);
+            var network = LoadNetwork(fileName,delimiter);
+            double sum = network.GetOutgoingEdges().Sum(e => e.Weight);
+
+            //int[][] graph = new int[][]
+            //  {
+            //            new int[]{ 0,1,1,1,1,0,0 },
+            //            new int[]{ 0,0,0,0,0,1,1 },
+            //            new int[]{ 0,0,0,1,0,0,0 },
+            //            new int[]{ 1,0,0,0,0,0,0 },
+            //            new int[]{ 0,0,0,0,0,0,0 },
+            //            new int[]{ 0,0,0,0,0,0,0 },
+            //            new int[]{ 0,0,0,0,0,0,0 },
+            //};
+
+            //var q = network.DetectCycle(graph, 8);
+            
+            // get minimum possibl edge weight 
+            DirectedAcyclicGraph<int> subset = network.GetMinimumSpanningTree();
+                
+            sum -= subset.GetOutgoingEdges().Sum(e => e.Weight);
+
+            var answer = sum.ToString();
+            var message = string.Format("Using a given text file containing a network with forty vertices, and given in matrix form, the maximum saving which can be achieved by removing redundant edges whilst ensuring that the network remains connected is {0}.", answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+
+
+        #region Support Methods
+        private static DirectedAcyclicGraph<int> LoadNetwork(string fileName, char delimiter = ',')
+        {
+            int[][] matrix = UtilityFile.ReadTextToTwoDimensionalNumericArrayWithNullElements(fileName, delimiter);
+            DirectedAcyclicGraph<int> network = new DirectedAcyclicGraph<int>();
+
+            int dimension = matrix.Length;
+
+            for (int i = 0; i < dimension; i++)
+            {
+                network.AddVertex(new Vertex<int>( value: i, name: UtilityString.GetColumnName(i)));
+            }
+
+            var edges = new List<string>();
+
+            for (int i = 0; i < dimension; i++)
+            {
+                for (int j = 0; j < dimension; j++)
+                {
+                    double w = (double)matrix[i][j];
+                    if (w > 0)
+                    {
+                        var from = network.GetVertex(UtilityString.GetColumnName(i));
+                        var to = network.GetVertex(UtilityString.GetColumnName(j));
+                        // there should only one edge between two nodes
+                        string n = $"{from.Name}-{to.Name}";
+                        if (!edges.Contains(UtilityString.ReverseString(n, '-')))
+                        {
+                            var e = new Edge<int>(from, to, w, n, Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.unidirectional);
+                            edges.Add(n);
+                            network.AddEdge(e);
+                        }
+                    }
+                }
+            }
+
+            return network;
+        }
+        #endregion
     }
 }
