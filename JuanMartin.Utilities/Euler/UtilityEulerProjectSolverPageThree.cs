@@ -226,24 +226,11 @@ namespace JuanMartin.Utilities.Euler
             var network = LoadNetwork(fileName,delimiter);
             double sum = network.GetOutgoingEdges().Sum(e => e.Weight);
 
-            //int[][] graph = new int[][]
-            //  {
-            //            new int[]{ 0,1,1,1,1,0,0 },
-            //            new int[]{ 0,0,0,0,0,1,1 },
-            //            new int[]{ 0,0,0,1,0,0,0 },
-            //            new int[]{ 1,0,0,0,0,0,0 },
-            //            new int[]{ 0,0,0,0,0,0,0 },
-            //            new int[]{ 0,0,0,0,0,0,0 },
-            //            new int[]{ 0,0,0,0,0,0,0 },
-            //};
-
-            //var q = network.DetectCycle(graph, 8);
-            
-            // get minimum possibl edge weight 
+            // get minimum possible edge weight 
             DirectedAcyclicGraph<int> subset = network.GetMinimumSpanningTree();
-                
             sum -= subset.GetOutgoingEdges().Sum(e => e.Weight);
 
+            
             var answer = sum.ToString();
             var message = string.Format("Using a given text file containing a network with forty vertices, and given in matrix form, the maximum saving which can be achieved by removing redundant edges whilst ensuring that the network remains connected is {0}.", answer);
             if (Answers[arguments.Id] != answer)
