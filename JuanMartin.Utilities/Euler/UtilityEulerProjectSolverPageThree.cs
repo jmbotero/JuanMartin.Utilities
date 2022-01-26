@@ -227,7 +227,7 @@ namespace JuanMartin.Utilities.Euler
             double sum = network.GetOutgoingEdges().Sum(e => e.Weight);
 
             // get minimum possible edge weight 
-            DirectedAcyclicGraph<int> subset = network.GetMinimumSpanningTree();
+            UndirectedGraph<int> subset = network.GetMinimumSpanningTree();
             sum -= subset.GetOutgoingEdges().Sum(e => e.Weight);
 
             
@@ -247,10 +247,10 @@ namespace JuanMartin.Utilities.Euler
 
 
         #region Support Methods
-        private static DirectedAcyclicGraph<int> LoadNetwork(string fileName, char delimiter = ',')
+        private static UndirectedGraph<int> LoadNetwork(string fileName, char delimiter = ',')
         {
             int[][] matrix = UtilityFile.ReadTextToTwoDimensionalNumericArrayWithNullElements(fileName, delimiter);
-            DirectedAcyclicGraph<int> network = new DirectedAcyclicGraph<int>();
+            UndirectedGraph<int> network = new UndirectedGraph<int>();
 
             int dimension = matrix.Length;
 
@@ -274,9 +274,8 @@ namespace JuanMartin.Utilities.Euler
                         string n = $"{from.Name}-{to.Name}";
                         if (!edges.Contains(UtilityString.ReverseString(n, '-')))
                         {
-                            var e = new Edge<int>(from, to, w, n, Edge<int>.EdgeType.outgoing, Edge<int>.EdgeDirection.unidirectional);
                             edges.Add(n);
-                            network.AddEdge(e);
+                            network.AddEdge(from, to,name:n, weight: w);
                         }
                     }
                 }
