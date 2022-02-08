@@ -227,7 +227,7 @@ namespace JuanMartin.Utilities.Euler
             double sum = network.GetOutgoingEdges().Sum(e => e.Weight);
 
             // get minimum possible edge weight 
-            UndirectedGraph<int> subset = network.GetMinimumSpanningTree();
+            UndirectedGraph<int> subset = network.GetMinimumSpanningTreeWithKruskalAlgorithm();
             sum -= subset.GetOutgoingEdges().Sum(e => e.Weight);
 
             
