@@ -223,16 +223,102 @@ namespace JuanMartin.Utilities.Euler
             var cvsinfo = arguments.Sequence.Split('|');
             var fileName = cvsinfo[0];
             var delimiter = Convert.ToChar(cvsinfo[1]);
-            var network = LoadNetwork(fileName,delimiter);
+            var network = LoadNetwork(fileName, delimiter);
             double sum = network.GetOutgoingEdges().Sum(e => e.Weight);
 
             // get minimum possible edge weight 
             UndirectedGraph<int> subset = network.GetMinimumSpanningTreeWithKruskalAlgorithm();
             sum -= subset.GetOutgoingEdges().Sum(e => e.Weight);
 
-            
+
             var answer = sum.ToString();
             var message = string.Format("Using a given text file containing a network with forty vertices, and given in matrix form, the maximum saving which can be achieved by removing redundant edges whilst ensuring that the network remains connected is {0}.", answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+
+        /// <summary>
+        /// https://projecteuler.net/problem=108 
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result DiophantineReciprocalsI(Problem arguments)
+        {
+            //List<Tuple<int, int>> FactorPairs(int number, bool addUniquePairs = true)
+            //{
+            //    var pairs = new List<Tuple<int, int>>();
+            //    var unique = new List<int>();
+            //    long[] factors = UtilityMath.GetFactors(number).ToArray();
+
+            //    foreach (var f in factors)
+            //    {
+            //        int i = (int)f;
+            //        int j = number / i;
+            //        if (addUniquePairs && !unique.Contains(i + j))
+            //        {
+            //            unique.Add(i + j);
+            //            pairs.Add(new Tuple<int, int>(i, j));
+            //        }
+            //        else  if(addUniquePairs)
+            //        {
+            //            pairs.Add(new Tuple<int, int>(i, j));
+            //        }
+            //    }
+
+            //    return pairs;
+            //};
+
+            // See that both x and y needs to be greater than n since they both need to be non-negative,
+            // therefore for non-negatve integers a and b, x and y can be expressed as
+            // x =  n+a and y= n+b, and replacing these in the original equation we get n^2=a * b,
+            // therefore the pairs of factors of n^2 lead to multiple values for x and y and
+            // all are solutions to the reciprocals equality.
+            var solutions = arguments.IntNumber;
+            //int a, b;
+            //int x, y;
+            BigInteger n = BigInteger.Pow(180179, 2);
+
+            while (true)
+            {
+                //int count = 0;
+                //var f = FactorPairs(n * n);
+
+                //foreach (var p in f)
+                //{
+                //    a = p.Item1;
+                //    b = p.Item2;
+                //    x = n + a;
+                //    y = n + b;
+
+                //    double reciprocals = (double)(1)/ x;
+                //    reciprocals += (double)(1)/ y;
+                //    if (reciprocals == (double)(1) / n)
+                //    {
+                //        Console.WriteLine($"1/{x} + 1/{y} = 1/{n}");
+                //        count++;
+                //    }
+                //}
+
+
+                //if (count >= solutions)
+                //    break;
+                var count = UtilityMath.CountLargeNumberFactors(n * n);
+
+                if (count > solutions)
+                    break;
+                n++;
+            }
+
+            var answer = n.ToString();
+            var message = string.Format(" The least value of n for which the number of distinct solutions exceeds {0} is {1}.", UtilityMath.NumberToLetters((long)solutions), answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
