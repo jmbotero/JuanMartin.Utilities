@@ -284,7 +284,7 @@ namespace JuanMartin.Utilities.Euler
             var solutions = arguments.IntNumber;
             //int a, b;
             //int x, y;
-            BigInteger n = BigInteger.Pow(180179, 2);
+            long n = 2;
 
             while (true)
             {
@@ -310,7 +310,8 @@ namespace JuanMartin.Utilities.Euler
 
                 //if (count >= solutions)
                 //    break;
-                var count = UtilityMath.CountLargeNumberFactors(n * n);
+                /// Hack, only use up to prime 17 from <see cref="https://www.mathblog.dk/project-euler-108-diophantine-equation/"/>
+                var count = (UtilityMath.CountFactors(n * n, 17) + 1) / 2;
 
                 if (count > solutions)
                     break;
