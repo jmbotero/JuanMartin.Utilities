@@ -310,10 +310,15 @@ namespace JuanMartin.Utilities.Euler
 
                 //if (count >= solutions)
                 //    break;
-                /// Hack, only use up to prime 17 from <see cref="https://www.mathblog.dk/project-euler-108-diophantine-equation/"/>
-                var count = (UtilityMath.CountFactors(n * n, 17) + 1) / 2;
 
-                if (count > solutions)
+                /// Hack, only use up to prime 17 from <see cref="https://www.mathblog.dk/project-euler-108-diophantine-equation/"/>
+                var primes = new System.Collections.Generic.Queue<long>();
+                foreach (var p in UtilityMath.ErathostenesSieve(17))
+                    primes.Enqueue(p);
+
+                var count = (UtilityMath.CountFactors(n * n, primes) + 1) / 2;
+
+                if (count > solutions) 
                     break;
                 n++;
             }
