@@ -106,7 +106,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(104,PandigitalFibonacciEnds),
                 new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets.txt|,"),
                 new Problem(107,MinimalNetwork,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\network.txt|,"),
-                new Problem(108,DiophantineReciprocalsI,1000) 
+                new Problem(108,DiophantineReciprocalsI,1000),
+                new Problem(111,PrimesWithRuns, 10)
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
@@ -126,7 +127,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,"),
                 new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets_small.txt|,"),
                 new Problem(107,MinimalNetwork,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\network_small.txt|,"),
-                new Problem(108,DiophantineReciprocalsI,3)
+                new Problem(108,DiophantineReciprocalsI,3),
+                new Problem(111,PrimesWithRuns, 4)
             };
 
         public static string[] Answers

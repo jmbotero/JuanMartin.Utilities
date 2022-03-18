@@ -1,5 +1,6 @@
 ﻿using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
+using JuanMartin.Kernel.Extesions;
 using JuanMartin.Models;
 using System;
 using System.Collections.Generic;
@@ -318,13 +319,101 @@ namespace JuanMartin.Utilities.Euler
 
                 var count = (UtilityMath.CountFactors(n * n, primes) + 1) / 2;
 
-                if (count > solutions) 
+                if (count > solutions)
                     break;
                 n++;
             }
 
             var answer = n.ToString();
             var message = string.Format(" The least value of n for which the number of distinct solutions exceeds {0} is {1}.", UtilityMath.NumberToLetters((long)solutions), answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
+        /// <summary>
+        /// https://projecteuler.net/problem=111 
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result PrimesWithRuns(Problem arguments)
+        {
+            IEnumerable<long> GenerateNumbers(int length, int lowerLimit, int upperLimit)
+            {
+                var digits = Enumerable.Range(0, 10).ToArray<int>();
+
+                //var numbers = UtilityMath.GeneratePermutationsOfK<int>(digits, length, true);
+
+                for(long  x = lowerLimit; x < upperLimit; x++)
+                {
+                    if (CheckNumber(x))
+                    {
+                        //long x = 0;
+
+                        ////for (int i = 0; i < number.Length; i++)
+                        //for (int i = number.Length - 1; i >= 0; i--)
+                        //{
+                        //    x = x * 10 + number[i];
+                        //}
+                        //long x = Convert.ToInt64(number); 
+                        if(UtilityMath.GetPrimeFactors(x, false, false).LongCount() == 0)
+                        //if (UtilityMath.IsPrimeUsingSquares(x))
+                        //if (x >= lowerLimit && x <= upperLimit)//&& UtilityMath.IsPrimeUsingSquares(x))
+                            yield return x;
+                    }
+                }
+            };
+
+            /// Return true if number couuld be prime and has duplicate digits
+            bool CheckNumber(long number)
+            {
+                var last = number % 10;
+                bool isPossiblePrime = last != 0 && last != 5 && last % 2 != 0 && UtilityMath.DigitsSum(number) % 3 != 0;
+
+                return isPossiblePrime && number.HasDuplicates();
+            };
+
+            int n = arguments.IntNumber;
+            var N = new Dictionary<int, List<long>> {
+                { 0, new List<long>() },
+                { 1, new List<long>() },
+                { 2, new List<long>() },
+                { 3, new List<long>() },
+                { 4, new List<long>() },
+                { 5, new List<long>() },
+                { 6, new List<long>() },
+                { 7, new List<long>() },
+                { 8, new List<long>() },
+                { 9, new List<long>() }
+                    };
+
+
+            int lowerBound = (int)Math.Pow(10, n - 1) + 1;
+            int upperBound = (int)Math.Pow(10, n ) - 1;
+            var primes = GenerateNumbers(n, lowerBound, upperBound).ToArray(); //UtilityMath.ErathostenesSieve(upperBound, lowerBound, threadCount: 2);
+    
+            var M = UtilityMath.MaximumNumericFrequency(primes);
+            foreach(long p in primes)
+            {
+                string number = p.ToString();
+
+                var repeats = number.DigitCounts(); //LongCount(x => (x - 48) == d);
+                for(int d=0;d<10;d++)
+                {
+                    if (repeats[d] == M[d])
+                        N[d].Add(p);
+                }
+            }
+
+            long sum = N.Sum(primeSeries => primeSeries.Value.Sum());
+            var answer = sum.ToString();
+            var message = string.Format("The sum of all S({0} d). is {1}.", n, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
