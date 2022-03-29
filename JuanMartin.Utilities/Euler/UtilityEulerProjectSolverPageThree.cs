@@ -338,33 +338,48 @@ namespace JuanMartin.Utilities.Euler
             return r;
         }
         /// <summary>
-        /// https://projecteuler.net/problem=111 
+        /// https://projecteuler.net/problem=111 , got it to work on test problem   
+        /// but  not  for  10, for this took code from mathblog.
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
         public static Result PrimesWithRuns(Problem arguments)
         {
-            IEnumerable<long> GenerateNumbers(int length, int lowerLimit, int upperLimit)
+            /// Copied from utilitymath to convert to ulong
+            //bool IsPrime(ulong number)
+            //{
+            //    if (number <= 1)
+            //        return false;
+
+            //    if (number == 2)
+            //        return true;
+
+            //    if (number % 2 == 0)
+            //        return false;
+
+            //    ulong counter = 3;
+
+            //    while ((counter * counter) <= number)
+            //    {
+            //        if (number % counter == 0)
+            //        {
+            //            return false;
+            //        }
+            //        else
+            //        {
+            //            counter += 2;
+            //        }
+            //    }
+            //    return true;
+            //};
+
+            IEnumerable<long> GenerateNumbers(long lowerLimit, long upperLimit)
             {
-                var digits = Enumerable.Range(0, 10).ToArray<int>();
-
-                //var numbers = UtilityMath.GeneratePermutationsOfK<int>(digits, length, true);
-
-                for(long  x = lowerLimit; x < upperLimit; x++)
+                for(long  x = lowerLimit; x <= upperLimit; x++)
                 {
                     if (CheckNumber(x))
                     {
-                        //long x = 0;
-
-                        ////for (int i = 0; i < number.Length; i++)
-                        //for (int i = number.Length - 1; i >= 0; i--)
-                        //{
-                        //    x = x * 10 + number[i];
-                        //}
-                        //long x = Convert.ToInt64(number); 
-                        if(UtilityMath.GetPrimeFactors(x, false, false).LongCount() == 0)
-                        //if (UtilityMath.IsPrimeUsingSquares(x))
-                        //if (x >= lowerLimit && x <= upperLimit)//&& UtilityMath.IsPrimeUsingSquares(x))
+                       if (UtilityMath.IsPrimeUsingSquares(x))
                             yield return x;
                     }
                 }
@@ -376,11 +391,17 @@ namespace JuanMartin.Utilities.Euler
                 var last = number % 10;
                 bool isPossiblePrime = last != 0 && last != 5 && last % 2 != 0 && UtilityMath.DigitsSum(number) % 3 != 0;
 
+                /// <see cref="https://stackoverflow.com/questions/1282271/how-to-test-a-prime-number-1000-digits-long/1282397#1282397"/>
+                isPossiblePrime = isPossiblePrime && (number > 3 && (number - 1) % 6 == 0 || (number + 1) % 6 == 0);
                 return isPossiblePrime && number.HasDuplicates();
             };
 
+            long sum = 0;
             int n = arguments.IntNumber;
-            var N = new Dictionary<int, List<long>> {
+
+            if (arguments.TestMode)
+            {
+                var N = new Dictionary<int, List<long>> {
                 { 0, new List<long>() },
                 { 1, new List<long>() },
                 { 2, new List<long>() },
@@ -394,24 +415,33 @@ namespace JuanMartin.Utilities.Euler
                     };
 
 
-            int lowerBound = (int)Math.Pow(10, n - 1) + 1;
-            int upperBound = (int)Math.Pow(10, n ) - 1;
-            var primes = GenerateNumbers(n, lowerBound, upperBound).ToArray(); //UtilityMath.ErathostenesSieve(upperBound, lowerBound, threadCount: 2);
-    
-            var M = UtilityMath.MaximumNumericFrequency(primes);
-            foreach(long p in primes)
-            {
-                string number = p.ToString();
+                long lowerBound = Convert.ToInt64("1" + "0".Repeat(n - 1));
+                long upperBound = Convert.ToInt64("9".Repeat(n));
+                var primes = GenerateNumbers(lowerBound, upperBound).ToArray(); //UtilityMath.ErathostenesSieve(upperBound, lowerBound, threadCount: 2);
 
-                var repeats = number.DigitCounts(); //LongCount(x => (x - 48) == d);
-                for(int d=0;d<10;d++)
+                //       ulong sum = primes.Aggregate((n1, n2) => n1 + n2);
+
+                var M = UtilityMath.MaximumNumericFrequency(primes);
+                foreach (long p in primes)
                 {
-                    if (repeats[d] == M[d])
-                        N[d].Add(p);
-                }
-            }
+                    string number = p.ToString();
 
-            long sum = N.Sum(primeSeries => primeSeries.Value.Sum());
+                    var repeats = number.DigitCounts(); //LongCount(x => (x - 48) == d);
+                    for (int d = 0; d < 10; d++)
+                    {
+                        if (repeats[d] == M[d])
+                            N[d].Add(p);
+                    }
+                }
+
+                foreach (var primeSeries in N.Values)
+                    sum += primeSeries.Sum();
+            }
+            else
+            {
+                var p = new Probleem111();
+                sum = p.Solve();
+            }
             var answer = sum.ToString();
             var message = string.Format("The sum of all S({0} d). is {1}.", n, answer);
             if (Answers[arguments.Id] != answer)

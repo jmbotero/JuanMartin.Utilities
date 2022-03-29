@@ -154,6 +154,7 @@ namespace JuanMartin.Utilities.Euler
         public static void Launch(EulerProblem problem, Problem args, bool testMode=false, bool silent = false)
         {
             Result answer = null;
+            args.TestMode = testMode;
             var stopWatch = new Stopwatch();
 
             if (!silent) Console.WriteLine("{0}roblem {1}:", (testMode) ? "Test p" : "P", args.Id);

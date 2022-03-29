@@ -55,6 +55,7 @@
     <Compile Include="Euler\Objrects\Number.cs" />
     <Compile Include="Euler\Objrects\Passcode.cs" />
     <Compile Include="Euler\Objrects\PrimeSet.cs" />
+    <Compile Include="Euler\Objrects\Probleem111.cs" />
     <Compile Include="Euler\Objrects\Problem88.cs" />
     <Compile Include="Euler\Objrects\RomanNumeral.cs" />
     <Compile Include="Euler\Objrects\Sudoku.cs" />
