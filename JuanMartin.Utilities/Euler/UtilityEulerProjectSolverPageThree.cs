@@ -337,6 +337,7 @@ namespace JuanMartin.Utilities.Euler
 
             return r;
         }
+
         /// <summary>
         /// https://projecteuler.net/problem=111 , got it to work on test problem   
         /// but  not  for  10, for this took code from mathblog.
@@ -345,41 +346,13 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result PrimesWithRuns(Problem arguments)
         {
-            /// Copied from utilitymath to convert to ulong
-            //bool IsPrime(ulong number)
-            //{
-            //    if (number <= 1)
-            //        return false;
-
-            //    if (number == 2)
-            //        return true;
-
-            //    if (number % 2 == 0)
-            //        return false;
-
-            //    ulong counter = 3;
-
-            //    while ((counter * counter) <= number)
-            //    {
-            //        if (number % counter == 0)
-            //        {
-            //            return false;
-            //        }
-            //        else
-            //        {
-            //            counter += 2;
-            //        }
-            //    }
-            //    return true;
-            //};
-
             IEnumerable<long> GenerateNumbers(long lowerLimit, long upperLimit)
             {
-                for(long  x = lowerLimit; x <= upperLimit; x++)
+                for (long x = lowerLimit; x <= upperLimit; x++)
                 {
                     if (CheckNumber(x))
                     {
-                       if (UtilityMath.IsPrimeUsingSquares(x))
+                        if (UtilityMath.IsPrimeUsingSquares(x))
                             yield return x;
                     }
                 }
@@ -439,7 +412,7 @@ namespace JuanMartin.Utilities.Euler
             }
             else
             {
-                var p = new Probleem111();
+                var p = new Problem111();
                 sum = p.Solve();
             }
             var answer = sum.ToString();
@@ -456,6 +429,43 @@ namespace JuanMartin.Utilities.Euler
             return r;
         }
 
+        /// <summary>
+        /// https://projecteuler.net/problem=112
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static Result BouncyNumbers(Problem arguments)
+        {
+            int percent =   arguments.IntNumber;
+            int n = 99;
+            int p = 0, bouncies = 0;
+
+             while (true)
+            {
+                if (n > 100 && UtilityMath.IsBouncyNumber(n))
+                {
+                    bouncies++;
+                    p = 100 * bouncies / n;
+                }
+                if (p == percent)
+                    break;
+                else
+                    n++;
+            }
+
+            var answer = n.ToString();
+            var message = string.Format("The lea  st number for which the proportion of bouncy numbers is exactly {0}% is {1}.", percent, answer);
+            if (Answers[arguments.Id] != answer)
+            {
+                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+            }
+            var r = new Result(arguments.Id, message)
+            {
+                Answer = answer
+            };
+
+            return r;
+        }
 
         #region Support Methods
         private static UndirectedGraph<int> LoadNetwork(string fileName, char delimiter = ',')

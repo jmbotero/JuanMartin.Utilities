@@ -107,7 +107,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets.txt|,"),
                 new Problem(107,MinimalNetwork,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\network.txt|,"),
                 new Problem(108,DiophantineReciprocalsI,1000),
-                new Problem(111,PrimesWithRuns, 10)
+                new Problem(111,PrimesWithRuns, 10),
+                new Problem(112,BouncyNumbers,99)
             };
 
         public static Problem[] unitTestProblems = new Problem[] {
@@ -128,7 +129,8 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets_small.txt|,"),
                 new Problem(107,MinimalNetwork,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\network_small.txt|,"),
                 new Problem(108,DiophantineReciprocalsI,3),
-                new Problem(111,PrimesWithRuns, 4)
+                new Problem(111,PrimesWithRuns, 4),
+                new Problem(112,BouncyNumbers,90)
             };
 
         public static string[] Answers

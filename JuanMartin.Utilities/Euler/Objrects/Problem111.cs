@@ -6,7 +6,7 @@ namespace JuanMartin.Utilities.Euler
     /// <summary>
     /// <see cref="https://www.mathblog.dk/files/euler/Problem111.cs"/>
     /// </summary>
-    public class Probleem111
+    public class Problem111
     {
         readonly int[] number = new int[10];
 
