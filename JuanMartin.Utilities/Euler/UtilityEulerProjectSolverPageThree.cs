@@ -6,6 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using JuanMartin.Models.Gallery;
+using JuanMartin.Kernel.Messaging;
+using JuanMartin.Kernel;
+using System.IO;
+using JuanMartin.Kernel.Adapters;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -436,12 +441,64 @@ namespace JuanMartin.Utilities.Euler
         /// <returns></returns>
         public static Result BouncyNumbers(Problem arguments)
         {
+            IEnumerable<Photography> GetAllPhotographies(int userId, int pageId = 1)
+            {
+                AdapterMySql _dbAdapter = new AdapterMySql("localhost", "photogallery", "root", "yala");
+                var photographies = new List<Photography>();
+                if (_dbAdapter == null)
+                    throw new ApplicationException("MySql connection nnnot set.");
+
+                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+
+                request.AddData(new ValueHolder("PhotoGraphy", $"uspGetAllPhotographies({pageId},8,{userId})"));
+                request.AddSender("AddPhotoGraphy", typeof(Photography).ToString());
+
+                _dbAdapter.Send(request);
+                IRecordSet reply = (IRecordSet)_dbAdapter.Receive();
+
+                if (reply.Data != null && reply.Data.GetAnnotation("Record") != null)
+                {
+                    foreach (ValueHolder record in reply.Data.Annotations)
+                    {
+                        var id = (long)record.GetAnnotation("Id").Value;
+                        var source =  Convert.ToInt32(record.GetAnnotation("Source").Value);
+                        var path = (string)record.GetAnnotation("Path").Value;
+                        var fileName = (string)record.GetAnnotation("Filename").Value;
+                        var title = (string)record.GetAnnotation("Title").Value;
+                        var location = (string)record.GetAnnotation("Location").Value;
+                        var rank = (long)record.GetAnnotation("Rank").Value;
+                        var keywords = (string)record.GetAnnotation("Keywords").Value;
+
+                        var photography = new Photography
+                        {
+                            UserId = userId,
+                            Id = id,
+                            FileName = fileName,
+                            Path = path,
+                            Source = (Photography.PhysicalSource)source,
+                            Title = title,
+                            Location = location,
+                            Rank = rank
+                        };
+
+                        photography.AddKeywords(keywords);
+
+                        photographies.Add(photography);
+                    }
+                }
+
+                return photographies;
+            };
+
             int percent =   arguments.IntNumber;
             int n = 99;
             int p = 0, bouncies = 0;
 
-             while (true)
+            var gph = GetAllPhotographies(1, 1).ToList();
+
+            while (true)
             {
+                
                 if (n > 100 && UtilityMath.IsBouncyNumber(n))
                 {
                     bouncies++;
