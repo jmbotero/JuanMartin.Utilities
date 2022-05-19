@@ -461,7 +461,7 @@ namespace JuanMartin.Utilities.Euler
                     foreach (ValueHolder record in reply.Data.Annotations)
                     {
                         var id = (long)record.GetAnnotation("Id").Value;
-                        var source =  Convert.ToInt32(record.GetAnnotation("Source").Value);
+                        var source = Convert.ToInt32(record.GetAnnotation("Source").Value);
                         var path = (string)record.GetAnnotation("Path").Value;
                         var fileName = (string)record.GetAnnotation("Filename").Value;
                         var title = (string)record.GetAnnotation("Title").Value;
@@ -490,10 +490,30 @@ namespace JuanMartin.Utilities.Euler
                 return photographies;
             };
 
+            int GetGalleryPageCount(int pageSize)
+            {
+                AdapterMySql _dbAdapter = new AdapterMySql("localhost", "photogallery", "root", "yala");
+                if (_dbAdapter == null)
+                    throw new ApplicationException("MySql connection nnnot set.");
+
+                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+
+                request.AddData(new ValueHolder("uspGetPageCount", $"uspGetPageCount({pageSize})"));
+                request.AddSender("Gallery", typeof(Photography).ToString());
+
+                _dbAdapter.Send(request);
+                IRecordSet reply = (IRecordSet)_dbAdapter.Receive();
+
+                var pageCount = (int)reply.Data.GetAnnotationByValue(1).GetAnnotation("pageCount").Value;
+
+                return pageCount;
+            };
+
             int percent =   arguments.IntNumber;
             int n = 99;
             int p = 0, bouncies = 0;
 
+            var pc = GetGalleryPageCount(8);
             var gph = GetAllPhotographies(1, 1).ToList();
 
             while (true)
