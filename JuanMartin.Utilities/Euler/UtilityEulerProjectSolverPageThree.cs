@@ -509,10 +509,31 @@ namespace JuanMartin.Utilities.Euler
                 return pageCount;
             };
 
+            int UpdatePhotographyRanking(long id, int userId, int rank)
+            {
+                AdapterMySql _dbAdapter = new AdapterMySql("localhost", "photogallery", "root", "yala");
+                if (_dbAdapter == null)
+                    throw new ApplicationException("MySql connection nnnot set.");
+
+                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+
+                request.AddData(new ValueHolder("uspUpdateRanking", $"uspUpdateRanking({id},{userId},{rank})"));
+                request.AddSender("Photography", typeof(Photography).ToString());
+
+                _dbAdapter.Send(request);
+                IRecordSet reply = (IRecordSet)_dbAdapter.Receive();
+
+                // be sure record.GetAnnotation("...") exists and is not null
+                var rankingId = (int)reply.Data.GetAnnotationByValue(1).GetAnnotation("id").Value;
+
+                return rankingId;
+            };
+
             int percent =   arguments.IntNumber;
             int n = 99;
             int p = 0, bouncies = 0;
 
+            var upr = UpdatePhotographyRanking(1, 9, 6);
             var pc = GetGalleryPageCount(8);
             var gph = GetAllPhotographies(1, 1).ToList();
 
