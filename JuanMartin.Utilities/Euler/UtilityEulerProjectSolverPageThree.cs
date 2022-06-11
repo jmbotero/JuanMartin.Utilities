@@ -11,6 +11,7 @@ using JuanMartin.Kernel.Messaging;
 using JuanMartin.Kernel;
 using System.IO;
 using JuanMartin.Kernel.Adapters;
+using JuanMartin.Utilities.Euler.Objects;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -448,7 +449,7 @@ namespace JuanMartin.Utilities.Euler
                 if (_dbAdapter == null)
                     throw new ApplicationException("MySql connection nnnot set.");
 
-                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+                Message request = new Message("Command", Type: System.Data.CommandType.StoredProcedure.ToString());
 
                 request.AddData(new ValueHolder("PhotoGraphy", $"uspGetAllPhotographies({pageId},8,{userId})"));
                 request.AddSender("AddPhotoGraphy", typeof(Photography).ToString());
@@ -528,11 +529,62 @@ namespace JuanMartin.Utilities.Euler
 
                 return rankingId;
             };
+            
+            User AddUser(string userName, string password, string email)
+            {
+                AdapterMySql _dbAdapter = new AdapterMySql("localhost", "photogallery", "root", "yala");
+                if (_dbAdapter == null)
+                    throw new ApplicationException("MySql connection not set.");
+
+                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+
+                request.AddData(new ValueHolder("uspAddUser", $"uspAddUser('{userName}','{password}','{email}')"));
+                request.AddSender("User", typeof(User).ToString());
+
+                _dbAdapter.Send(request);
+                IRecordSet reply = (IRecordSet)_dbAdapter.Receive();
+
+                var Id = Convert.ToInt32(reply.Data.GetAnnotationByValue(1).GetAnnotation("id").Value);
+
+                User user = new User()
+                {
+                    UserId = Id,
+                    UserName = userName,
+                    Password = "",
+                    Email = email
+                };
+                return user;
+            };
+
+            RedirectResponseModel SetRedirectInfo(int userId, string remoteHost, string controller, string action, long routeId = -1, string queryString = "")
+            {
+                AdapterMySql _dbAdapter = new AdapterMySql("localhost", "photogallery", "root", "yala");
+                if (_dbAdapter == null)
+                    throw new ApplicationException("MySql connection not set.");
+
+                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+
+                request.AddData(new ValueHolder("uspSetCurrentClientRedirectInfo", $"uspSetCurrentClientRedirectInfo({userId},'{remoteHost}','{controller}','{action}',{routeId},'{queryString}')"));
+                request.AddSender("RedirectRequestModel", typeof(RedirectResponseModel).ToString());
+
+                _dbAdapter.Send(request);
+
+                RedirectResponseModel requestModel = new RedirectResponseModel()
+                {
+                    RemoteHost = remoteHost,
+                    Controller = controller,
+                    Action = action
+                };
+                return requestModel;
+            };
 
             int percent =   arguments.IntNumber;
             int n = 99;
             int p = 0, bouncies = 0;
+            String solutionName = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
+            var sri = SetRedirectInfo(1, "::1", "Gallery", "Index", 12, "?pageId=3");   
+            var au = AddUser("juanm", "yala", "jbotero@hotmail.com");
             var upr = UpdatePhotographyRanking(1, 9, 6);
             var pc = GetGalleryPageCount(8);
             var gph = GetAllPhotographies(1, 1).ToList();

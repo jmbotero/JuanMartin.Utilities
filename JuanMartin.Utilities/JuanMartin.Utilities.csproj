@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JuanMartin.PhotoGallery">
-      <HintPath>..\..\JuanMartin.ToolSet\JuanMartin.PhotoGallery\bin\Debug\net5.0\JuanMartin.PhotoGallery.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\JuanMartin.ToolSet\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -53,15 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Euler\Objrects\Cube.cs" />
-    <Compile Include="Euler\Objrects\Matrix.cs" />
-    <Compile Include="Euler\Objrects\Number.cs" />
-    <Compile Include="Euler\Objrects\Passcode.cs" />
-    <Compile Include="Euler\Objrects\PrimeSet.cs" />
-    <Compile Include="Euler\Objrects\Problem111.cs" />
-    <Compile Include="Euler\Objrects\Problem88.cs" />
-    <Compile Include="Euler\Objrects\RomanNumeral.cs" />
-    <Compile Include="Euler\Objrects\Sudoku.cs" />
+    <Compile Include="Euler\Objects\Cube.cs" />
+    <Compile Include="Euler\Objects\Matrix.cs" />
+    <Compile Include="Euler\Objects\Number.cs" />
+    <Compile Include="Euler\Objects\Passcode.cs" />
+    <Compile Include="Euler\Objects\PrimeSet.cs" />
+    <Compile Include="Euler\Objects\Problem111.cs" />
+    <Compile Include="Euler\Objects\Problem88.cs" />
+    <Compile Include="Euler\Objects\RedirectResponseModel.cs" />
+    <Compile Include="Euler\Objects\RomanNumeral.cs" />
+    <Compile Include="Euler\Objects\Sudoku.cs" />
     <Compile Include="Euler\UtilityEulerProjectSolverPageThree.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Euler\UtilityEulerProjectSolver.cs" />

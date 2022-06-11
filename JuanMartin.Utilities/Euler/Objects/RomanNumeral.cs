@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JuanMartin.Kernel.Utilities;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     public class RomanNumeral
     {

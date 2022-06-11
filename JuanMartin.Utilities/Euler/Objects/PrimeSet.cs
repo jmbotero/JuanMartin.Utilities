@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     public class PrimeSet
     {

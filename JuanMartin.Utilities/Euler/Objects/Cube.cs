@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     public class Cube
     {

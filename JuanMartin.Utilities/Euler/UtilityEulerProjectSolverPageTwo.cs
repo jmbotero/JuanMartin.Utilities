@@ -2,6 +2,7 @@
 using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
 using JuanMartin.Models;
+using JuanMartin.Utilities.Euler.Objects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

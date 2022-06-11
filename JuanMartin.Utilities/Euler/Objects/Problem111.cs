@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     /// <summary>
     /// <see cref="https://www.mathblog.dk/files/euler/Problem111.cs"/>

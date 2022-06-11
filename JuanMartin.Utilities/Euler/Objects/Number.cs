@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
  
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     public class Number : IComparable<Number>
     {

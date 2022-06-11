@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "}")]
     public class Sudoku

@@ -2,13 +2,13 @@
 using JuanMartin.Kernel.Utilities.DataStructures;
 using System.Diagnostics;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "}")]
 
     public class Passcode
     {
-        private DirectedAcyclicGraph<int> graph;
+        private readonly DirectedAcyclicGraph<int> graph;
 
         public Path<int> Code => graph.GetLongestPath();
 

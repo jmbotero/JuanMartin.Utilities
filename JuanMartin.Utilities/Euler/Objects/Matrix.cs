@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JuanMartin.Utilities.Euler
+namespace JuanMartin.Utilities.Euler.Objects
 {
     public class Matrix
     {
@@ -252,10 +252,10 @@ namespace JuanMartin.Utilities.Euler
                     for (int x = 0; x < w; x++)
                     {
                         int temp = INFINITY;
-                        temp = Math.Min(getDistance(x - 1, y), temp);
-                        temp = Math.Min(getDistance(x + 1, y), temp);
-                        temp = Math.Min(getDistance(x, y - 1), temp);
-                        temp = Math.Min(getDistance(x, y + 1), temp);
+                        temp = Math.Min(GetDistance(x - 1, y), temp);
+                        temp = Math.Min(GetDistance(x + 1, y), temp);
+                        temp = Math.Min(GetDistance(x, y - 1), temp);
+                        temp = Math.Min(GetDistance(x, y + 1), temp);
                         _distance[x][y] = Math.Min(_matrix[x][y].Value + temp, _distance[x][y]);
                     }
                 }
@@ -264,7 +264,7 @@ namespace JuanMartin.Utilities.Euler
         }
 
 
-        private int getDistance(int x, int y)
+        private int GetDistance(int x, int y)
         {
             if (x < 0 || x >= _distance.Length || y < 0 || y >= _distance[x].Length)
             {
