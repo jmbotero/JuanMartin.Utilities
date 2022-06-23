@@ -482,7 +482,7 @@ namespace JuanMartin.Utilities.Euler
                             Rank = rank
                         };
 
-                        photography.AddKeywords(keywords);
+                        photography.ParseTags(keywords);
 
                         photographies.Add(photography);
                     }
@@ -578,11 +578,30 @@ namespace JuanMartin.Utilities.Euler
                 return requestModel;
             };
 
+            int AddTag(string tag, long id)
+            {
+                AdapterMySql _dbAdapter = new AdapterMySql("localhost", "photogallery", "root", "yala");
+                if (_dbAdapter == null)
+                    throw new ApplicationException("MySql connection not set.");
+
+                Message request = new Message("Command", System.Data.CommandType.StoredProcedure.ToString());
+
+                request.AddData(new ValueHolder("uspAddTag", $"uspAddTag('{tag}',{id})"));
+                request.AddSender("Photography", typeof(Photography).ToString());
+
+                _dbAdapter.Send(request);
+                IRecordSet reply = (IRecordSet)_dbAdapter.Receive();
+
+                var Id = Convert.ToInt32(reply.Data.GetAnnotationByValue(1).GetAnnotation("id").Value);
+
+                return Id;
+            };
+
             int percent =   arguments.IntNumber;
             int n = 99;
             int p = 0, bouncies = 0;
-            String solutionName = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
+            var at = AddTag("bear", 19);
             var sri = SetRedirectInfo(1, "::1", "Gallery", "Index", 12, "?pageId=3");   
             var au = AddUser("juanm", "yala", "jbotero@hotmail.com");
             var upr = UpdatePhotographyRanking(1, 9, 6);
