@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JuanMartin.Utilities.Euler.Objects;
 
-namespace JuanMartin.Utilities.Euler.Tests
+namespace JuanMartin.Utilities.Tests.Euler.Objects
 {
     [TestFixture()]
     public class RomanNumeralTests

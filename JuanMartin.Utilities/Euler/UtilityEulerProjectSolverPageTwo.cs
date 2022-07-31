@@ -64,23 +64,23 @@ namespace JuanMartin.Utilities.Euler
             /// <param name="left"></param>
             /// <param name="right"></param>
             /// <returns></returns>
-            bool NumbersBelongToSameDigitFamily(int left, int right, int repeatingSequences = 1)
+            bool NumbersBelongToSameDigitFamily<T>(T left, T right, int repeatingSequences = 1)
             {
                 var repeating = new Dictionary<char, List<int>>();
-                var sleft = left.ToString();
-                var sright = right.ToString();
+                var sLeft = left.ToString();
+                var sRight = right.ToString();
 
-                if (left == right)
+                if (sLeft == sRight)
                     return false;
-                if (sleft.Length != sright.Length)
+                if (sLeft.Length != sRight.Length)
                     return false;
 
-                for (var i = 0; i < sleft.Length; i++)
+                for (var i = 0; i < sLeft.Length; i++)
                 {
-                    var rdigit = sright[i];
-                    var ldigit = sleft[i];
+                    var rdigit = sRight[i];
+                    var ldigit = sLeft[i];
 
-                    if ((repeating.Count < repeatingSequences) && !repeating.ContainsKey(ldigit) && (sleft.Count(c => c == ldigit) >= 2))
+                    if ((repeating.Count < repeatingSequences) && !repeating.ContainsKey(ldigit) && (sLeft.Count(c => c == ldigit) >= 2))
                     {
                         if (repeating.ContainsKey(ldigit) && repeating[ldigit].Contains(i))
                             continue;
@@ -88,7 +88,7 @@ namespace JuanMartin.Utilities.Euler
                         {
                             repeating.Add(ldigit, new List<int>());
 
-                            foreach (var (digit, j) in sleft.Enumerate())
+                            foreach (var (digit, j) in sLeft.Enumerate())
                             {
                                 if (digit == ldigit)
                                     repeating[ldigit].Add(j);
@@ -96,7 +96,7 @@ namespace JuanMartin.Utilities.Euler
                             bool match = true;
                             foreach (var k in repeating[ldigit])
                             {
-                                match = match && sright[k] == rdigit;
+                                match = match && sRight[k] == rdigit;
 
                                 if (!match) break;
                             }
@@ -117,7 +117,7 @@ namespace JuanMartin.Utilities.Euler
 
             // get all six digit primes
             var primes = UtilityMath.GeneratePrimesUsingSquares(1000000, 100000).ToArray();
-            var repeats = new List<int>();
+            var repeats = new List<long>();
 
             // get primes with repeated digits (not necessarily adjacent digits)
             for (int i = 0; i < primes.Length; i++)
@@ -128,11 +128,11 @@ namespace JuanMartin.Utilities.Euler
             }
 
             // get first eight number prime-family
-            HashSet<int> family = null;
+            HashSet< long> family = null;
 
             foreach (var prime in repeats)
             {
-                family = new HashSet<int>
+                family = new HashSet<long>
                 {
                     prime
                 };
@@ -673,7 +673,7 @@ namespace JuanMartin.Utilities.Euler
 
             for (int n = 2; n <= upperBound; n++)
             {
-                if (UtilityMath.IsPerferctSquare((double)n)) continue;
+                if (UtilityMath.IsPerferctSquare(n)) continue;
 
                 var p = UtilityMath.GetContinuedFractionExpansionPeriodicLengthForNonPerfectSquare(n);
                 if (p % 2 == 1) //only if odd
@@ -925,7 +925,7 @@ namespace JuanMartin.Utilities.Euler
 
             for (var number = 1; number <= count; number++)
             {
-                if (!UtilityMath.IsPerferctSquare((double)(double)number))
+                if (!UtilityMath.IsPerferctSquare(number))
                 {
                     var sqrt = UtilityMath.SqrtDigitExpansion(number, digits);
 

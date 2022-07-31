@@ -1140,14 +1140,14 @@ namespace JuanMartin.Utilities.Euler
         {
             var limit = arguments.IntNumber;
             var max = 0;
-            var number = 0;
+            long number = 0;
 
             // only prime numbers as per (https://en.wikipedia.org/wiki/Repeating_decimal#Fractions_with_prime_denominators), 
             // those have the longest recurring cycles
             var primes = UtilityMath.ErathostenesSieve(limit);
-            foreach (int divisor in primes)
+            foreach (var divisor in primes)
             {
-                var digits = UtilityMath.GetDecimalList(1, divisor, 2000).ToArray();
+                var digits = UtilityMath.GetDecimalList(1, (int)divisor, 2 * limit).ToArray();
 
                 // we have a decimal part number
                 if (digits.Length > 0)
@@ -1770,7 +1770,7 @@ namespace JuanMartin.Utilities.Euler
                 var match = true;
                 for (int i = 0; i < primes.Length; i++)
                 {
-                    match &= UtilityMath.IsSubstringDivisible(pandigital, new int[] { i + 2, i + 3, i + 4 }, primes[i]);
+                    match &= UtilityMath.IsSubstringDivisible(pandigital, new int[] { i + 2, i + 3, i + 4 }, (int)primes[i]);
                 }
                 if (match)
                     selected.Add(pandigital);
@@ -1877,10 +1877,10 @@ namespace JuanMartin.Utilities.Euler
             {
                 var q = false;
                 var primes = UtilityMath.ErathostenesSieve(x);
-                foreach (int p in primes)
+                foreach (long p in primes)
                 {
                     var dif = x - p;
-                    if (dif % 2 == 0 && UtilityMath.IsPerferctSquare((double)dif / 2))
+                    if (dif % 2 == 0 && UtilityMath.IsPerferctSquare(dif / 2))
                     {
                         q = true;
                         break;
