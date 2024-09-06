@@ -1,7 +1,7 @@
 ﻿using JuanMartin.Kernel.Extesions;
 using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
-using JuanMartin.Models;
+using JuanMartin.Models.Euler;
 using JuanMartin.Utilities.Euler.Objects;
 using System;
 using System.Collections.Generic;
@@ -157,7 +157,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The smallest prime which, by replacing part of the number (not necessarily adjacent digits) with the same digit, is part of an eight prime value family is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -199,7 +199,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The smallest positive integer, x, such that 2x, 3x, 4x, 5x, and 6x, contain the same digits is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -234,7 +234,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("{0} not necessarily distinct, values of combinatorics(n, r), for 1 ≤ n ≤ 100, are greater than {1}.", answer, limit);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var result = new Result(arguments.Id, message)
             {
@@ -290,7 +290,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Player 1 wins {0} hands.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var result = new Result(arguments.Id, message)
             {
@@ -320,7 +320,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("There are {0} Lychrel numbers below {1}.", answer, limit);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -355,7 +355,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The maximum digital sum of natural numbers of the form, a^b, where a, b < {0}, is {1}.", limit, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -397,7 +397,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("In the first {0} expansions, {1} fractions contain a _numerator with more digits than denominator.", limit, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -444,7 +444,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The side length of the square spiral for which the ratio of primes along both diagonals first falls below {0}% is {1}.", ratio * 100, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -497,7 +497,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the ASCII values in the original English text is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -524,7 +524,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The lowest sum for of {0} primes for which any two primes concatenate to produce another prime is {1}.", set.Count, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -555,7 +555,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the only ordered set of six cyclic 4-digit numbers for which each polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and octagonal, is represented by a different number in the set is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -606,7 +606,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The smallest cube for which exactly five permutations of its digits are cube is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -651,7 +651,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of n-digit positive integers exist which are also an nth Power is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -684,7 +684,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of continued fractions for N ≤ {0} have an odd period is {1}.", upperBound, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -731,7 +731,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The maximum 16-digit string for a \"magic\" 5-gon ring is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -758,7 +758,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The numerator of the fraction immediately to the left of {0} is {1}.", key.ToString(), answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -788,7 +788,7 @@ namespace JuanMartin.Utilities.Euler
 
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -820,7 +820,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Given that L is the length of the wire, {0} values of L ≤ {1} can form exactly one integer sided right angle triangle.", answer, perimeter);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -863,7 +863,7 @@ namespace JuanMartin.Utilities.Euler
 
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -892,7 +892,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Given that the three characters are always asked for in order, after analysing the given file ({0}), the shortest possible secret passcode of unknown length is {1}.", fileName, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -937,7 +937,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The total of the digital sums of the first {0} decimal digits for all the irrational square roots of the first {1} natural numbers is {2}.", digits, count, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -976,7 +976,7 @@ namespace JuanMartin.Utilities.Euler
             //var message = string.Format("The minimal path sum from the top left to the bottom right:  [{0}], by moving left, right, up, and down, is equal to {1}.", labels, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1019,7 +1019,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("There are {0} numbers below {1} can be expressed as the sum of a prime square, prime cube, and prime fourth power.", answer, limit);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1063,7 +1063,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all the minimal product-sum numbers for 2≤k≤{0} is {1}.", limit, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1148,7 +1148,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of characters saved by writing all of the roman numerals in '{0}', in their minimal form is {1}.", fileName, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1180,7 +1180,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("There are {0} numbers below ten million that will arrive at 89.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1238,7 +1238,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The set of four distinct digits, a < b < c < d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, is {0} with the highest value operation [{1} (n={2})].", answer, maximumExpression, maximumCount);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1340,7 +1340,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The  the sum of the perimeters of all almost equilateral triangles with integral side lengths and area and whose perimeters do not exceed {0} is {1}.", limit, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1433,7 +1433,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The smallest member of the longest amicable chain with no element exceeding one million is {0}", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1461,7 +1461,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the 3-digit numbers found in the top left corner of each solution grid is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1501,7 +1501,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The last {0} of the  massive non-Mersenne prime which contains 2,357,207 digits, are {1}", count, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1614,6 +1614,9 @@ namespace JuanMartin.Utilities.Euler
                 matrix = lines.Select(line => line.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries).Select(v => new Vertex<int>(Convert.ToInt32(v))).ToArray()).ToArray();
                 dimension = matrix.Length;
             }
+            // Differrent cells may reference repeated values/names
+            // so evaluate  unicqueness on the newly defined cellid
+            graph.DefineVertexUniqueness = Graph<int>.DefineObjectUniqueness.onGuid;
             for (int i = 0; i < dimension; i++)
             {
                 for (int j = 0; j < dimension; j++)
@@ -1772,7 +1775,8 @@ namespace JuanMartin.Utilities.Euler
 
                 while ((line = reader.ReadLine()) != null)
                 {
-                    attempts.Add(line);
+                    
+                     attempts.Add(line);
                 }
 
                 foreach (var key in attempts)

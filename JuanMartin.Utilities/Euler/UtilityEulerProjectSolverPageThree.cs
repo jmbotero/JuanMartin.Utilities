@@ -1,7 +1,7 @@
 ﻿using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
 using JuanMartin.Kernel.Extesions;
-using JuanMartin.Models;
+using JuanMartin.Models.Euler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +77,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of triangles, in triangles.txt, a 27K text file containing the coordinates of one thousand 'random' triangles, for which the interior contains the origin is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -130,7 +130,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Given that Fk = ({0}), is the first Fibonacci number for which the first nine digits AND the last nine digits are 1-9 pandigital, k is {1}.", fn, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -205,7 +205,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Using  a 4K text file with one-hundred sets containing seven to twelve elements (the two examples given above are the first two sets in the file), identify all the special sum sets, A1, A2, ..., Ak, and the value of S(A1) + S(A2) + ... + S(Ak). is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -237,7 +237,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Using a given text file containing a network with forty vertices, and given in matrix form, the maximum saving which can be achieved by removing redundant edges whilst ensuring that the network remains connected is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -329,7 +329,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format(" The least value of n for which the number of distinct solutions exceeds {0} is {1}.", UtilityMath.NumberToLetters((long)solutions), answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -420,7 +420,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all S({0} d). is {1}.", n, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -459,7 +459,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The lea  st number for which the proportion of bouncy numbers is exactly {0}% is {1}.", percent, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" => INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -491,8 +491,8 @@ namespace JuanMartin.Utilities.Euler
                     double w = (double)matrix[i][j];
                     if (w > 0)
                     {
-                        var from = network.GetVertex(UtilityString.GetColumnName(i));
-                        var to = network.GetVertex(UtilityString.GetColumnName(j));
+                        var from = network.GetVertexByName(UtilityString.GetColumnName(i));
+                        var to = network.GetVertexByName(UtilityString.GetColumnName(j));
                         // there should only one edge between two nodes
                         string n = $"{from.Name}-{to.Name}";
                         if (!edges.Contains(UtilityString.ReverseString(n, '-')))

@@ -28,10 +28,11 @@ namespace JuanMartin.Utilities.Euler.Objects
             }
             for (var i = 1; i < digits.Length; i++)
             {
-                var from = graph.GetVertex(digits[i - 1]);
-                var to = graph.GetVertex(digits[i]);
+                var from = graph.GetVertexByName(digits[i - 1].ToString());
+                var to = graph.GetVertexByName(digits[i].ToString());
 
-                graph.AddEdge(nameFrom: from.Name, nameTo:to.Name, name: "adjacent", weight: 1);
+				if (from != null && to !=  null)
+					graph.AddEdge(nameFrom: from.Name, nameTo:to.Name, name: "adjacent", weight: 1);
             }
         }
 

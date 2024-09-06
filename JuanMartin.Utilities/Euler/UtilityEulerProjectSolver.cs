@@ -1,7 +1,7 @@
 ﻿using JuanMartin.Kernel.Extesions;
 using JuanMartin.Kernel.Utilities;
 using JuanMartin.Kernel.Utilities.DataStructures;
-using JuanMartin.Models;
+using JuanMartin.Models.Euler;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,9 +18,12 @@ namespace JuanMartin.Utilities.Euler
     public partial class UtilityEulerProjectSolver
     {
         public bool TestMode { get; set; }
-        public static string ListOfAnswers = "";// "233168,4613732,6857,906609,232792560,25164150,104743,23514624000,31875000,142913828922,70600674,76576500,5537376230,837799,137846528820,1366,21124,1074,171,648,31626,871198282,4179871,2783915460,4782,983,-59231,669171001,9183,443839,73682,45228,100,40730,55,872187,748317,932718654,840,210,7652413,162,16695334890,5482660,1533776805,5777,134043,9110846700,296962999629,997651,121313,142857,4075,376,249,972,153,26241,107359,26033,28684,127035954683,49,1322,272,661,7273,6531031914842725,510510,8319823,428570,303963552391,7295372,402,161667,190569291,71,55374,73162890,40886,427337,260324,425185,101524,2772,1818,1097343,7587457,743,1217,14234,8581146,1258,518408346,14316,24702,8739992577,18769,709,756872327473,37076114526,228,20313839404245,329468,73702,21384,259679,180180,38182,612407567715,1587000,51161058134250,16475640049,168,20492570929,100808458960497,44680,248155780267521,333082500,2269,1582,21035,21417,2906969179,18407904,14516824220,1000023,149253,843296,453647705,18613426663617118,4989,10057761,1006193,608720,676333270,52852124,-271248680,0.464399,3857447,16576,3D58725572C62302,378158756814587,7130034,178653872807,142989277,227485267000992000,1572729,209566,126461847755,986262,399788195976,2325629,17427258,95962097,1918080160,1.710637717,34029210557338,2944730,0.5731441,1389019170,331951449665644800,1922364685,1677366278943,806844323190414,5437849,0,1590933,2009,7526965179680,892371480,9275262564250418,1425480602091519,209110240768,0.999992836187,4617456485273129588,430.088247,313135496,2178309,1111981904675169,283988410192,13625242,6.3551758451,199740353/29386561536000,13938,336108797689259276,11109800204052,1004195061,1739023853137,139602943319822,696067597313468,281632621,39782849136421,446572970925740,46479497324,98792821,23.386029052,326624372659664,153651073760956,6.818741802,35407281,100315739184392,476001479068717,2240";
+        public static string ListOfAnswers ="233168,4613732,6857,906609,232792560,25164150,104743,23514624000,31875000,142913828922,70600674,76576500,5537376230,837799,137846528820,1366,21124,1074,171,648,31626,871198282,4179871,2783915460,4782,983,-59231,669171001,9183,443839,73682,45228,100,40730,55,872187,748317,932718654,840,210,7652413,162,16695334890,5482660,1533776805,5777,134043,9110846700,296962999629,997651,121313,142857,4075,376,249,972,153,26241,107359,26033,28684,127035954683,49,1322,272,661,7273,6531031914842725,510510,8319823,428570,303963552391,7295372,402,161667,190569291,71,55374,73162890,40886,427337,260324,425185,101524,2772,1818,1097343,7587457,743,1217,14234,8581146,1258,518408346,14316,24702,8739992577,18769,709,756872327473,37076114526,228,20313839404245,329468,73702,21384,259679,180180,38182,612407567715,1587000,51161058134250,16475640049,168,20492570929,100808458960497,44680,248155780267521,333082500,2269,1582,21035,21417,2906969179,18407904,14516824220,1000023,149253,843296,453647705,18613426663617118,4989,10057761,1006193,608720,676333270,52852124,-271248680,0.464399,3857447,16576,3D58725572C62302,378158756814587,7130034,178653872807,142989277,227485267000992000,1572729,209566,126461847755,986262,399788195976,2325629,17427258,95962097,1918080160,1.710637717,34029210557338,2944730,0.5731441,1389019170,331951449665644800,1922364685,1677366278943,806844323190414,5437849,0,1590933,2009,7526965179680,892371480,9275262564250418,1425480602091519,209110240768,0.999992836187,4617456485273129588,430.088247,313135496,2178309,1111981904675169,283988410192,13625242,6.3551758451,199740353/29386561536000,13938,336108797689259276,11109800204052,1004195061,1739023853137,139602943319822,696067597313468,281632621,39782849136421,446572970925740,46479497324,98792821,23.386029052,326624372659664,153651073760956,6.818741802,35407281,100315739184392,476001479068717,2240";
+        public static string TestListOfAnswers = ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,644";
 
-        public static Problem[] problems = new Problem[] {
+        public static Dictionary<bool, Problem[]> Problems = new Dictionary<bool, Problem[]>()
+        {
+            { false, new Problem[] {
                 new Problem(0,Test),
                 new Problem(1,Multiples,1000,"",new long[] {3,5}),
                 new Problem(2,EvenFibonacci,4000000),
@@ -43,7 +46,7 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(19,CountingSundays,"01/01/1901;12/31/2000"),
                 new Problem(20,FactorialDigitSum,100),
                 new Problem(21,AmicableNumbers,10000),
-                new Problem(22,NameScores,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\names.txt|,|"""),
+                new Problem(22,NameScores,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\names.txt|,|"""),
                 new Problem(23,NonAbundantSum,28123),
                 new Problem(24,LexicographicPermutations, new long[] { 1000000, 9 }),
                 new Problem(25,NumberDigitsFidonacciNumber,1000),
@@ -62,24 +65,24 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(39,IntegerRightTriangles),
                 new Problem(40,ChamperownesConstant),
                 new Problem(41,PandigitalPrime),
-                new Problem(42,CodedTriangleNumbers,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\words.txt|,|"""),
+                new Problem(42,CodedTriangleNumbers,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\words.txt|,|"""),
                 new Problem(43,SubstringDivisibility),
                 new Problem(44,PentagonNumbers),
                 new Problem(45,TriangularPentagonalHexagonal),
                 new Problem(46,GoldbachOtherConjecture),
-                new Problem(47,DistinctPrimeFactors,4),
+                new Problem(47,DistinctPrimeFactors,new long[]   {4, 4, 646 }),
                 new Problem(48,SelfPowers,10L,1000),
                 new Problem(49,PrimePermutations,new long[] { 1488, 9999 }),
                 new Problem(50,ConsecutivePrimeSum,1000000),
                 new Problem(51,PrimeDigitReplacements),
                 new Problem(52,PermutedMultiples),
                 new Problem(53,CombinatoricSelections,1000000),
-                new Problem(54,PokerHands,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\poker.txt| "),
+                new Problem(54,PokerHands,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\poker.txt| "),
                 new Problem(55,LychrelNumbers,10000),
                 new Problem(56,PowerfulDigitSum,100),
                 new Problem(57,SquareRootConvergents,1000),
                 new Problem(58,SpiralPrimes),
-                new Problem(59,XorDecryption,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\cypher.txt|,|"""),
+                new Problem(59,XorDecryption,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\cypher.txt|,|"""),
                 new Problem(60,PrimePairSets,new long[] { 5, 10000  }),
                 new Problem(61,CyclicalFigurateNumbers),
                 new Problem(63,PowerfulDigitCounts),
@@ -90,55 +93,70 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(73,CountingFractionsInRange,12000,new List<int> { 1, 3, 1, 2 }),
                 new Problem(75,SingularIntegerRightTriangles,1500000),
                 new Problem(76,CountingSummations,100),
-                new Problem(79,PasscodeDerivation,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\keylog.txt|"),
+                new Problem(79,PasscodeDerivation,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\keylog.txt|"),
                 new Problem(80,SquareRootDigitalExpansion,new long[] {100,100}),
-                new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix.txt|,", new List<int> { 4445, 7981 }),
+                new Problem(83,PathSumFourWays,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\matrix.txt|,", new List<int> { 4445, 7981 }),
                 new Problem(87,PrimePowerTriples,50000000),
                 new Problem(88,ProductSumNumbers,12000),
-                new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
+                new Problem(89,RomanNumerals,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\roman.txt|,"),
                 new Problem(92,SquareDigitChains,10000000),
                 new Problem(93,ArithmeticExpressions, 9),
                 new Problem(94, AlmostEquilateralTriangles,1000000000),
                 new Problem(95, AmicableChains,1000000),
-                new Problem(96,Sudoku,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sudoku.txt|1"),
+                new Problem(96,Sudoku,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\sudoku.txt|1"),
                 new Problem(97,LargeNonMersennePrime, 10, new long[] {28433, 7830457}),
-                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles.txt|,"),
+                new Problem(102,TriangleContainment,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\triangles.txt|,"),
                 new Problem(104,PandigitalFibonacciEnds),
-                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets.txt|,"),
-                new Problem(107,MinimalNetwork,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\network.txt|,"),
+                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\sets.txt|,"),
+                new Problem(107,MinimalNetwork,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\network.txt|,"),
                 new Problem(108,DiophantineReciprocalsI,1000),
                 new Problem(111,PrimesWithRuns, 10),
                 new Problem(112,BouncyNumbers,99)
-            };
-
-        public static Problem[] unitTestProblems = new Problem[] {
-                new Problem(24,LexicographicPermutations, new long[] { 6, 2 } ),
+            }
+            },
+            { true, new Problem[] {
+				new Problem(0,Test),
+				new Problem(24,LexicographicPermutations, new long[] { 6, 2 } ),
                 new Problem(25,NumberDigitsFidonacciNumber,3),
-                new Problem(48,SelfPowers,11L,10),
+				new Problem(47,DistinctPrimeFactors,new long[]   {3, 3, 600 }),
+				new Problem(48,SelfPowers,11L,10),
                 new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
                 new Problem(50,ConsecutivePrimeSum,1000),
                 new Problem(60,PrimePairSets,new long[] { 4, 673 }),
-                new Problem(83,PathSumFourWays,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
+                new Problem(83,PathSumFourWays,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
                 new Problem(87,PrimePowerTriples,50),
                 new Problem(88,ProductSumNumbers,12),
-                new Problem(89,RomanNumerals,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
+                new Problem(89,RomanNumerals,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
                 new Problem(93,ArithmeticExpressions, 4),
                 new Problem(94, AlmostEquilateralTriangles, 16),
-                new Problem(102,TriangleContainment,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,"),
-                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\sets_small.txt|,"),
-                new Problem(107,MinimalNetwork,@"C:\GitRepositories\JuanMartin.ToolSet\JuanMartin.EulerProjectSolver\data\network_small.txt|,"),
+                new Problem(102,TriangleContainment,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,"),
+                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\sets_small.txt|,"),
+                new Problem(107,MinimalNetwork,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\network_small.txt|,"),
                 new Problem(108,DiophantineReciprocalsI,3),
                 new Problem(111,PrimesWithRuns, 4),
                 new Problem(112,BouncyNumbers,90)
+            }
+            }
             };
+
+        public static int LastProblemId
+        {
+            get
+            {
+                int i = Problems[false].Length - 1;
+                Problem p = Problems[false][i];
+                return p.Id;
+            }
+        }
 
         public static string[] Answers
         {
-            get { return ("," + ListOfAnswers).Split(','); }
+            get { return (ListOfAnswers).Split(','); }
         }
 
-        public static void LoadAnswers(bool testMode=false)
+        public static void 
+            LoadAnswers(bool testMode = false)
         {
             string fileName;
             if (testMode)
@@ -148,9 +166,15 @@ namespace JuanMartin.Utilities.Euler
 
             if (File.Exists(fileName))
             {
-                var arr = UtilityFile.ReadTextToStringEnumerable(fileName).ToArray();
+                var arr = UtilityFile.ReadTextToStringEnumerable(fileName,false).ToArray();
+ 
                 if (arr.Length > 0)
                     ListOfAnswers = string.Join(",", arr);
+            }
+               else
+            {
+                var h = (testMode) ? "test" : "";
+                throw new ArgumentException($"{fileName} does not exist,{h} answers could not be loaded.");
             }
         }
         public static void Launch(EulerProblem problem, Problem args, bool testMode=false, bool silent = false)
@@ -161,6 +185,45 @@ namespace JuanMartin.Utilities.Euler
 
             if (!silent) Console.WriteLine("{0}roblem {1}:", (testMode) ? "Test p" : "P", args.Id);
             stopWatch.Start();
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             answer = problem?.Invoke(args);
             stopWatch.Stop();
 
@@ -174,56 +237,72 @@ namespace JuanMartin.Utilities.Euler
         {
             Result result = null;
             var incorrectProblems = new List<int>();
+            var exceptionProblems = new List<int>();
+            var exceptionProblemInformation = new Dictionary<int, string>();
             var stopWatch = new Stopwatch();
             double totalElapsed = 0;
-            
+
             stopWatch.Start();
-            Console.Write("Executing problem: ");
+            Console.Write("Executing problems: ");
             for (int i = 1; i < problems.Length; i++)
             {
                 var p = problems[i];
 
                 if (skipProblems != null && skipProblems.Contains(p.Id))
                     continue;
-                
-                Console.Write((i > 1) ? "," + p.Id.ToString(): p.Id.ToString());
+                double t = 0;
+                bool skip = false; //  skip errored problems
+                try
+                {
+                    result = p.Script(p);
+                    t = stopWatch.Elapsed.TotalMinutes;
+                    Console.Write((i > 1) ? "," + p.Id.ToString() : p.Id.ToString());
+                }
+                catch (Exception e)
+                {
+                    exceptionProblems.Add(p.Id);
+                    exceptionProblemInformation.Add(p.Id, string.Format("{0}:{1}", e.Source, e.Message));
+                    skip = true;
+                }
 
-                result = p.Script(p);
 
-                var t = stopWatch.Elapsed.TotalMinutes;
                 totalElapsed += t;
                 result.Duration = t;
 
                 stopWatch.Restart();
 
-                if (Answers[p.Id] != result.Answer)
+                if (!skip && Answers[p.Id] != result.Answer)
                     incorrectProblems.Add(p.Id);
             }
             stopWatch.Stop();
             Console.WriteLine();
             Console.WriteLine("Have incorrect answers for Problems: {0}", (incorrectProblems.Count == 0) ? "None" : string.Join(",", incorrectProblems.ToArray()));
-            Console.WriteLine($"Overall execution, {problems.Length} prblems, duration: {Math.Round(totalElapsed, 1)} min");
+            if (exceptionProblems.Count > 0)
+            {
+                Console.WriteLine("Could not execute the following Problems:");
+                foreach (int id in exceptionProblems)
+                {
+                    Console.WriteLine($"{id}->{exceptionProblemInformation[id]}");
+                }
+            } 
+			Console.WriteLine($"Overall execution, {problems.Length} prblems, duration: {Math.Round(totalElapsed, 1)} min");
         }
 
         public static Problem GetProblemById(int id, bool testMode=false)
         {
             Problem p = null;
+            var problemSet = Problems[testMode];
 
-            if (!testMode)
+            try
             {
-                foreach (var problem in problems)
+                foreach(Problem item in problemSet)
                 {
-                    if (problem.Id == id)
-                        p = problem;
+                    if (item.Id == id) p = item;
                 }
             }
-            else
+            catch (Exception e)
             {
-                foreach (var problem in unitTestProblems)
-                {
-                    if (problem.Id == id)
-                        p = problem;
-                }
+                p = null;
             }
             return p;
         }
@@ -253,9 +332,9 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the multiples of ({0}) below {1} is {2}", string.Join(",", numbers.Select(v => v.ToString())), limit, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
-            }
-            var r = new Result(arguments.Id, message)
+				message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
+			}
+			var r = new Result(arguments.Id, message)
             {
                 Answer = answer
             };
@@ -298,7 +377,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Sum of all even fibonnaci numbers less than {0} is {1}", target, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -334,7 +413,7 @@ namespace JuanMartin.Utilities.Euler
 
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -390,7 +469,7 @@ namespace JuanMartin.Utilities.Euler
 
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -432,7 +511,7 @@ namespace JuanMartin.Utilities.Euler
                 message = string.Format("No evenly positive multiple number found.");
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -462,7 +541,7 @@ namespace JuanMartin.Utilities.Euler
 
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -496,7 +575,7 @@ namespace JuanMartin.Utilities.Euler
 
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -536,7 +615,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The adjacent digits [{0}] in the 1000-digit number that have the greatest product which is {1}.", string.Join("x", digit.ToArray()), product);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -589,7 +668,7 @@ namespace JuanMartin.Utilities.Euler
                 message = string.Format("Found no piathagorean triplet that adds to {0}", sum);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -619,7 +698,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all the primes below {0} is {1}.", limit, sum);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -662,7 +741,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The greatest product of {0} adjacent numbers in the same direction (up, down, left, right, or diagonally) in the {1}×{1} grid is {2}.", adjacent, size, maxProduct);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -695,7 +774,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The value of the first triangle number to have over {0} divisors is {1}.", count, number);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -727,7 +806,7 @@ namespace JuanMartin.Utilities.Euler
                 message = "Error: not enough digits specified.";
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -764,7 +843,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The longest chain ({0}) produced by the number under {1} is {2}", maxLength, target, selected);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -792,7 +871,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("There are {0} route(s) in a {1}x{1} grid.", routes, gridSize);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -818,7 +897,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of digits of {0}^{1} is {2}.", b, e, s);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -848,7 +927,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of letters used if all the numbers from {0} to {1} inclusive were written out in words is {2}.", lower, upper, sum);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -876,7 +955,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The maximum total from top to bottom is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -913,7 +992,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Exactly {0} Sundays fell in the first of the month between {1} and {2}.", count, startDate.ToShortDateString(), endDate.ToShortDateString());
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -939,7 +1018,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the digits of {0}! is {1}", number, sum);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -973,7 +1052,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all amicable numbers under {0} is {1}.", limit, sum);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1012,7 +1091,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The total of all name scores in the file is {0}.", total);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1058,7 +1137,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all the positive integers which cannot be written as the sum of two abundant numbers is {0}.", total);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1087,7 +1166,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The {0}{1} permutation of the digits [{2}] is {3}.", position, (position % 10 == 1) ? "st" : "th", string.Join(",", digits), answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1121,7 +1200,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The index of the first term in the Fibonacci sequence to contain {0} digits is {1}.", length, i);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1166,7 +1245,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The value of d < {0} for which 1/d contains the longest recurring cycle in its decimal fraction part is {1} with length of {2}.", limit, answer, max);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1206,7 +1285,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes ({0}) for consecutive values of n, starting with n=0,  is {1}.", max, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1232,7 +1311,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the numbers on the diagonals in a {0} by {0} spiral matrix is {1}.", dimension, sum);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1267,7 +1346,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("There are {0} distinct terms are in the sequence generated by a^b for {1} ≤ a ≤ {2} and {1} ≤ b ≤ {2}.", bag.Count, lbound, ubound);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1309,7 +1388,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The he sum of all the numbers that can be written as the sum of {0}{1} powers of their digits is {2}.", power, (power % 10 == 1) ? "st" : "th", total);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1352,7 +1431,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
 
             var r = new Result(arguments.Id, message)
@@ -1415,7 +1494,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("If the product of the four non-trivial fractions is given in its lowest common terms, find the value of the denominator is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1453,7 +1532,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all numbers which are equal to the sum of the factorial of their digits is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1484,7 +1563,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of circular primes are there below {0} is {1}.", ubound, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1522,7 +1601,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all numbers, less than {0}, which are palindromic in base 10 and base 2 is {1}.", ubound, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1560,7 +1639,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of the {0} primes ({1} non truncatable primes), that are both truncatable from left to right and right to left is {2} [{3}].", count, string.Join(",", nonPrimes), answer, string.Join(",", primes.ToArray()));
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1608,7 +1687,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The largest 1 to 9 digit number that can be formed as the concatenated product of an integer with (1,2,...,{0}) is {1}.", d, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1643,7 +1722,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The number of solutions for a value of p ≤ {0}, maximised is {1}.", max, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1674,7 +1753,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("If dn represents the nth digit of the fractional part, the value of the following expression: d1 × d10 × d100 × d1000 × d10000 × d100000 × d1000000 is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1709,7 +1788,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("the largest n-digit ({0}) pandigital prime that exists is {1}.", n, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1744,7 +1823,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("Using words.txt, text file containing nearly two-thousand common English words, {0} are triangle words.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1782,7 +1861,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The sum of all 0 to 9 pandigital numbers with the subtrings prime divisibility property is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1824,7 +1903,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The value of D, where the pair of pentagonal numbers, Pj and Pk, for which their sum and difference are pentagonal and D = |Pk − Pj| is minimised, is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1856,7 +1935,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("the next triangle number that is also pentagonal and hexagonal is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1908,7 +1987,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The smallest odd composite that cannot be written as the sum of a prime and twice a square is {0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1916,47 +1995,48 @@ namespace JuanMartin.Utilities.Euler
             };
 
             return r;
-        }   
+        }
 
-        /// <summary>
-        /// https://projecteuler.net/problem=47
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
-        public static Result DistinctPrimeFactors(Problem arguments)
+		/// <summary>
+		/// https://projecteuler.net/problem=47
+		/// </summary>
+		/// <param name="arguments"></param>
+		/// <returns></returns>
+		public static Result DistinctPrimeFactors(Problem arguments)
         {
-            var NumConsecutives = arguments.IntNumber;
-            var distincts = 4;
-            var consecutives = 0;
+            var NumConsecutives = Convert.ToInt32(arguments.Numbers[0]);
+            var distincts = Convert.ToInt32(arguments.Numbers[1]);
+            var consecutivesCount = 0;
             var found = false;
-            var number = 646;
+            var number = Convert.ToInt32(arguments.Numbers[2]);
             var first = -1;
 
-            while (!found && number < int.MaxValue)
+            
+			while (!found && number < int.MaxValue)
             {
                 var pf = UtilityMath.GetPrimeFactors(number).ToArray();
                 if (pf.Length == distincts)
                 {
-                    consecutives++;
+                    consecutivesCount++;
                     if (first == -1) first = number;
                 }
                 else
                 {
-                    consecutives = 0;
+                    consecutivesCount = 0;
                     first = -1;
                 }
 
-                if (consecutives == NumConsecutives)
+                if (consecutivesCount == NumConsecutives)
                     found = true;
-
-                number++;
+                else
+                    number++;
             }
             var answer = first.ToString();
 
-            var message = string.Format("The first number of the first four consecutive integers to have four distinct prime factors each is {0}.", answer);
+            var message = string.Format("The first number of the first {0} consecutive integers to have {1} distinct prime factors each is {2}.", distincts, NumConsecutives, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -1995,7 +2075,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The last {0} digit(s) of the series, 1^1 + 2^2 + 3^3 + ... + {1}^{1} are {2}.", size, power, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -2043,7 +2123,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The {0}-digit number do you form by concatenating the three terms in the second 4-digit increasing sequence is {1}.", answer.Length,  answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -2096,7 +2176,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("The prime, below {0}, can be written as the sum of the most consecutive primes ({1}) is {2}.", limit, end - start, answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
              var r = new Result(arguments.Id, message)
             {
@@ -2113,7 +2193,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("{0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
@@ -2130,7 +2210,7 @@ namespace JuanMartin.Utilities.Euler
             var message = string.Format("{0}.", answer);
             if (Answers[arguments.Id] != answer)
             {
-                message += string.Format(" \n\r=> INCORRECT ({0})", Answers[arguments.Id]);
+                message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
             }
             var r = new Result(arguments.Id, message)
             {
