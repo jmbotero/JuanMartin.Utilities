@@ -111,32 +111,33 @@ namespace JuanMartin.Utilities.Euler
                 new Problem(107,MinimalNetwork,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\network.txt|,"),
                 new Problem(108,DiophantineReciprocalsI,1000),
                 new Problem(111,PrimesWithRuns, 10),
-                new Problem(112,BouncyNumbers,99)
-            }
+                new Problem(112,BouncyNumbers,99),
+                 new Problem(113,NonBouncyNumbers,new List<int>{10,100})
+                }
             },
             { true, new Problem[] {
-				new Problem(0,Test),
-				new Problem(24,LexicographicPermutations, new long[] { 6, 2 } ),
-                new Problem(25,NumberDigitsFidonacciNumber,3),
-				new Problem(47,DistinctPrimeFactors,new long[]   {3, 3, 600 }),
-				new Problem(48,SelfPowers,11L,10),
-                new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
-                new Problem(50,ConsecutivePrimeSum,1000),
-                new Problem(60,PrimePairSets,new long[] { 4, 673 }),
-                new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6 }),
-                new Problem(83,PathSumFourWays,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
-                new Problem(87,PrimePowerTriples,50),
-                new Problem(88,ProductSumNumbers,12),
-                new Problem(89,RomanNumerals,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
-                new Problem(93,ArithmeticExpressions, 4),
-                new Problem(94, AlmostEquilateralTriangles, 16),
-                new Problem(102,TriangleContainment,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,"),
-                new Problem(105,SpecialSubsetSumsTesting,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\sets_small.txt|,"),
-                new Problem(107,MinimalNetwork,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\network_small.txt|,"),
-                new Problem(108,DiophantineReciprocalsI,3),
-                new Problem(111,PrimesWithRuns, 4),
-                new Problem(112,BouncyNumbers,90)
-            }
+                    new Problem(24,LexicographicPermutations, new long[] { 6, 2 } ),
+                    new Problem(25,NumberDigitsFidonacciNumber,3),
+                    new Problem(47,DistinctPrimeFactors,new long[]   {3, 3, 600 }),
+                    new Problem(48,SelfPowers,11L,10),
+                    new Problem(49,PrimePermutations,new long[] { 1485, 9999 }),
+                    new Problem(50,ConsecutivePrimeSum,1000),
+                    new Problem(60,PrimePairSets,new long[] {4, 673}),
+                    new Problem(68,Magic5GonRing,3,new List<int> {1,2,3,4,5,6}),
+                    new Problem(83,PathSumFourWays,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\matrix_small.txt|,", new List<int> { 131, 331 }),
+                    new Problem(87,PrimePowerTriples,50),
+                    new Problem(88,ProductSumNumbers,12),
+                    new Problem(89,RomanNumerals,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\roman_small.txt|,"),
+                    new Problem(93,ArithmeticExpressions, 4),
+                    new Problem(94, AlmostEquilateralTriangles, 16),
+                    new Problem(102,TriangleContainment,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\triangles_small.txt|,"),
+                    new Problem(105,SpecialSubsetSumsTesting,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\sets_small.txt|,"),
+                    new Problem(107,MinimalNetwork,@"C:\GitHub\JuanMartin.EulerProjectSolver\JuanMartin.EulerProjectSolver\data\network_small.txt|,"),
+                    new Problem(108,DiophantineReciprocalsI,3),
+                    new Problem(111,PrimesWithRuns, 4),
+                    new Problem(112,BouncyNumbers,90),
+                    new Problem(113,NonBouncyNumbers,new List<int>{10,6})
+                }
             }
             };
 

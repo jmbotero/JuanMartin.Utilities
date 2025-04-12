@@ -456,7 +456,7 @@ namespace JuanMartin.Utilities.Euler
             }
 
             var answer = n.ToString();
-            var message = string.Format("The lea  st number for which the proportion of bouncy numbers is exactly {0}% is {1}.", percent, answer);
+            var message = string.Format("The least number for which the proportion of bouncy numbers is exactly {0}% is {1}.", percent, answer);
             if (Answers[arguments.Id] != answer)
             {
                 message += string.Format(" \n\r=> {0} ({1})",  Result.INCORRECT_RESULT, Answers[arguments.Id]);
@@ -469,8 +469,46 @@ namespace JuanMartin.Utilities.Euler
             return r;
         }
 
-        #region Support Methods
-        private static UndirectedGraph<int> LoadNetwork(string fileName, char delimiter = ',')
+		/// <summary>
+		/// https://projecteuler.net/problem=113
+		/// </summary>
+		/// <param name="arguments"></param>
+		/// <returns></returns>
+		public static Result NonBouncyNumbers(Problem arguments)
+        {                                                                                                                    
+            int number = arguments.ListOfNumbers[0];
+            int power = arguments.ListOfNumbers[1];
+            BigInteger  limit = BigInteger.Pow (number,power);
+            int count = 0;
+            bool isBruteForce = true;
+
+            if(isBruteForce)
+{            
+                for (BigInteger i = 1; i < limit; i++)
+                {
+                    var n = i.ToString();
+                    //if (!UtilityMath.IsBouncyNumber(n))
+                    if (n.IsSorted(UtilityMath.Growth.increase) || n.IsSorted(UtilityMath.Growth.decrease))
+                        count++;
+                }
+            }
+            var answer = count.ToString();
+
+            var message = string.Format("The  count of numbers below ({0}^{1})  that  are not bouncy is {2}.", number,  power, answer);
+			if (Answers[arguments.Id] != answer)
+			{
+				message += string.Format(" \n\r=> {0} ({1})", Result.INCORRECT_RESULT, Answers[arguments.Id]);
+			}
+			var r = new Result(arguments.Id, message)
+			{
+				Answer = answer
+			};
+
+			return r;
+		}
+
+		#region Support Methods
+		private static UndirectedGraph<int> LoadNetwork(string fileName, char delimiter = ',')
         {
             int[][] matrix = UtilityFile.ReadTextToTwoDimensionalNumericArrayWithNullElements(fileName, delimiter);
             UndirectedGraph<int> network = new UndirectedGraph<int>();
