@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using JuanMartin.Utilities.Euler.Objects;
+using System.Net.Http.Headers;
 
 namespace JuanMartin.Utilities.Euler
 {
@@ -479,11 +480,12 @@ namespace JuanMartin.Utilities.Euler
             int number = arguments.ListOfNumbers[0];
             int power = arguments.ListOfNumbers[1];
             BigInteger  limit = BigInteger.Pow (number,power);
-            int count = 0;
-            bool isBruteForce = true;
+            double count = 0;
 
-            if(isBruteForce)
-{            
+
+            if (power < 100 )
+            { 
+                // brute force
                 for (BigInteger i = 1; i < limit; i++)
                 {
                     var n = i.ToString();
@@ -491,6 +493,15 @@ namespace JuanMartin.Utilities.Euler
                     if (n.IsSorted(UtilityMath.Growth.increase) || n.IsSorted(UtilityMath.Growth.decrease))
                         count++;
                 }
+            }
+            else
+            {
+                // combinatorial
+                var increasing = UtilityMath.Choose(power + 9, 9) - 1;
+                var decreasing = UtilityMath.Choose(power  + 10, 10) -  1;
+                var both = power * 10;
+
+                count = increasing + decreasing - both;
             }
             var answer = count.ToString();
 

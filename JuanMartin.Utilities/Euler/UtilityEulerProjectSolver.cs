@@ -136,7 +136,7 @@ namespace JuanMartin.Utilities.Euler
                     new Problem(108,DiophantineReciprocalsI,3),
                     new Problem(111,PrimesWithRuns, 4),
                     new Problem(112,BouncyNumbers,90),
-                    new Problem(113,NonBouncyNumbers,new List<int>{10,6})
+                    new Problem(113,NonBouncyNumbers,new List<int>{10,10})
                 }
             }
             };
